@@ -1,21 +1,25 @@
 'use strict';
 
+
+var bpm = 10;
+var currentBeat = 0;
+
 function Drum(name, sample){
   this.name = name;
-  this.sample = sample;//new Audio(sample);
-  this.playTriggers = [];
-  this.playTriggers.length = 16;
-  this.playTriggers.fill(false);
+  this.sample = sample;
+  this.playTriggers = new Array(16).fill(false);
 
 }
 
-function playDrum (drum) {
-  new Audio(drum.sample).play();
-}
+Drum.prototype.playDrum = function(){
+  new Audio(this.sample).play();
+};
 
 var snare = new Drum('snare', 'Samples/snare-big.mp3');
 var hihat = new Drum('hihat', 'Samples/hihat-808.mp3');
-// playDrum(snare);
+
+var allDrums = [snare, hihat];
+
 snare.playTriggers[1] = true;
 snare.playTriggers[2] = true;
 hihat.playTriggers[5] = true;
@@ -25,16 +29,15 @@ snare.playTriggers[11] = true;
 hihat.playTriggers[13] = true;
 hihat.playTriggers[15] = true;
 
-var interval = 4000/16;
-setInterval(function() {playMeasure(snare);}, 4000);
-setInterval(function() {playMeasure(hihat);}, 4000);
 
+setInterval(playBeat, 6000 / bpm);
 
-function playMeasure (drum){
-  for (var i = 0; i < drum.playTriggers.length; i++){
-    if (drum.playTriggers[i]){
-      setTimeout(function() {playDrum(drum);}, i * interval);
-      setTimeout(function() {console.log(drum.name);}, i * interval);
+function playBeat(){
+  for (var i = 0; i < allDrums.length; i++){
+    if (allDrums[i].playTriggers[currentBeat]){
+      allDrums[i].playDrum();
     }
   }
+  currentBeat++;
+  currentBeat %= 16;
 }
