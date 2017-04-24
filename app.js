@@ -8,7 +8,6 @@ function Drum(name, sample){
   this.name = name;
   this.sample = sample;
   this.playTriggers = new Array(16).fill(false);
-
 }
 
 Drum.prototype.playDrum = function(){
@@ -51,10 +50,15 @@ function toggleTrigger(e, drum) {
   }
 }
 
-var snare = new Drum('snare', 'Samples/snare-big.mp3');
-var hihat = new Drum('hihat', 'Samples/hihat-808.mp3');
+var snare = new Drum('snare', 'Samples/snare-dist01.mp3');
+var hihat = new Drum('hihat', 'Samples/hihat-dist01.mp3');
+var kick = new Drum('kick', 'Samples/kick-classic.mp3');
+var tom1 = new Drum('tom1', 'Samples/tom-acoustic01.mp3');
+var tom2 = new Drum('tom2', 'Samples/tom-acoustic02.mp3');
+var crash = new Drum('crash', 'Samples/crash-acoustic.mp3');
 
-var allDrums = [snare, hihat];
+
+var allDrums = [snare, hihat, kick, tom1, tom2, crash];
 
 generateTable(allDrums);
 
