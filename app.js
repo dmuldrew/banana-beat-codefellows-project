@@ -252,3 +252,33 @@ document.onkeyup = function(event) {
     b.stop();
   }
 };
+
+//creating a pause button event listener
+var pause = document.getElementById('pause');
+pause.addEventListener('click', pausePlaying);
+function pausePlaying(){
+  clearInterval(playingInterval);
+}
+
+//creating a play button event listener
+var play = document.getElementById('play');
+play.addEventListener('click', playBack);
+function playBack(){
+  playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+}
+
+//creating a reset button
+var reset = document.getElementById('reset');
+reset.addEventListener('click',resetBeats);
+function resetBeats(){
+  var allRows = document.querySelectorAll('#grid-beat tr');
+  var allCells;
+  for (var i = 0; i < allDrums.length; i++) {
+    allCells = allRows[i].childNodes;
+    allDrums[i].playTriggers.fill(false);
+    for (var j= 1; j < allCells.length; j++) {
+      allCells[j].style.background = 'transparent';
+      allCells[j].className = 'off';
+    }
+  }
+}
