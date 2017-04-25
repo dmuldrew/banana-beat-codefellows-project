@@ -1,7 +1,8 @@
 'use strict';
 
+var MINUTE = 60000;
+var bpm = 80;
 
-var bpm = 90;
 var currentBeat = 0;
 
 function Drum(name, sample){
@@ -50,6 +51,31 @@ function toggleTrigger(e, drum) {
   }
 }
 
+// set the default values of the slider and text to current bpm
+var tempoValue = document.getElementById('tempo-value');
+tempoValue.value = bpm;
+var tempoSlider = document.getElementById('tempo-slider');
+tempoSlider.value = bpm;
+// listen for a change to the bpm
+tempoValue.addEventListener('change', handleTempoChange);
+tempoSlider.addEventListener('change', handleTempoChange);
+
+function handleTempoChange(e) {
+  var newBpm = Math.round(e.target.value);
+  if (newBpm < 20) {
+    newBpm = 20;
+  } else if(newBpm > 200) {
+    newBpm = 200;
+  }
+  // change the global bpm
+  bpm = newBpm;
+  tempoSlider.value = bpm;
+  tempoValue.value = bpm;
+  // activate the change in tempo
+  clearInterval(playingInterval);
+  playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+}
+
 var snare = new Drum('snare', 'Samples/snare-dist01.mp3');
 var hihat = new Drum('hihat', 'Samples/hihat-dist01.mp3');
 var kick = new Drum('kick', 'Samples/kick-classic.mp3');
@@ -62,7 +88,7 @@ var allDrums = [snare, hihat, kick, tom1, tom2, crash];
 
 generateTable(allDrums);
 
-setInterval(playBeat, 6000 / bpm);
+var playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
 
 function playBeat(){
   for (var i = 0; i < allDrums.length; i++){
