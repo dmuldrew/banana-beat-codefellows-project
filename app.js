@@ -106,3 +106,29 @@ function playBeat(){
   currentBeat++;
   currentBeat %= 16;
 }
+
+// retrieve saved states
+var savedStates = [];
+
+try {
+  savedStates = JSON.parse(localStorage.savedStates);
+} catch(error) {
+  console.info('No saved states available.');
+}
+
+//saving current state
+function saveCurrentState(nameInput) {
+  savedStates.push({
+    name: nameInput,
+    state: allDrums,
+  });
+  try {
+    localStorage.savedStates = JSON.stringify(savedStates);
+  } catch(error) {
+    console.error('Unable to save to localStorage:', error);
+  }
+}
+
+function generateSavedStatesDisplay() {
+
+}
