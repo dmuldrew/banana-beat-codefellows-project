@@ -113,3 +113,11 @@ pause.addEventListener('click', pausePlaying);
 function pausePlaying(){
   clearInterval(playingInterval);
 }
+
+//creating a play button event listener
+var play = document.getElementById('play');
+play.addEventListener('click', playBack);
+function playBack(){
+  playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+
+}
