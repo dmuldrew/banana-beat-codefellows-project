@@ -15,9 +15,9 @@ Drum.prototype.playDrum = function(){
   new Audio(this.sample).play();
 };
 
-function generateTable(allDrums) {
-  for(var i = 0; i < allDrums.length; i++) {
-    generateRow(allDrums[i]);
+function generateTable(drumList) {
+  for(var i = 0; i < drumList.length; i++) {
+    generateRow(drumList[i]);
   }
 }
 
@@ -30,7 +30,12 @@ function generateRow(drum) {
   var beatBox;
   for (var i = 0; i < drum.playTriggers.length; i++) {
     beatBox = document.createElement('td');
-    beatBox.className = 'off';
+    if (drum.playTriggers[i]) {
+      beatBox.className = 'on';
+      beatBox.style.background = 'blue';
+    } else {
+      beatBox.className = 'off';
+    }
     beatBox.setAttribute('count-index', i);
     row.appendChild(beatBox);
     beatBox.addEventListener('click', function(e) {toggleTrigger(e, drum);});
@@ -106,6 +111,86 @@ function playBeat(){
   }
   currentBeat++;
   currentBeat %= 16;
+}
+
+// retrieve saved states
+var savedStates = [];
+
+try {
+  savedStates = JSON.parse(localStorage.savedStates);
+} catch(error) {
+  console.info('No saved states available.');
+}
+
+for (var save = 0; save < savedStates.length; save++) {
+  generateSavedStateBox(savedStates[save], document.getElementById('saved-states'));
+}
+
+document.getElementById('save-form').addEventListener('submit', handleSaveSubmit);
+
+function handleSaveSubmit(e) {
+  e.preventDefault();
+  saveCurrentState(e.target.nameInput.value);
+  e.target.reset();
+}
+
+//saves the current state
+function saveCurrentState(nameInput) {
+  if(!gridIsEmpty()) {
+    var currentState = {
+      name: nameInput,
+      setup: copyDrumsList(allDrums),
+    };
+    savedStates.push(currentState);
+    generateSavedStateBox(currentState, document.getElementById('saved-states'));
+    try {
+      localStorage.savedStates = JSON.stringify(savedStates);
+    } catch(error) {
+      console.error('Unable to save to localStorage:', error);
+    }
+  }
+}
+
+// returns a new div with a saved state
+function generateSavedStateBox(state, allSavedBoxes) {
+  var saveBox = document.createElement('div');
+  saveBox.className = 'saved-state';
+  saveBox.textContent = state.name;
+  allSavedBoxes.appendChild(saveBox);
+  saveBox.addEventListener('click', function() {handlePreviousSaveClick(state);});
+}
+
+function handlePreviousSaveClick(state) {
+  var table = document.getElementById('grid-beat');
+  var newTable = document.createElement('table');
+  newTable.id = 'grid-beat';
+  table.parentElement.replaceChild(newTable, table);
+  allDrums = copyDrumsList(state.setup);
+  generateTable(allDrums);
+}
+
+// returns boolean of whether the current grid setup is empty or not
+function gridIsEmpty() {
+  for (var i = 0; i < allDrums.length; i++) {
+    for (var j = 0; j < allDrums[i].playTriggers.length; j++) {
+      if (allDrums[i].playTriggers[j]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+// takes a list of drums and returns an independant copy of the list
+function copyDrumsList(drumList) {
+  var drumListCopy = [];
+  var drumCopy;
+  for (var i = 0; i < drumList.length; i++) {
+    drumCopy = new Drum(drumList[i].name, drumList[i].sample);
+    drumCopy.playTriggers = drumList[i].playTriggers.slice();
+    drumListCopy.push(drumCopy);
+  }
+  return drumListCopy;
 }
 
 var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J'];
@@ -223,35 +308,36 @@ document.onkeydown = function(event) {
 
 document.onkeyup = function(event) {
   switch (event.keyCode) {
-    case 65:
+  case 65:
     firstKeyC = true;
     c.stop();
     break;
-    case 83:
+  case 83:
     firstKeyD = true;
     d.stop();
     break;
-    case 68:
+  case 68:
     firstKeyE = true;
     e.stop();
     break;
-    case 70:
+  case 70:
     firstKeyF = true;
     f.stop();
     break;
-    case 71:
+  case 71:
     firstKeyG = true;
     g.stop();
     break;
-    case 72:
+  case 72:
     firstKeyA = true;
     a.stop();
     break;
-    case 74:
+  case 74:
     firstKeyB = true;
     b.stop();
   }
 };
+
 
 //creating a pause button event listener
 var pause = document.getElementById('pause');
@@ -281,4 +367,5 @@ function resetBeats(){
       allCells[j].className = 'off';
     }
   }
+
 }
