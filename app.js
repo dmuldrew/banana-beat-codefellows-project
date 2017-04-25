@@ -60,8 +60,14 @@ tempoValue.addEventListener('change', handleTempoChange);
 tempoSlider.addEventListener('change', handleTempoChange);
 
 function handleTempoChange(e) {
+  var newBpm = Math.round(e.target.value);
+  if (newBpm < 20) {
+    newBpm = 20;
+  } else if(newBpm > 200) {
+    newBpm = 200;
+  }
   // change the global bpm
-  bpm = e.target.value;
+  bpm = newBpm;
   tempoSlider.value = bpm;
   tempoValue.value = bpm;
   // activate the change in tempo
