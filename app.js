@@ -2,6 +2,7 @@
 
 var MINUTE = 60000;
 var bpm = 80;
+
 var currentBeat = 0;
 
 function Drum(name, sample){
@@ -46,7 +47,7 @@ function toggleTrigger(e, drum) {
   var beatBox = e.target;
   if (beatBox.className === 'off') {
     drum.playTriggers[beatBox.getAttribute('count-index')] = true;
-    beatBox.style.background = 'blue';
+    beatBox.style.background = 'red';
     beatBox.className = 'on';
   } else {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
@@ -191,6 +192,152 @@ function copyDrumsList(drumList) {
   }
   return drumListCopy;
 }
+
+var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J'];
+function generatePiano() {
+  var table = document.getElementById('piano');
+  var row = document.createElement('tr');
+  var pianoKey;
+  for (var i = 0; i < pianoLabels.length; i++) {
+    pianoKey = document.createElement('td');
+    pianoKey.textContent = pianoLabels[i];
+    pianoKey.style.width = '35px';
+    pianoKey.style.height = '150px';
+    row.appendChild(pianoKey);
+  }
+  table.appendChild(row);
+  var blackKey = document.getElementById('blackKey');
+  blackKey.style.backgroundColor = 'black';
+  blackKey.style.width = '25px';
+  blackKey.style.height = '90px';
+  blackKey.style.position = 'relative';
+  blackKey.style.bottom = '156px';
+  blackKey.style.left = '30px';
+}
+generatePiano();
+
+
+
+
+var audioContext, osc, gain;
+audioContext = new AudioContext || window.webkitAudioContext();
+
+function Note(frequency){
+  this.frequency = frequency;
+  this.osc = audioContext.createOscillator();
+  this.osc.type = 'sine';
+  this.osc.frequency.value = this.frequency;
+  this.gain = audioContext.createGain();
+  this.gain.gain.value = .5;
+
+  this.osc.connect(this.gain);
+  this.gain.connect(audioContext.destination);
+
+}
+
+Note.prototype.start = function () {
+  this.osc.start(0);
+
+};
+
+Note.prototype.stop = function() {
+  this.gain.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
+};
+
+
+
+
+var c, d, e, f, g, a, b;
+var firstKeyA = true;
+var firstKeyB = true;
+var firstKeyC = true;
+var firstKeyD = true;
+var firstKeyE = true;
+var firstKeyF = true;
+var firstKeyG = true;
+
+document.onkeydown = function(event) {
+  switch (event.keyCode) {
+    case 65:
+    if(!firstKeyC) return;
+    firstKeyC = false;
+    c = new Note(261.63);
+    c.start();
+    break;
+
+    case 83:
+    if(!firstKeyD) return;
+    firstKeyD = false;
+    d = new Note(293.66);
+    d.start();
+    break;
+
+    case 68:
+    if(!firstKeyE) return;
+    firstKeyE = false;
+    e = new Note(329.63);
+    e.start();
+    break;
+
+    case 70:
+    if(!firstKeyF) return;
+    firstKeyF = false;
+    f = new Note(349.23);
+    f.start();
+    break;
+    case 71:
+    if(!firstKeyG) return;
+    firstKeyG = false;
+    g = new Note(392);
+    g.start();
+    break;
+    case 72:
+    if(!firstKeyA) return;
+    firstKeyA = false;
+    a = new Note(440);
+    a.start();
+    break;
+    case 74:
+    if(!firstKeyB) return;
+    firstKeyB = false;
+    b = new Note(493.88);
+    b.start();
+    break;
+  }
+};
+
+document.onkeyup = function(event) {
+  switch (event.keyCode) {
+  case 65:
+    firstKeyC = true;
+    c.stop();
+    break;
+  case 83:
+    firstKeyD = true;
+    d.stop();
+    break;
+  case 68:
+    firstKeyE = true;
+    e.stop();
+    break;
+  case 70:
+    firstKeyF = true;
+    f.stop();
+    break;
+  case 71:
+    firstKeyG = true;
+    g.stop();
+    break;
+  case 72:
+    firstKeyA = true;
+    a.stop();
+    break;
+  case 74:
+    firstKeyB = true;
+    b.stop();
+  }
+};
+
 
 //creating a pause button event listener
 var pause = document.getElementById('pause');
