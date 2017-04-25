@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Drum-Machine</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+  <form id="tempo-form">
+    <label for="tempo">Current Tempo:</label>
+    <span id="tempo-value"></span>
+    <input type="range" name="tempo" min="20" max="200" step="5" />
+    <button type="submit">Set Tempo</button>
+  </form>
   <table id="grid-beat">
   </table>
   <script src='app.js'></script>
