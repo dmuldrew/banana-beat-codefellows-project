@@ -1,7 +1,7 @@
 'use strict';
 
 
-var bpm = 80;
+var bpm = 90;
 var currentBeat = 0;
 
 function Drum(name, sample){
@@ -41,7 +41,7 @@ function toggleTrigger(e, drum) {
   var beatBox = e.target;
   if (beatBox.className === 'off') {
     drum.playTriggers[beatBox.getAttribute('count-index')] = true;
-    beatBox.style.background = 'blue';
+    beatBox.style.background = 'red';
     beatBox.className = 'on';
   } else {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
@@ -80,4 +80,33 @@ function playBeat(){
   }
   currentBeat++;
   currentBeat %= 16;
+}
+
+var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J'];
+function generatePiano() {
+  var table = document.getElementById('piano');
+  var row = document.createElement('tr');
+  var pianoKey;
+  for (var i = 0; i < pianoLabels.length; i++) {
+    pianoKey = document.createElement('td');
+    pianoKey.textContent = pianoLabels[i];
+    row.appendChild(pianoKey);
+  }
+  table.appendChild(row);
+}
+generatePiano();
+
+var key;
+document.onkeydown = function(e) {
+  switch (e.keyCode) {
+  case 65:
+    key = 'A';
+    break;
+  }
+};
+
+
+var a = new Audio('Samples/clap-808.mp3');
+if (key == 'A'){
+  a.play();
 }
