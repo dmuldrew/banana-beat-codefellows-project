@@ -81,3 +81,8 @@ function playBeat(){
   currentBeat++;
   currentBeat %= 16;
 }
+
+//creating a Stop event listener
+var stop = document.getElementById('stop');
+stop.addEventListener('click', stopPlaying);
+function stopPlaying
