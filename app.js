@@ -121,6 +121,13 @@ function generatePiano() {
     row.appendChild(pianoKey);
   }
   table.appendChild(row);
+  var blackKey = document.getElementById('blackKey');
+  blackKey.style.backgroundColor = 'black';
+  blackKey.style.width = '25px';
+  blackKey.style.height = '90px';
+  blackKey.style.position = 'relative';
+  blackKey.style.bottom = '156px';
+  blackKey.style.left = '30px';
 }
 generatePiano();
 
