@@ -7,9 +7,8 @@
 <body>
   <form id="tempo-form">
     <label for="tempo">Current Tempo:</label>
-    <span id="tempo-value"></span>
-    <input type="range" name="tempo" min="20" max="200" step="5" />
-    <button type="submit">Set Tempo</button>
+    <input id="tempo-value" type="number" name="tempoTextInput" min="20" max="200" />bpm
+    <input id="tempo-slider" type="range" name="tempoSliderInput" min="20" max="200" step="5" />
   </form>
   <table id="grid-beat">
   </table>
