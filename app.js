@@ -121,6 +121,10 @@ try {
   console.info('No saved states available.');
 }
 
+for (var save = 0; save < savedStates.length; save++) {
+  generateSavedStateBox(savedStates[save], document.getElementById('saved-states'));
+}
+
 document.getElementById('save-form').addEventListener('submit', handleSaveSubmit);
 
 function handleSaveSubmit(e) {
@@ -160,8 +164,8 @@ function handlePreviousSaveClick(state) {
   var newTable = document.createElement('table');
   newTable.id = 'grid-beat';
   table.parentElement.replaceChild(newTable, table);
-  generateTable(state.setup);
   allDrums = copyDrumsList(state.setup);
+  generateTable(allDrums);
 }
 
 // returns boolean of whether the current grid setup is empty or not
@@ -186,15 +190,4 @@ function copyDrumsList(drumList) {
     drumListCopy.push(drumCopy);
   }
   return drumListCopy;
-}
-
-// replaces all the drums in the given list with copies
-function copyOnlyDrums(drumList) {
-  drumList = [];
-  var drumCopy;
-  for (var i = 0; i < drumList.length; i++) {
-    drumCopy = new Drum(drumList[i].name, drumList[i].sample);
-    drumCopy.playTriggers = drumList[i].playTriggers.slice();
-    drumList.push(drumCopy);
-  }
 }
