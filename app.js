@@ -1,9 +1,13 @@
 'use strict';
 
+// GLOBALS
+
 var MINUTE = 60000;
 var bpm = 80;
 
 var currentBeat = 0;
+
+// DRUM OBJECT
 
 function Drum(name, sample){
   this.name = name;
@@ -14,6 +18,8 @@ function Drum(name, sample){
 Drum.prototype.playDrum = function(){
   new Audio(this.sample).play();
 };
+
+// TABLE GENERATION
 
 function generateTable(drumList) {
   for(var i = 0; i < drumList.length; i++) {
@@ -53,6 +59,8 @@ function toggleTrigger(e, drum) {
   }
 }
 
+// TEMPO CHANGE FUNCTIONALITY
+
 // set the default values of the slider and text to current bpm
 var tempoValue = document.getElementById('tempo-value');
 tempoValue.value = bpm;
@@ -77,6 +85,8 @@ function handleTempoChange(e) {
   clearInterval(playingInterval);
   playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
 }
+
+// PLAY THE MUSIC
 
 var snare = new Drum('snare', 'Samples/snare-dist01.mp3');
 var hihat = new Drum('hihat', 'Samples/hihat-dist01.mp3');
@@ -109,6 +119,8 @@ function playBeat(){
   currentBeat++;
   currentBeat %= 16;
 }
+
+// SAVING TO LOCALSTORAGE FUNCTIONALITY
 
 // retrieve saved states
 var savedStates = [];
@@ -190,6 +202,9 @@ function copyDrumsList(drumList) {
   return drumListCopy;
 }
 
+
+// PIANO FUNCTIONALITY
+
 var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J'];
 function generatePiano() {
   var table = document.getElementById('piano');
@@ -239,9 +254,6 @@ Note.prototype.start = function () {
 Note.prototype.stop = function() {
   this.gain.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
 };
-
-
-
 
 var c, d, e, f, g, a, b;
 var firstKeyA = true;
@@ -334,20 +346,35 @@ document.onkeyup = function(event) {
   }
 };
 
+// PLAY, PAUSE, RESET FUNCTIONALITY
 
-//creating a pause button event listener
-var pause = document.getElementById('pause');
-pause.addEventListener('click', pausePlaying);
-function pausePlaying(){
-  clearInterval(playingInterval);
+var playPauseButton = document.getElementById('play-pause');
+playPauseButton.addEventListener('click', handlePlayPauseClick);
+function handlePlayPauseClick(e) {
+  var button = e.target;
+  if (button.textContent === 'Pause') {
+    clearInterval(playingInterval);
+    button.textContent = 'Play';
+  } else {
+    playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+    button.textContent = 'Pause';
+  }
 }
 
-//creating a play button event listener
-var play = document.getElementById('play');
-play.addEventListener('click', playBack);
-function playBack(){
-  playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
-}
+
+// //creating a pause button event listener
+// var pause = document.getElementById('pause');
+// pause.addEventListener('click', pausePlaying);
+// function pausePlaying(){
+//   clearInterval(playingInterval);
+// }
+//
+// //creating a play button event listener
+// var play = document.getElementById('play');
+// play.addEventListener('click', playBack);
+// function playBack(){
+//   playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+// }
 
 //creating a reset button
 var reset = document.getElementById('reset');
