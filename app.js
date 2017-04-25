@@ -116,23 +116,77 @@ function generatePiano() {
   for (var i = 0; i < pianoLabels.length; i++) {
     pianoKey = document.createElement('td');
     pianoKey.textContent = pianoLabels[i];
+    pianoKey.style.width = '35px';
+    pianoKey.style.height = '150px';
     row.appendChild(pianoKey);
   }
   table.appendChild(row);
 }
 generatePiano();
 
-var key;
-document.onkeydown = function(e) {
-  switch (e.keyCode) {
-  case 65:
-    key = 'A';
-    break;
-  }
+
+
+
+var audioContext, osc, gain;
+audioContext = new AudioContext || window.webkitAudioContext();
+
+function Note(frequency){
+  this.frequency = frequency;
+  this.oscs = [];
+}
+
+Note.prototype.play = function () {
+  osc = audioContext.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.value = this.frequency;
+
+  gain = audioContext.createGain();
+  gain.gain.value = .5;
+
+  osc.connect(gain);
+  gain.connect(audioContext.destination);
+
+  osc.start(0);
+
+  this.oscs.push(osc);
 };
 
 
-var a = new Audio('Samples/clap-808.mp3');
-if (key == 'A'){
-  a.play();
-}
+document.onkeydown = function(event) {
+
+  switch (event.keyCode) {
+    case 65:
+    var c = new Note(261.63);
+    c.play();
+    break;
+    case 83:
+    var d = new Note(293.66);
+    d.play();
+    break;
+    case 68:
+    gain.gain.value = 1;
+    osc.frequency.value = 329.63;
+    setTimeout(function(){gain.gain.value = 0;}, 250);
+    break;
+    case 70:
+    gain.gain.value = 1;
+    osc.frequency.value = 349.23;
+    setTimeout(function(){gain.gain.value = 0;}, 250);
+    break;
+    case 71:
+    gain.gain.value = 1;
+    osc.frequency.value = 392.00;
+    setTimeout(function(){gain.gain.value = 0;}, 250);
+    break;
+    case 72:
+    gain.gain.value = 1;
+    osc.frequency.value = 440;
+    setTimeout(function(){gain.gain.value = 0;}, 250);
+    break;
+    case 74:
+    gain.gain.value = 1;
+    osc.frequency.value = 493.88;
+    setTimeout(function(){gain.gain.value = 0;}, 250);
+    break;
+  }
+};
