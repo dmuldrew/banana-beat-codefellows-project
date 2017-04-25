@@ -107,7 +107,9 @@ function playBeat(){
   currentBeat %= 16;
 }
 
-//creating a Stop event listener
-var stop = document.getElementById('stop');
-stop.addEventListener('click', stopPlaying);
-function stopPlaying
+//creating a pause button event listener
+var pause = document.getElementById('pause');
+pause.addEventListener('click', pausePlaying);
+function pausePlaying(){
+  clearInterval(playingInterval);
+}
