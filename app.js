@@ -364,3 +364,33 @@ function resetBeats(){
   }
 
 }
+// creating a pulldown menue to select beatsbox color
+
+var beatBoxColor =document.getElementById('cellColors');
+beatBoxColor.addEventListener('change', beatBoxColorChange);
+function cssRules(){
+  var rules={}; var ds=document.styleSheets,dsl=ds.length;
+  for (var i=0;i<dsl;++i){
+    var dsi=ds[i].cssRules,dsil=dsi.length;
+    for (var j=0;j<dsil;++j) rules[dsi[j].selectorText]=dsi[j];
+  }
+  return rules;
+}
+function cssGetClass(name){
+  var rules=cssRules();
+  if (!rules.hasOwnProperty(name)) throw 'todo:deal_with_notfound_case';
+  return rules[name];
+}
+function beatBoxColorChange(e) {
+  var beatBoxColor = e.target;
+  if (beatBoxColor.value === 'green'){
+    cssGetClass('.on').style.background = 'green';
+  }else if (beatBoxColor.value === 'yellow'){
+    cssGetClass('.on').style.background = 'yellow';
+  } else if(beatBoxColor.value === 'blue'){
+    cssGetClass('.on').style.background = 'blue';
+  } else{
+    cssGetClass('.on').style.background = 'pink';
+  }
+
+}
