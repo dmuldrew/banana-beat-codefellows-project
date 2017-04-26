@@ -1,7 +1,47 @@
+
 td {
   border: 1px solid black;
   width: 50px;
   height: 50px;
+}
+
+.black-key{
+  width: 30px;
+  height: 90px;
+  background-color: black;
+  display: inline-block;
+  border: 1px solid black;
+}
+
+#two-keys{
+  position: relative;
+  bottom: 156px;
+  left: 25px;
+  display:inline-block;
+  width:auto;
+}
+
+#d-sharp{
+  position: relative;
+  left: 8px;
+}
+
+#g-sharp{
+  position: relative;
+  left: 5px;
+}
+
+#a-sharp{
+  position: relative;
+  left: 10px;
+}
+
+#three-keys{
+  position:relative;
+  bottom: 156px;
+  left: 80px;
+  display:inline-block;
+  width: auto;
 }
 
 .off {
