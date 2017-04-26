@@ -13,8 +13,6 @@ td {
   border: 1px solid black;
 }
 
-
-
 #two-keys{
   position: relative;
   bottom: 156px;
@@ -44,4 +42,12 @@ td {
   left: 80px;
   display:inline-block;
   width: auto;
+}
+
+.off {
+  background: none;
+}
+
+.on {
+  background: red;
 }

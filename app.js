@@ -32,7 +32,6 @@ function generateRow(drum) {
     beatBox = document.createElement('td');
     if (drum.playTriggers[i]) {
       beatBox.className = 'on';
-      beatBox.style.background = 'blue';
     } else {
       beatBox.className = 'off';
     }
@@ -47,11 +46,9 @@ function toggleTrigger(e, drum) {
   var beatBox = e.target;
   if (beatBox.className === 'off') {
     drum.playTriggers[beatBox.getAttribute('count-index')] = true;
-    beatBox.style.background = 'red';
     beatBox.className = 'on';
   } else {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
-    beatBox.style.background = 'transparent';
     beatBox.className = 'off';
   }
 }
@@ -221,6 +218,7 @@ function handleOctaveChange(e){
 }
 octaveChange.addEventListener('change', handleOctaveChange);
 
+
 var waveType = 'sine';
 var waveChange = document.getElementById('wave-menu');
 
@@ -229,6 +227,9 @@ function handleWaveChange(e){
 }
 
 waveChange.addEventListener('change', handleWaveChange);
+
+var audioContext = new AudioContext || window.webkitAudioContext();
+
 
 function Note(frequency){
   this.frequency = frequency * Math.pow(2, octave);
@@ -273,7 +274,7 @@ var firstKeyCNext = true;
 
 document.onkeydown = function(event) {
   switch (event.keyCode) {
-    case 65:
+  case 65:
     if(!firstKeyC) return;
     firstKeyC = false;
     c = new Note(261.63);
@@ -291,7 +292,7 @@ document.onkeydown = function(event) {
     keyW.style.backgroundColor = 'red';
     break;
 
-    case 83:
+  case 83:
     if(!firstKeyD) return;
     firstKeyD = false;
     d = new Note(293.66);
@@ -309,7 +310,7 @@ document.onkeydown = function(event) {
     keyE.style.backgroundColor = 'red';
     break;
 
-    case 68:
+  case 68:
     if(!firstKeyE) return;
     firstKeyE = false;
     e = new Note(329.63);
@@ -318,7 +319,7 @@ document.onkeydown = function(event) {
     keyD.style.backgroundColor = 'red';
     break;
 
-    case 70:
+  case 70:
     if(!firstKeyF) return;
     firstKeyF = false;
     f = new Note(349.23);
@@ -499,7 +500,6 @@ function resetBeats(){
     allCells = allRows[i].childNodes;
     allDrums[i].playTriggers.fill(false);
     for (var j= 1; j < allCells.length; j++) {
-      allCells[j].style.background = 'transparent';
       allCells[j].className = 'off';
     }
   }
