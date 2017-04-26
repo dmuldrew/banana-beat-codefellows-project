@@ -205,6 +205,23 @@ function copyDrumsList(drumList) {
 
 // EXPORT/IMPORT FUNCTIONALITY
 
+var exportForm = document.getElementById('export-form');
+exportForm.addEventListener('submit', handleExportSubmit);
+
+var importForm = document.getElementById('import-form');
+importForm.addEventListener('submit', handleImportSubmit);
+
+function handleExportSubmit(e) {
+  e.preventDefault();
+  e.target.exportOutput.value = encode(allDrums);
+}
+
+function handleImportSubmit(e) {
+  e.preventDefault();
+  loadDrumSetup(decode(e.target.importInput.value));
+  e.target.reset();
+}
+
 // encodes the current set of drums as a string of unicode characters
 function encode(drumList) {
   var encodedList = '';
@@ -227,7 +244,7 @@ function encode(drumList) {
   return encodedList;
 }
 
-// decodes a string of unicode characters to create a drum setup. uses the current set of drums to determine which the drum sample and name.
+// decodes a string of unicode characters to create a drum setup. uses the current set of drums to determine which the drum sample and name. returns null if given invalid characters.
 function decode(encodedList) {
   var binaryList = [];
   var drum = '';
@@ -235,12 +252,18 @@ function decode(encodedList) {
   for (var i = 0; i < encodedList.length; i++) {
     binaryHalf = '';
     charCode = encodedList.charCodeAt(i) - 215; // reset default to 0
+    if (charCode < 0) {
+      return null;
+    }
     binaryHalf += charCode.toString(2);
     while (binaryHalf.length < 8) {
       binaryHalf = '0' + binaryHalf;
     }
     drum += binaryHalf;
     if (i % 2) {
+      if (binaryList.length > 16) {
+        return null;
+      }
       binaryList.push(drum);
       drum = '';
     }
