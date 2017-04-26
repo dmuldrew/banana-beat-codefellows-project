@@ -202,6 +202,30 @@ function copyDrumsList(drumList) {
   return drumListCopy;
 }
 
+// EXPORT/IMPORT FUNCTIONALITY
+
+// export:
+// convert from binary to base 10:
+// parseInt(number, 2);
+// convert from base 10 to character (in UTF-16):
+// String.fromCharCode(number);
+// note that actual characters start at the value 33, so need to add 33 to get it to work properly
+// also, the normal latin characters are in 1 byte of binary
+// all together now:
+// String.fromCharCode(parseInt(binary, 2) + 33)
+
+
+// import:
+// for (var i = 0; i < input.length; i++) {
+// 	var n = '';
+//     n += input[i].charCodeAt(0).toString(2);
+//     while (n.length < 8) {
+//         n = '0' + n;
+//     }
+// 	output += n + ' ';
+// }
+// results in a list of 8 bit sequences
+// change 8 to 16 to encode in 16 bit sequences
 
 // PIANO FUNCTIONALITY
 
@@ -383,8 +407,8 @@ function resetBeats(){
   var allRows = document.querySelectorAll('#grid-beat tr');
   var allCells;
   for (var i = 0; i < allDrums.length; i++) {
-    allCells = allRows[i].childNodes;
     allDrums[i].playTriggers.fill(false);
+    allCells = allRows[i].childNodes;
     for (var j= 1; j < allCells.length; j++) {
       allCells[j].className = 'off';
     }
