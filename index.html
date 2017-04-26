@@ -5,6 +5,7 @@
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+  <img id="banana"src="https://m.popkey.co/987552/NGLb3.gif"/>
   <div id="tempo-change">
     <label for="tempo">Current Tempo:</label>
     <input id="tempo-value" type="number" name="tempoValueInput" min="20" max="200" />bpm
@@ -14,9 +15,15 @@
   <table id="grid-beat">
   </table>
 
+  <div>
+    <button id="d1" type:"submit">Option 1</button>
+    <button id="d2" type:"submit">Option 2</button>
+    <button id="d3" type:"submit">Option 3</button>
+    <button id="d4" type:"submit">Option 4</button>
+  </div>
+
   <button id="play-pause">Pause</button>
-  <!-- <button id="pause" type="click"> Pause </button>
-  <button id="play" type="click"> Play </button> -->
+
   <button id="reset" type="click"> Reset </button>
 
   <table id="piano">
@@ -83,6 +90,7 @@
     <button id="clear-saves">Clear All Saved Data</button>
     <div id="saves"></div>
   </div>
+
 
   <script src='app.js'></script>
 </body>
