@@ -524,14 +524,20 @@ function cssGetClass(name){
 }
 function beatBoxColorChange(e) {
   var beatBoxColor = e.target;
-  if (beatBoxColor.value === 'green'){
-    cssGetClass('.on').style.background = 'green';
-  }else if (beatBoxColor.value === 'yellow'){
-    cssGetClass('.on').style.background = 'yellow';
-  } else if(beatBoxColor.value === 'blue'){
-    cssGetClass('.on').style.background = 'blue';
-  } else{
-    cssGetClass('.on').style.background = 'pink';
+  try {
+    if (beatBoxColor.value === 'green'){
+      cssGetClass('.on').style.background = 'green';
+    }else if (beatBoxColor.value === 'yellow'){
+      cssGetClass('.on').style.background = 'yellow';
+    } else if(beatBoxColor.value === 'blue'){
+      cssGetClass('.on').style.background = 'blue';
+    } else if(beatBoxColor.value === 'red'){
+      cssGetClass('.on').style.background = 'red';
+    } else {
+      cssGetClass('.on').style.background = 'pink';
+    }
+  } catch(error) {
+    console.warn(error);
   }
 
 }
