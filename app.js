@@ -286,7 +286,6 @@ function handleWaveChange(e){
 
 waveChange.addEventListener('change', handleWaveChange);
 
-var audioContext = new AudioContext || window.webkitAudioContext();
 
 
 function Note(frequency){
