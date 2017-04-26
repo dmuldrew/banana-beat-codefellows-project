@@ -51,3 +51,7 @@ td {
 .on {
   background: red;
 }
+
+.hide {
+  display: none;
+}

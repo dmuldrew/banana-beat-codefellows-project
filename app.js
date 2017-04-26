@@ -57,6 +57,8 @@ function toggleTrigger(e, drum) {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
     beatBox.className = 'off';
   }
+  document.querySelector('#export-form input').value = '';
+  document.getElementById('select-button').className = 'hide';
 }
 
 // TEMPO CHANGE FUNCTIONALITY
@@ -205,15 +207,16 @@ function copyDrumsList(drumList) {
 
 // EXPORT/IMPORT FUNCTIONALITY
 
-var exportForm = document.getElementById('export-form');
-exportForm.addEventListener('submit', handleExportSubmit);
+document.getElementById('export-form').addEventListener('submit', handleExportSubmit);
 
-var importForm = document.getElementById('import-form');
-importForm.addEventListener('submit', handleImportSubmit);
+document.getElementById('import-form').addEventListener('submit', handleImportSubmit);
+
+document.getElementById('select-button').addEventListener('click', handleSelectClick);
 
 function handleExportSubmit(e) {
   e.preventDefault();
   e.target.exportOutput.value = encode(allDrums);
+  document.getElementById('select-button').className = '';
 }
 
 function handleImportSubmit(e) {
@@ -227,6 +230,10 @@ function handleImportSubmit(e) {
     errorBox.textContent = 'Please enter a valid code.';
   }
   e.target.reset();
+}
+
+function handleSelectClick() {
+  document.querySelector('#export-form input').select();
 }
 
 // encodes the current set of drums as a string of unicode characters
