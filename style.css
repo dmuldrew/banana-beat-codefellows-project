@@ -62,3 +62,7 @@ td {
   background: green;
 
 }
+
+.hide {
+  display: none;
+}

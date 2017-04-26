@@ -1,9 +1,14 @@
 'use strict';
 
+// GLOBALS
+
 var MINUTE = 60000;//IT's OVER 9000!!!!(What!? 9000!?!?!)
+
 var bpm = 80;
 
 var currentBeat = 0;
+
+// DRUM OBJECT
 
 function Drum(name, sample){
   this.name = name;
@@ -16,11 +21,9 @@ Drum.prototype.playDrum = function(){
 };
 
 
-
-var numRows = 0;
-function generateTable(allDrums) {
-  for(var i = 0; i < allDrums.length; i++) {
-    generateRow(allDrums[i]);
+function generateTable(drumList) {
+  for(var i = 0; i < drumList.length; i++) {
+    generateRow(drumList[i]);
   }
 }
 // function generateTable(drumList) {
@@ -75,7 +78,10 @@ function toggleTrigger(e, drum) {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
     beatBox.className = 'off';
   }
+  resetExportCode();
 }
+
+// TEMPO CHANGE FUNCTIONALITY
 
 // set the default values of the slider and text to current bpm
 var tempoValue = document.getElementById('tempo-value');
@@ -93,13 +99,8 @@ function handleTempoChange(e) {
   } else if(newBpm > 200) {
     newBpm = 200;
   }
-  // change the global bpm
-  bpm = newBpm;
-  tempoSlider.value = bpm;
-  tempoValue.value = bpm;
-  // activate the change in tempo
-  clearInterval(playingInterval);
-  playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+  loadTempo(newBpm);
+  resetExportCode();
 }
 
 var snare = function(){
@@ -175,14 +176,16 @@ d2.addEventListener('click', switchToOption2);
 
 var d3 = document.getElementById('d3');
 function switchToOption3() {
-  loadDrumSetup ([snare(), hihat(), kick(), tom1(), tom2(), crash(), bass(), guitar1()]);
+  allDrums.push(guitar1());
+  loadDrumSetup (allDrums);
   console.log('added a row');
 }
 d3.addEventListener('click', switchToOption3);
 
 var d4 = document.getElementById('d4');
 function switchToOption4() {
-  loadDrumSetup ([snare(), hihat(), kick(), tom1(), tom2(), crash(), bass(), bassBeat()]);
+  allDrums.push(bassBeat());
+  loadDrumSetup (allDrums);
   console.log('added a row');
 }
 d4.addEventListener('click', switchToOption4);
@@ -197,7 +200,7 @@ function playBeat(){
       allDrums[i].playDrum();
     }
   }
-  var allBoxes = document.getElementsByTagName('td');
+  var allBoxes = document.querySelectorAll('#grid-beat td');
   for (i = 0; i < allBoxes.length; i++) {
     if (allBoxes[i].getAttribute('count-index') == currentBeat) {
       allBoxes[i].style.borderColor = 'red';
@@ -209,6 +212,8 @@ function playBeat(){
   currentBeat %= 16;
 }
 
+// SAVING TO LOCALSTORAGE FUNCTIONALITY
+
 // retrieve saved states
 var savedStates = [];
 
@@ -219,15 +224,26 @@ try {
 }
 
 for (var save = 0; save < savedStates.length; save++) {
-  generateSavedStateBox(savedStates[save], document.getElementById('saved-states'));
+  generateSavedStateBox(savedStates[save], document.getElementById('saves'));
 }
 
 document.getElementById('save-form').addEventListener('submit', handleSaveSubmit);
+
+document.getElementById('clear-saves').addEventListener('click', handleClearClick);
 
 function handleSaveSubmit(e) {
   e.preventDefault();
   saveCurrentState(e.target.nameInput.value);
   e.target.reset();
+}
+
+function handleClearClick() {
+  try {
+    localStorage.clear();
+    document.getElementById('saves').innerHTML = '';
+  } catch(error) {
+    console.error('Unable to save to localStorage:', error);
+  }
 }
 
 //saves the current state
@@ -236,6 +252,7 @@ function saveCurrentState(nameInput) {
     var currentState = {
       name: nameInput,
       setup: copyDrumsList(allDrums),
+      tempo: bpm,
     };
     savedStates.push(currentState);
     generateSavedStateBox(currentState, document.getElementById('saved-states'));
@@ -253,18 +270,38 @@ function generateSavedStateBox(state, allSavedBoxes) {
   saveBox.className = 'saved-state';
   saveBox.textContent = state.name;
   allSavedBoxes.appendChild(saveBox);
-  saveBox.addEventListener('click', function() {loadDrumSetup(state.setup);});
+
+  saveBox.addEventListener('click', function() {
+    loadDrumSetup(state.setup);
+    loadTempo(state.tempo);
+  });
 }
 
+// takes a list of drums as a drum setup and loads it to the grid
 function loadDrumSetup(drumList) {
   var table = document.getElementById('grid-beat');
   // table.textContent = '';
   var newTable = document.createElement('table');
   newTable.id = 'grid-beat';
   table.parentElement.replaceChild(newTable, table);
+
   allDrums = [];
+
   allDrums = copyDrumsList(drumList);
   generateTable(allDrums);
+
+  resetExportCode();
+}
+
+function loadTempo(tempo) {
+  bpm = tempo;
+  tempoSlider.value = bpm;
+  tempoValue.value = bpm;
+  var isPlaying = document.getElementById('play-pause').textContent === 'Pause';
+  if (isPlaying) {
+    clearInterval(playingInterval);
+    playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+  }
 }
 
 // returns boolean of whether the current grid setup is empty or not
@@ -291,7 +328,110 @@ function copyDrumsList(drumList) {
   return drumListCopy;
 }
 
+// EXPORT/IMPORT FUNCTIONALITY
+
+document.getElementById('export-form').addEventListener('submit', handleExportSubmit);
+
+document.getElementById('import-form').addEventListener('submit', handleImportSubmit);
+
+function handleExportSubmit(e) {
+  e.preventDefault();
+  e.target.exportOutput.value = encode(allDrums);
+  e.target.exportOutput.select();
+}
+
+function handleImportSubmit(e) {
+  e.preventDefault();
+  var importedDrums = decode(e.target.importInput.value);
+  var errorBox = document.getElementById('error-message');
+  if (importedDrums) {
+    loadDrumSetup(importedDrums);
+    errorBox.textContent = '';
+  } else {
+    errorBox.textContent = 'Please enter a valid code.';
+  }
+  e.target.reset();
+}
+
+function resetExportCode() {
+  document.querySelector('#export-form input').value = '';
+}
+
+// encodes the current set of drums as a string of unicode characters
+function encode(drumList) {
+  var encodedList = '';
+  var binaryString, charOne, charTwo;
+  for (var i = 0; i < drumList.length; i++) {
+    binaryString = '';
+    for (var j = 0; j < drumList[i].playTriggers.length; j++) {
+      if (drumList[i].playTriggers[j]) {
+        binaryString += '1';
+      } else {
+        binaryString += '0';
+      }
+    }
+    charOne = binaryString.slice(0,8); // fist byte
+    charOne = String.fromCharCode(parseInt(charOne, 2) + 215); // default ×
+    charTwo = binaryString.slice(8); // second byte
+    charTwo = String.fromCharCode(parseInt(charTwo, 2) + 215); // default ×
+    encodedList += charOne + charTwo;
+  }
+  encodedList += ' ' + bpm;
+  return encodedList;
+}
+
+// decodes a string of unicode characters to create a drum setup. uses the current set of drums to determine which the drum sample and name. returns null if given invalid characters.
+function decode(code) {
+  var codes = code.split(' ');
+  var encodedList = codes[0];
+  var encodedBpm = codes[1];
+
+  if (encodedBpm >= 20 && encodedBpm <= 200) {
+    loadTempo(encodedBpm);
+  }
+
+  var binaryList = [];
+  var drum = '';
+  var binaryHalf, charCode;
+  for (var i = 0; i < encodedList.length; i++) {
+    binaryHalf = '';
+    charCode = encodedList.charCodeAt(i) - 215; // reset default to 0
+    if (charCode < 0) {
+      return null;
+    }
+    binaryHalf += charCode.toString(2);
+    while (binaryHalf.length < 8) {
+      binaryHalf = '0' + binaryHalf;
+    }
+    drum += binaryHalf;
+    if (i % 2) {
+      if (binaryList.length > 16) {
+        return null;
+      }
+      binaryList.push(drum);
+      drum = '';
+    }
+  }
+
+  var drumList = copyDrumsList(allDrums);
+
+  for (i = 0; i < binaryList.length; i++) {
+    drumList[i].playTriggers = [];
+    for (var j = 0; j < binaryList[i].length; j++) {
+      if (parseInt(binaryList[i][j])) {
+        drumList[i].playTriggers.push(true);
+      } else {
+        drumList[i].playTriggers.push(false);
+      }
+    }
+  }
+  return drumList;
+}
+
+// PIANO FUNCTIONALITY
+
 var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'];
+
 function generatePiano() {
   var table = document.getElementById('piano');
   var row = document.createElement('tr');
@@ -330,7 +470,6 @@ function handleWaveChange(e){
 waveChange.addEventListener('change', handleWaveChange);
 
 
-
 function Note(frequency){
   this.frequency = frequency * Math.pow(2, octave);
   this.osc = audioContext.createOscillator();
@@ -353,11 +492,9 @@ Note.prototype.stop = function() {
   this.gain.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
 };
 
-
-
-
 var c, cSharp, d, dSharp, e, f, fSharp, g, gSharp, a, aSharp, b, cNext;
 var keyA, keyW, keyS, keyE, keyD, keyF, keyT, keyG, keyY, keyH, keyU, keyJ, keyK;
+
 var firstKeyA = true;
 var firstKeyB = true;
 var firstKeyC = true;
@@ -383,7 +520,7 @@ document.onkeydown = function(event) {
     keyA.style.backgroundColor = 'red';
     break;
 
-    case 87:
+  case 87:
     if(!firstKeyCSharp) return;
     firstKeyCSharp = false;
     cSharp = new Note(277.18);
@@ -401,7 +538,7 @@ document.onkeydown = function(event) {
     keyS.style.backgroundColor = 'red';
     break;
 
-    case 69:
+  case 69:
     if(!firstKeyDSharp) return;
     firstKeyDSharp = false;
     dSharp = new Note(311.13);
@@ -428,7 +565,7 @@ document.onkeydown = function(event) {
     keyF.style.backgroundColor = 'red';
     break;
 
-    case 84:
+  case 84:
     if(!firstKeyFSharp) return;
     firstKeyFSharp = false;
     fSharp = new Note(369.99);
@@ -437,7 +574,7 @@ document.onkeydown = function(event) {
     keyT.style.backgroundColor = 'red';
     break;
 
-    case 71:
+  case 71:
     if(!firstKeyG) return;
     firstKeyG = false;
     g = new Note(392);
@@ -446,7 +583,7 @@ document.onkeydown = function(event) {
     keyG.style.backgroundColor = 'red';
     break;
 
-    case 89:
+  case 89:
     if(!firstKeyGSharp) return;
     firstKeyGSharp = false;
     gSharp = new Note(415.30);
@@ -455,7 +592,7 @@ document.onkeydown = function(event) {
     keyY.style.backgroundColor = 'red';
     break;
 
-    case 72:
+  case 72:
     if(!firstKeyA) return;
     firstKeyA = false;
     a = new Note(440);
@@ -464,7 +601,7 @@ document.onkeydown = function(event) {
     keyH.style.backgroundColor = 'red';
     break;
 
-    case 85:
+  case 85:
     if(!firstKeyASharp) return;
     firstKeyASharp = false;
     aSharp = new Note(466.16);
@@ -473,7 +610,7 @@ document.onkeydown = function(event) {
     keyU.style.backgroundColor = 'red';
     break;
 
-    case 74:
+  case 74:
     if(!firstKeyB) return;
     firstKeyB = false;
     b = new Note(493.88);
@@ -482,7 +619,7 @@ document.onkeydown = function(event) {
     keyJ.style.backgroundColor = 'red';
     break;
 
-    case 75:
+  case 75:
     if(!firstKeyCNext) return;
     firstKeyCNext = false;
     cNext = new Note(523.25);
@@ -546,7 +683,7 @@ document.onkeyup = function(event) {
   case 89:
     firstKeyGSharp = true;
     gSharp.stop();
-    keyY.style.backgroundColor = 'black'
+    keyY.style.backgroundColor = 'black';
     break;
 
   case 72:
@@ -575,20 +712,35 @@ document.onkeyup = function(event) {
   }
 };
 
+// PLAY, PAUSE, RESET FUNCTIONALITY
 
-//creating a pause button event listener
-var pause = document.getElementById('pause');
-pause.addEventListener('click', pausePlaying);
-function pausePlaying(){
-  clearInterval(playingInterval);
+var playPauseButton = document.getElementById('play-pause');
+playPauseButton.addEventListener('click', handlePlayPauseClick);
+function handlePlayPauseClick(e) {
+  var button = e.target;
+  if (button.textContent === 'Pause') {
+    clearInterval(playingInterval);
+    button.textContent = 'Play';
+  } else {
+    playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+    button.textContent = 'Pause';
+  }
 }
 
-//creating a play button event listener
-var play = document.getElementById('play');
-play.addEventListener('click', playBack);
-function playBack(){
-  playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
-}
+
+// //creating a pause button event listener
+// var pause = document.getElementById('pause');
+// pause.addEventListener('click', pausePlaying);
+// function pausePlaying(){
+//   clearInterval(playingInterval);
+// }
+//
+// //creating a play button event listener
+// var play = document.getElementById('play');
+// play.addEventListener('click', playBack);
+// function playBack(){
+//   playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+// }
 
 //creating a reset button
 var reset = document.getElementById('reset');
@@ -597,10 +749,13 @@ function resetBeats(){
   var allRows = document.querySelectorAll('#grid-beat tr');
   var allCells;
   for (var i = 0; i < allDrums.length; i++) {
-    allCells = allRows[i].childNodes;
     allDrums[i].playTriggers.fill(false);
+    allCells = allRows[i].childNodes;
     for (var j= 1; j < allCells.length; j++) {
       allCells[j].className = 'off';
     }
   }
+
+  resetExportCode();
+
 }
