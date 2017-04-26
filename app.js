@@ -5,15 +5,31 @@ var bpm = 80;
 
 var currentBeat = 0;
 
+var audioContext;
+audioContext = new AudioContext || window.webkitAudioContext();
+
 function Drum(name, sample){
+  this.context = audioContext;
+  this.drumGain = audioContext.createGain();
+  this.drumGain.gain.value = 0;
   this.name = name;
   this.sample = sample;
   this.playTriggers = new Array(16).fill(false);
 }
 
+// var newDrum = audioContext.createMediaElementSource(sound);
+// sound.crossOrigin = 'anonymous';
+// newDrum.connect(this.drumGain);
+// this.drumGain.connect(audioContext.destination);
+
 Drum.prototype.playDrum = function(){
-  new Audio(this.sample).play();
+  var sound = new Audio(this.sample);
+  sound.volume = .5;
+  sound.play();
 };
+
+
+
 
 function generateTable(drumList) {
   for(var i = 0; i < drumList.length; i++) {
@@ -26,6 +42,8 @@ function generateRow(drum) {
   var row = document.createElement('tr');
   var drumName = document.createElement('td');
   drumName.textContent = drum.name;
+  var volumeSlider = document.createElement('volume-slider');
+  volumeSlider.setAttribute('type', 'range');
   row.appendChild(drumName);
   var beatBox;
   for (var i = 0; i < drum.playTriggers.length; i++) {
@@ -84,7 +102,6 @@ var kick = new Drum('kick', 'Samples/kick-classic.mp3');
 var tom1 = new Drum('tom1', 'Samples/tom-acoustic01.mp3');
 var tom2 = new Drum('tom2', 'Samples/tom-acoustic02.mp3');
 var crash = new Drum('crash', 'Samples/crash-acoustic.mp3');
-
 
 var allDrums = [snare, hihat, kick, tom1, tom2, crash];
 
@@ -207,9 +224,6 @@ function generatePiano() {
 }
 generatePiano();
 
-var audioContext;
-audioContext = new AudioContext || window.webkitAudioContext();
-
 var octave = 0;
 var octaveChange = document.getElementById('octave-menu');
 
@@ -227,8 +241,6 @@ function handleWaveChange(e){
 }
 
 waveChange.addEventListener('change', handleWaveChange);
-
-var audioContext = new AudioContext || window.webkitAudioContext();
 
 
 function Note(frequency){
