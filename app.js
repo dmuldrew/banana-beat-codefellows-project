@@ -212,11 +212,20 @@ generatePiano();
 
 var audioContext;
 audioContext = new AudioContext || window.webkitAudioContext();
+var octave = 0;
+
+var octaveChange = document.getElementById('octave-menu');
+
+
+function handleOctaveChange(e){
+  octave = e.target.value - 4;
+}
+octaveChange.addEventListener('change', handleOctaveChange);
 
 function Note(frequency){
-  this.frequency = frequency;
+  this.frequency = frequency * Math.pow(2, octave);
   this.osc = audioContext.createOscillator();
-  this.osc.type = 'sine';
+  this.osc.type = 'triangle';
   this.osc.frequency.value = this.frequency;
   this.gain = audioContext.createGain();
   this.gain.gain.value = .5;
