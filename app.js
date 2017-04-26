@@ -218,7 +218,14 @@ function handleExportSubmit(e) {
 
 function handleImportSubmit(e) {
   e.preventDefault();
-  loadDrumSetup(decode(e.target.importInput.value));
+  var importedDrums = decode(e.target.importInput.value);
+  var errorBox = document.getElementById('error-message');
+  if (importedDrums) {
+    loadDrumSetup(importedDrums);
+    errorBox.textContent = '';
+  } else {
+    errorBox.textContent = 'Please enter a valid code.';
+  }
   e.target.reset();
 }
 
