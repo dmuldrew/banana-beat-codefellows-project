@@ -14,47 +14,58 @@
   <table id="grid-beat">
   </table>
 
-  <button id="pause" type="click"> Pause </button>
-  <button id="play" type="click"> Play </button>
+  <button id="play-pause">Pause</button>
+  <!-- <button id="pause" type="click"> Pause </button>
+  <button id="play" type="click"> Play </button> -->
   <button id="reset" type="click"> Reset </button>
 
   <table id="piano">
   </table>
-    <div id="two-keys">
-      <div id="c-sharp" class="black-key"></div>
-      <div id="d-sharp" class="black-key"></div>
-    </div>
-    <div id="three-keys">
-      <div id="f-sharp" class="black-key"></div>
-      <div id="g-sharp" class="black-key"></div>
-      <div id="a-sharp" class="black-key"></div>
-    </div>
+  <div id="two-keys">
+    <div id="c-sharp" class="black-key"></div>
+    <div id="d-sharp" class="black-key"></div>
+  </div>
+  <div id="three-keys">
+    <div id="f-sharp" class="black-key"></div>
+    <div id="g-sharp" class="black-key"></div>
+    <div id="a-sharp" class="black-key"></div>
+  </div>
 
-    <div id ='octaveSelector'>
-      Change Octave:
-      <select id='octave-menu' name="octave-change">
-        <option value=0>0</option>
-        <option value=1>1</option>
-        <option value=2>2</option>
-        <option value=3>3</option>
-        <option value=4>4</option>
-        <option value=5>5</option>
-        <option value=6>6</option>
-        <option value=7>7</option>
-        <option value=8>8</option>
-      </select>
-    </div>
+  <div id ='octaveSelector'>
+    Change Octave:
+    <select id='octave-menu' name="octave-change">
+      <option value=0>0</option>
+      <option value=1>1</option>
+      <option value=2>2</option>
+      <option value=3>3</option>
+      <option value=4>4</option>
+      <option value=5>5</option>
+      <option value=6>6</option>
+      <option value=7>7</option>
+      <option value=8>8</option>
+    </select>
+  </div>
 
-    <div id ='waveSelector'>
-      Change Wave Tone:
-      <select id='wave-menu' name="wave-change">
-        <option value = 'sine'>Sine</option>
-        <option value = 'sawtooth'>Saw</option>
-        <option value ='triangle'>Triangle</option>
-        <option value = "square">Square</option>
-      </select>
-    </div>
+  <div id ='waveSelector'>
+    Change Wave Tone:
+    <select id='wave-menu' name="wave-change">
+      <option value='sine'>Sine</option>
+      <option value='sawtooth'>Saw</option>
+      <option value='triangle'>Triangle</option>
+      <option value="square">Square</option>
+    </select>
+  </div>
 
+  <div id="export-import">
+    <form id="export-form">
+      <button type="submit">Export Current Setup</button>
+      <input type="text" name="exportOutput" readonly="readonly" />
+    </form>
+    <form id="import-form">
+      <input type="text" name="importInput" required />
+      <button type="submit">Import Setup</button>
+      <div id="error-message"></div>
+    </form>
   </div>
   <label for="cellColors">Choose Your Selector Color:</label>
   <select id="cellColors" name="cellColors">
@@ -69,6 +80,8 @@
       <input type="text" name="nameInput" placeholder="Setup name" required />
       <button type="submit">Save Current Setup</button>
     </form>
+    <button id="clear-saves">Clear All Saved Data</button>
+    <div id="saves"></div>
   </div>
 
   <script src='app.js'></script>
