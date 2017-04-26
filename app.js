@@ -205,6 +205,7 @@ function copyDrumsList(drumList) {
 
 // EXPORT/IMPORT FUNCTIONALITY
 
+// encodes the current set of drums as a string of unicode characters
 function encode(drumList) {
   var encodedList = '';
   var binaryString, charOne, charTwo;
@@ -226,8 +227,9 @@ function encode(drumList) {
   return encodedList;
 }
 
+// decodes a string of unicode characters to create a drum setup. uses the current set of drums to determine which the drum sample and name.
 function decode(encodedList) {
-  var drumList = [];
+  var binaryList = [];
   var drum = '';
   var binaryHalf, charCode;
   for (var i = 0; i < encodedList.length; i++) {
@@ -239,35 +241,25 @@ function decode(encodedList) {
     }
     drum += binaryHalf;
     if (i % 2) {
-      drumList.push(drum);
+      binaryList.push(drum);
       drum = '';
+    }
+  }
+
+  var drumList = copyDrumsList(allDrums);
+
+  for (i = 0; i < binaryList.length; i++) {
+    drumList[i].playTriggers = [];
+    for (var j = 0; j < binaryList[i].length; j++) {
+      if (parseInt(binaryList[i][j])) {
+        drumList[i].playTriggers.push(true);
+      } else {
+        drumList[i].playTriggers.push(false);
+      }
     }
   }
   return drumList;
 }
-
-// export:
-// convert from binary to base 10:
-// parseInt(number, 2);
-// convert from base 10 to character (in UTF-16):
-// String.fromCharCode(number);
-// note that actual characters start at the value 33, so need to add 33 to get it to work properly
-// also, the normal latin characters are in 1 byte of binary
-// all together now:
-// String.fromCharCode(parseInt(binary, 2) + 33)
-
-
-// import:
-// for (var i = 0; i < input.length; i++) {
-// 	var n = '';
-//     n += input[i].charCodeAt(0).toString(2);
-//     while (n.length < 8) {
-//         n = '0' + n;
-//     }
-// 	output += n + ' ';
-// }
-// results in a list of 8 bit sequences
-// change 8 to 16 to encode in 16 bit sequences
 
 // PIANO FUNCTIONALITY
 
