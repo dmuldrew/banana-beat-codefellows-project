@@ -166,15 +166,16 @@ function generateSavedStateBox(state, allSavedBoxes) {
   saveBox.className = 'saved-state';
   saveBox.textContent = state.name;
   allSavedBoxes.appendChild(saveBox);
-  saveBox.addEventListener('click', function() {handlePreviousSaveClick(state);});
+  saveBox.addEventListener('click', function() {loadDrumSetup(state.setup);});
 }
 
-function handlePreviousSaveClick(state) {
+// takes a list of drums as a drum setup and loads it to the grid
+function loadDrumSetup(drumList) {
   var table = document.getElementById('grid-beat');
   var newTable = document.createElement('table');
   newTable.id = 'grid-beat';
   table.parentElement.replaceChild(newTable, table);
-  allDrums = copyDrumsList(state.setup);
+  allDrums = copyDrumsList(drumList);
   generateTable(allDrums);
 }
 
@@ -203,6 +204,47 @@ function copyDrumsList(drumList) {
 }
 
 // EXPORT/IMPORT FUNCTIONALITY
+
+function encode(drumList) {
+  var encodedList = '';
+  var binaryString, charOne, charTwo;
+  for (var i = 0; i < drumList.length; i++) {
+    binaryString = '';
+    for (var j = 0; j < drumList[i].playTriggers.length; j++) {
+      if (drumList[i].playTriggers[j]) {
+        binaryString += '1';
+      } else {
+        binaryString += '0';
+      }
+    }
+    charOne = binaryString.slice(0,8); // fist byte
+    charOne = String.fromCharCode(parseInt(charOne, 2) + 215); // default ×
+    charTwo = binaryString.slice(8); // second byte
+    charTwo = String.fromCharCode(parseInt(charTwo, 2) + 215); // default ×
+    encodedList += charOne + charTwo;
+  }
+  return encodedList;
+}
+
+function decode(encodedList) {
+  var drumList = [];
+  var drum = '';
+  var binaryHalf, charCode;
+  for (var i = 0; i < encodedList.length; i++) {
+    binaryHalf = '';
+    charCode = encodedList.charCodeAt(i) - 215; // reset default to 0
+    binaryHalf += charCode.toString(2);
+    while (binaryHalf.length < 8) {
+      binaryHalf = '0' + binaryHalf;
+    }
+    drum += binaryHalf;
+    if (i % 2) {
+      drumList.push(drum);
+      drum = '';
+    }
+  }
+  return drumList;
+}
 
 // export:
 // convert from binary to base 10:
