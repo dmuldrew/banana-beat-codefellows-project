@@ -110,8 +110,13 @@ var tom2 = new Drum('tom2', 'Samples/tom-acoustic02.mp3');
 var crash = new Drum('crash', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 09.wav');
 var bass = new Drum ('bass', 'random samples/Live_bass_Bitz_116.mp3');
 
+
 var technoBass = new Drum ('technoBass', '');
 var technoKick = new Drum ('technoKick', '');
+
+var guitar1 = new Drum ('guitar1', 'random samples/Guitar_loop32(160BPM).mp3');
+var bassBeat = new Drum ('bassBeat', 'random samples/Beat1-edited.wav');
+
 
 var allDrums = [snare, hihat, kick, tom1, tom2, crash, bass];
 // var alternateDrums = [something, drum, element, that, replaces, current, elements];
@@ -138,13 +143,23 @@ d2.addEventListener('click', switchToOption2);
 
 var d3 = document.getElementById('d3');
 function switchToOption3() {
-  allDrums = [snare, hihat, kick, tom1, tom2, crash, bass];
+  allDrums = [snare, hihat, kick, tom1, tom2, crash, bass, guitar1];
   //nukeRows();
-  generateRow(snare, numRows);
+  generateRow(guitar1, numRows);
   numRows++
   console.log('added a row');
 }
 d3.addEventListener('click', switchToOption3);
+
+var d4 = document.getElementById('d4');
+function switchToOption4() {
+  allDrums = [snare, hihat, kick, tom1, tom2, crash, bass, bassBeat];
+  //nukeRows();
+  generateRow(bassBeat, numRows);
+  numRows++
+  console.log('added a row');
+}
+d4.addEventListener('click', switchToOption4);
 
 generateTable(allDrums);
 
