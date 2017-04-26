@@ -57,8 +57,7 @@ function toggleTrigger(e, drum) {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
     beatBox.className = 'off';
   }
-  document.querySelector('#export-form input').value = '';
-  document.getElementById('select-button').className = 'hide';
+  resetExportCode();
 }
 
 // TEMPO CHANGE FUNCTIONALITY
@@ -86,6 +85,8 @@ function handleTempoChange(e) {
   // activate the change in tempo
   clearInterval(playingInterval);
   playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+
+  resetExportCode();
 }
 
 // PLAY THE MUSIC
@@ -179,6 +180,7 @@ function loadDrumSetup(drumList) {
   table.parentElement.replaceChild(newTable, table);
   allDrums = copyDrumsList(drumList);
   generateTable(allDrums);
+  resetExportCode();
 }
 
 // returns boolean of whether the current grid setup is empty or not
@@ -211,12 +213,10 @@ document.getElementById('export-form').addEventListener('submit', handleExportSu
 
 document.getElementById('import-form').addEventListener('submit', handleImportSubmit);
 
-document.getElementById('select-button').addEventListener('click', handleSelectClick);
-
 function handleExportSubmit(e) {
   e.preventDefault();
   e.target.exportOutput.value = encode(allDrums);
-  document.getElementById('select-button').className = '';
+  e.target.exportOutput.select();
 }
 
 function handleImportSubmit(e) {
@@ -232,8 +232,8 @@ function handleImportSubmit(e) {
   e.target.reset();
 }
 
-function handleSelectClick() {
-  document.querySelector('#export-form input').select();
+function resetExportCode() {
+  document.querySelector('#export-form input').value = '';
 }
 
 // encodes the current set of drums as a string of unicode characters
@@ -255,11 +255,24 @@ function encode(drumList) {
     charTwo = String.fromCharCode(parseInt(charTwo, 2) + 215); // default ×
     encodedList += charOne + charTwo;
   }
+  encodedList += ' ' + bpm;
   return encodedList;
 }
 
 // decodes a string of unicode characters to create a drum setup. uses the current set of drums to determine which the drum sample and name. returns null if given invalid characters.
-function decode(encodedList) {
+function decode(code) {
+  var codes = code.split(' ');
+  var encodedList = codes[0];
+  var encodedBpm = codes[1];
+
+  if (encodedBpm >= 20 && encodedBpm <= 200) {
+    bpm = encodedBpm;
+    tempoSlider.value = bpm;
+    tempoValue.value = bpm;
+    clearInterval(playingInterval);
+    playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+  }
+
   var binaryList = [];
   var drum = '';
   var binaryHalf, charCode;
@@ -624,5 +637,5 @@ function resetBeats(){
       allCells[j].className = 'off';
     }
   }
-
+  resetExportCode();
 }
