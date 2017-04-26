@@ -78,14 +78,7 @@ function handleTempoChange(e) {
   } else if(newBpm > 200) {
     newBpm = 200;
   }
-  // change the global bpm
-  bpm = newBpm;
-  tempoSlider.value = bpm;
-  tempoValue.value = bpm;
-  // activate the change in tempo
-  clearInterval(playingInterval);
-  playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
-
+  loadTempo(newBpm);
   resetExportCode();
 }
 
@@ -111,7 +104,7 @@ function playBeat(){
       allDrums[i].playDrum();
     }
   }
-  var allBoxes = document.getElementsByTagName('td');
+  var allBoxes = document.querySelectorAll('#grid-beat td');
   for (i = 0; i < allBoxes.length; i++) {
     if (allBoxes[i].getAttribute('count-index') == currentBeat) {
       allBoxes[i].style.borderColor = 'red';
@@ -135,15 +128,26 @@ try {
 }
 
 for (var save = 0; save < savedStates.length; save++) {
-  generateSavedStateBox(savedStates[save], document.getElementById('saved-states'));
+  generateSavedStateBox(savedStates[save], document.getElementById('saves'));
 }
 
 document.getElementById('save-form').addEventListener('submit', handleSaveSubmit);
+
+document.getElementById('clear-saves').addEventListener('click', handleClearClick);
 
 function handleSaveSubmit(e) {
   e.preventDefault();
   saveCurrentState(e.target.nameInput.value);
   e.target.reset();
+}
+
+function handleClearClick() {
+  try {
+    localStorage.clear();
+    document.getElementById('saves').innerHTML = '';
+  } catch(error) {
+    console.error('Unable to save to localStorage:', error);
+  }
 }
 
 //saves the current state
@@ -152,6 +156,7 @@ function saveCurrentState(nameInput) {
     var currentState = {
       name: nameInput,
       setup: copyDrumsList(allDrums),
+      tempo: bpm,
     };
     savedStates.push(currentState);
     generateSavedStateBox(currentState, document.getElementById('saved-states'));
@@ -169,7 +174,10 @@ function generateSavedStateBox(state, allSavedBoxes) {
   saveBox.className = 'saved-state';
   saveBox.textContent = state.name;
   allSavedBoxes.appendChild(saveBox);
-  saveBox.addEventListener('click', function() {loadDrumSetup(state.setup);});
+  saveBox.addEventListener('click', function() {
+    loadDrumSetup(state.setup);
+    loadTempo(state.tempo);
+  });
 }
 
 // takes a list of drums as a drum setup and loads it to the grid
@@ -180,7 +188,19 @@ function loadDrumSetup(drumList) {
   table.parentElement.replaceChild(newTable, table);
   allDrums = copyDrumsList(drumList);
   generateTable(allDrums);
+
   resetExportCode();
+}
+
+function loadTempo(tempo) {
+  bpm = tempo;
+  tempoSlider.value = bpm;
+  tempoValue.value = bpm;
+  var isPlaying = document.getElementById('play-pause').textContent === 'Pause';
+  if (isPlaying) {
+    clearInterval(playingInterval);
+    playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+  }
 }
 
 // returns boolean of whether the current grid setup is empty or not
@@ -266,11 +286,7 @@ function decode(code) {
   var encodedBpm = codes[1];
 
   if (encodedBpm >= 20 && encodedBpm <= 200) {
-    bpm = encodedBpm;
-    tempoSlider.value = bpm;
-    tempoValue.value = bpm;
-    clearInterval(playingInterval);
-    playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+    loadTempo(encodedBpm);
   }
 
   var binaryList = [];
