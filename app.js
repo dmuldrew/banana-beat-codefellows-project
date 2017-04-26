@@ -193,33 +193,24 @@ function copyDrumsList(drumList) {
   return drumListCopy;
 }
 
-var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J'];
+var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'];
 function generatePiano() {
   var table = document.getElementById('piano');
   var row = document.createElement('tr');
   var pianoKey;
   for (var i = 0; i < pianoLabels.length; i++) {
     pianoKey = document.createElement('td');
-    pianoKey.textContent = pianoLabels[i];
+    pianoKey.setAttribute('id', pianoLabels[i]);
     pianoKey.style.width = '35px';
     pianoKey.style.height = '150px';
     row.appendChild(pianoKey);
   }
   table.appendChild(row);
   var blackKey = document.getElementById('blackKey');
-  blackKey.style.backgroundColor = 'black';
-  blackKey.style.width = '25px';
-  blackKey.style.height = '90px';
-  blackKey.style.position = 'relative';
-  blackKey.style.bottom = '156px';
-  blackKey.style.left = '30px';
 }
 generatePiano();
 
-
-
-
-var audioContext, osc, gain;
+var audioContext;
 audioContext = new AudioContext || window.webkitAudioContext();
 
 function Note(frequency){
@@ -247,7 +238,8 @@ Note.prototype.stop = function() {
 
 
 
-var c, d, e, f, g, a, b;
+var c, cSharp, d, dSharp, e, f, fSharp, g, gSharp, a, aSharp, b, cNext;
+var keyA, keyW, keyS, keyE, keyD, keyF, keyT, keyG, keyY, keyH, keyU, keyJ, keyK;
 var firstKeyA = true;
 var firstKeyB = true;
 var firstKeyC = true;
@@ -255,6 +247,12 @@ var firstKeyD = true;
 var firstKeyE = true;
 var firstKeyF = true;
 var firstKeyG = true;
+var firstKeyCSharp = true;
+var firstKeyDSharp = true;
+var firstKeyFSharp = true;
+var firstKeyGSharp = true;
+var firstKeyASharp = true;
+var firstKeyCNext = true;
 
 document.onkeydown = function(event) {
   switch (event.keyCode) {
@@ -263,6 +261,17 @@ document.onkeydown = function(event) {
     firstKeyC = false;
     c = new Note(261.63);
     c.start();
+    keyA = document.getElementById('A');
+    keyA.style.backgroundColor = 'red';
+    break;
+
+    case 87:
+    if(!firstKeyCSharp) return;
+    firstKeyCSharp = false;
+    cSharp = new Note(277.18);
+    cSharp.start();
+    keyW = document.getElementById('c-sharp');
+    keyW.style.backgroundColor = 'red';
     break;
 
     case 83:
@@ -270,6 +279,17 @@ document.onkeydown = function(event) {
     firstKeyD = false;
     d = new Note(293.66);
     d.start();
+    keyS = document.getElementById('S');
+    keyS.style.backgroundColor = 'red';
+    break;
+
+    case 69:
+    if(!firstKeyDSharp) return;
+    firstKeyDSharp = false;
+    dSharp = new Note(311.13);
+    dSharp.start();
+    keyE = document.getElementById('d-sharp');
+    keyE.style.backgroundColor = 'red';
     break;
 
     case 68:
@@ -277,6 +297,8 @@ document.onkeydown = function(event) {
     firstKeyE = false;
     e = new Note(329.63);
     e.start();
+    keyD = document.getElementById('D');
+    keyD.style.backgroundColor = 'red';
     break;
 
     case 70:
@@ -284,24 +306,71 @@ document.onkeydown = function(event) {
     firstKeyF = false;
     f = new Note(349.23);
     f.start();
+    keyF = document.getElementById('F');
+    keyF.style.backgroundColor = 'red';
     break;
+
+    case 84:
+    if(!firstKeyFSharp) return;
+    firstKeyFSharp = false;
+    fSharp = new Note(369.99);
+    fSharp.start();
+    keyT = document.getElementById('f-sharp');
+    keyT.style.backgroundColor = 'red';
+    break;
+
     case 71:
     if(!firstKeyG) return;
     firstKeyG = false;
     g = new Note(392);
     g.start();
+    keyG = document.getElementById('G');
+    keyG.style.backgroundColor = 'red';
     break;
+
+    case 89:
+    if(!firstKeyGSharp) return;
+    firstKeyGSharp = false;
+    gSharp = new Note(415.30);
+    gSharp.start();
+    keyY = document.getElementById('g-sharp');
+    keyY.style.backgroundColor = 'red';
+    break;
+
     case 72:
     if(!firstKeyA) return;
     firstKeyA = false;
     a = new Note(440);
     a.start();
+    keyH = document.getElementById('H');
+    keyH.style.backgroundColor = 'red';
     break;
+
+    case 85:
+    if(!firstKeyASharp) return;
+    firstKeyASharp = false;
+    aSharp = new Note(466.16);
+    aSharp.start();
+    keyU = document.getElementById('a-sharp');
+    keyU.style.backgroundColor = 'red';
+    break;
+
     case 74:
     if(!firstKeyB) return;
     firstKeyB = false;
     b = new Note(493.88);
     b.start();
+    keyJ = document.getElementById('J');
+    keyJ.style.backgroundColor = 'red';
+    break;
+
+    case 75:
+    if(!firstKeyCNext) return;
+    firstKeyCNext = false;
+    cNext = new Note(523.25);
+    cNext.start();
+    keyK = document.getElementById('K');
+    keyK.style.backgroundColor = 'red';
     break;
   }
 };
@@ -311,30 +380,80 @@ document.onkeyup = function(event) {
   case 65:
     firstKeyC = true;
     c.stop();
+    keyA.style.backgroundColor = 'white';
     break;
+
+  case 87:
+    firstKeyCSharp = true;
+    cSharp.stop();
+    keyW.style.backgroundColor = 'black';
+    break;
+
   case 83:
     firstKeyD = true;
     d.stop();
+    keyS.style.backgroundColor = 'white';
     break;
+
+  case 69:
+    firstKeyDSharp = true;
+    dSharp.stop();
+    keyE.style.backgroundColor = 'black';
+    break;
+
   case 68:
     firstKeyE = true;
     e.stop();
+    keyD.style.backgroundColor = 'white';
     break;
+
   case 70:
     firstKeyF = true;
     f.stop();
+    keyF.style.backgroundColor = 'white';
     break;
+
+  case 84:
+    firstKeyFSharp = true;
+    fSharp.stop();
+    keyT.style.backgroundColor = 'black';
+    break;
+
   case 71:
     firstKeyG = true;
     g.stop();
+    keyG.style.backgroundColor = 'white';
     break;
+
+  case 89:
+    firstKeyGSharp = true;
+    gSharp.stop();
+    keyY.style.backgroundColor = 'black'
+    break;
+
   case 72:
     firstKeyA = true;
     a.stop();
+    keyH.style.backgroundColor = 'white';
     break;
+
+  case 85:
+    firstKeyASharp = true;
+    aSharp.stop();
+    keyU.style.backgroundColor = 'black';
+    break;
+
   case 74:
     firstKeyB = true;
     b.stop();
+    keyJ.style.backgroundColor = 'white';
+    break;
+
+  case 75:
+    firstKeyCNext = true;
+    cNext.stop();
+    keyK.style.backgroundColor = 'white';
+    break;
   }
 };
 
