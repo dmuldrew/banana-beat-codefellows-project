@@ -176,11 +176,11 @@ function handleTempoChange(e) {
 
 var snare = function(){
 
-  return new Drum('snare', 'Samples/snare-acoustic01.mp3');
+  return new Drum('Snare', 'Samples/snare-acoustic01.mp3');
 }
 
 var hihat = function(){
-  return  new Drum('hihat', 'Samples/hihat-dist01.mp3');
+  return  new Drum('Hi-Hat', 'Samples/hihat-dist01.mp3');
 }
 
 var kick = function(){
@@ -202,16 +202,16 @@ var crash = function(){
 
 
 var goat1 = function(){
-  return  new Drum ('goat 1', 'random samples/Goat-sound-effectedit1.mp3');
-}
+  return  new Drum ('Goat (1)', 'random samples/Goat-sound-effectedit1.mp3');
+};
 
 var goat2 = function(){
-  return  new Drum ('goat 2', 'random samples/Goat-sound-effectedit2.mp3');
-}
+  return  new Drum ('Goat (2)', 'random samples/Goat-sound-effectedit2.mp3');
+};
 
 var goat3 = function(){
-  return  new Drum ('goat 3', 'random samples/Goat-sound-effectiedit3.mp3');
-}
+  return  new Drum ('Goat (3)', 'random samples/Goat-sound-effectiedit3.mp3');
+};
 
 
 var bass = function(){
@@ -219,44 +219,44 @@ var bass = function(){
 };
 
 var bass2 = function(){
-  return  new Drum ('bass 2', 'electro-flux-sound-kit/Electro Flux Sound Kit/Bassdrums/ED Bassdrums 33.wav');
-}
+  return  new Drum ('Bass (2)', 'electro-flux-sound-kit/Electro Flux Sound Kit/Bassdrums/ED Bassdrums 33.wav');
+};
 
 var percussion1 = function(){
-  return  new Drum ('percussion 1', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion/ED Percussion 02.wav');
-}
+  return  new Drum ('ED Tom', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion/ED Percussion 02.wav');
+};
 
 var snare2 = function(){
-  return  new Drum ('snare 2', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 21.wav');
-}
+  return  new Drum ('ED Snare', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 21.wav');
+};
 
 var percussion2 = function(){
-  return  new Drum ('percussion2', 'electro-flux-sound-kit/Electro Flux Sound Kit/Synths/ED Synths 10.wav');
-}
+  return  new Drum ('ED Click', 'electro-flux-sound-kit/Electro Flux Sound Kit/Synths/ED Synths 10.wav');
+};
 
 var synth1 = function(){
-  return  new Drum ('synth1', 'electro-flux-sound-kit/Electro Flux Sound Kit/Synths/ED Synths 02.wav');
-}
+  return  new Drum ('ED Synth', 'electro-flux-sound-kit/Electro Flux Sound Kit/Synths/ED Synths 02.wav');
+};
 
 var crash2 = function(){
-  return  new Drum ('crash 2', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 11.wav');
-}
+  return  new Drum ('ED Crash', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 11.wav');
+};
 
 var guitar1 = function(){
-  return  new Drum ('guitar loop (40bpm)', 'random samples/Guitar_loop32(160BPM).mp3');
-}
+  return  new Drum ('Guitar Loop (40bpm)', 'random samples/Guitar_loop32(160BPM).mp3');
+};
 
 var synthLoop = function(){
-  return  new Drum ('synth loop (60bpm)', 'random samples/scifi-bass.wav');
-}
+  return  new Drum ('Synth Loop (60bpm)', 'random samples/scifi-bass.wav');
+};
 
 var bass3 = function(){
-  return  new Drum ('bass loop (60bpm)', 'random samples/Bass125A-01.mp3');
-}
+  return  new Drum ('Bass Loop (60bpm)', 'random samples/Bass125A-01.mp3');
+};
 
 var bassLoop2 = function(){
-  return  new Drum ('bass loop 2 (43bpm)', 'random samples/EMOK1Bass86E-04.mp3');
-}
+  return  new Drum ('Bass Loop 2 (43bpm)', 'random samples/EMOK1Bass86E-04.mp3');
+};
 
 
 var allDrums = [snare(), hihat(), kick(), tom1(), tom2(), crash()];
