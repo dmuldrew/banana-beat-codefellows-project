@@ -1,93 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Drum-Machine</title>
+  <title>Banana Beat</title>
+  <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700|Poppins:300,400" rel="stylesheet">
+
   <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet">
 </head>
 <body>
-  <img id="banana"src="https://m.popkey.co/987552/NGLb3.gif"/>
-  <div id="tempo-change">
-    <label for="tempo">Current Tempo:</label>
-    <input id="tempo-value" type="number" name="tempoValueInput" min="20" max="200" />bpm
-    <input id="tempo-slider" type="range" name="tempoSliderInput" min="20" max="200" step="5" />
-  </div>
+  <aside>
+    <img id="banana-beat" src="banana/banana7.png" alt="dancing banana"/>
+    <section id="tempo-change">
+      <h2>Tempo</h2>
+      <input id="tempo-value" type="number" name="tempoValueInput" min="20" max="200" />bpm
+      <input id="tempo-slider" type="range" name="tempoSliderInput" min="20" max="200" step="5" />
+    </section> <!-- end tempo-change -->
 
-  <table id="grid-beat">
-  </table>
+    <button id="play-pause">Pause</button>
 
-  <div>
-    <button id="d1" type:"submit">Classic</button>
-    <button id="d2" type:"submit">Electric</button>
-    <button id="d3" type:"submit">Guitar Loop (4bpm)</button>
-    <button id="d4" type:"submit">Bass Guitar</button>
-    <button id="d5" type:"submit">Synth Loop (60bpm)</button>
-    <button id="d6" type:"submit">Bass Loop 1(60bpm)</button>
-    <button id="d7" type:"submit">Bass Loop 2(43bpm)</button>
-    <button id="d0" type:"submit">Goat 1</button>
-  </div>
+    <button id="random-button">Randomize</button>
+    <button id="reset" type="click"> Reset </button>
 
-  <button id="play-pause">Pause</button>
+    <section id="options">
+      <h2>Kit Change</h2>
+        <button id="d1" type:"submit">Classic</button>
+        <button id="d2" type:"submit">Electric</button>
+        <button id="d3" type:"submit">Guitar Loop (4bpm)</button>
+        <button id="d4" type:"submit">Bass Guitar</button>
+        <button id="d5" type:"submit">Synth Loop (60bpm)</button>
+        <button id="d6" type:"submit">Bass Loop 1(60bpm)</button>
+        <button id="d7" type:"submit">Bass Loop 2(43bpm)</button>
+        <button id="d0" type:"submit">Goat 1</button>
+    </section> <!-- end options -->
 
-  <button id="reset" type="click"> Reset </button>
+    <section id="piano-settings">
+      <h2>Keyboard Settings</h2>
+      <div id ='octaveSelector'>
+        <p class="left">Octave</p>
+        <select class="right" id='octave-menu' name="octave-change">
+          <option value=0>0</option>
+          <option value=1>1</option>
+          <option value=2>2</option>
+          <option value=3>3</option>
+          <option value=4>4</option>
+          <option value=5>5</option>
+          <option value=6>6</option>
+          <option value=7>7</option>
+          <option value=8>8</option>
+        </select>
+      </div> <!-- end octaveSelector -->
 
-  <table id="piano">
-  </table>
-  <div id="two-keys">
-    <div id="c-sharp" class="black-key"></div>
-    <div id="d-sharp" class="black-key"></div>
-  </div>
-  <div id="three-keys">
-    <div id="f-sharp" class="black-key"></div>
-    <div id="g-sharp" class="black-key"></div>
-    <div id="a-sharp" class="black-key"></div>
-  </div>
 
-  <div id ='octaveSelector'>
-    Change Octave:
-    <select id='octave-menu' name="octave-change">
-      <option value=0>0</option>
-      <option value=1>1</option>
-      <option value=2>2</option>
-      <option value=3>3</option>
-      <option value=4>4</option>
-      <option value=5>5</option>
-      <option value=6>6</option>
-      <option value=7>7</option>
-      <option value=8>8</option>
-    </select>
-  </div>
+      <div id ='waveSelector'>
+        <p class="left clear-fix">Wave Tone</p>
+        <select class="right" id='wave-menu' name="wave-change">
+          <option value='sine'>Sine</option>
+          <option value='sawtooth'>Saw</option>
+          <option value='triangle'>Triangle</option>
+          <option value="square">Square</option>
+        </select>
+      </div> <!-- end waveSelector -->
+      <div class="clear-fix"></div>
+    </section> <!-- end piano-settings -->
 
-  <div id ='waveSelector'>
-    Change Wave Tone:
-    <select id='wave-menu' name="wave-change">
-      <option value='sine'>Sine</option>
-      <option value='sawtooth'>Saw</option>
-      <option value='triangle'>Triangle</option>
-      <option value="square">Square</option>
-    </select>
-  </div>
 
-  <div id="export-import">
-    <form id="export-form">
-      <button type="submit">Export Current Setup</button>
-      <input type="text" name="exportOutput" readonly="readonly" />
-    </form>
-    <form id="import-form">
-      <input type="text" name="importInput" required />
-      <button type="submit">Import Setup</button>
-      <div id="error-message"></div>
-    </form>
-  </div>
+    <section id="export-import">
+      <h2>Share Your Beat</h2>
+      <form id="export-form">
+        <button type="submit">Export</button>
+        <input type="text" name="exportOutput" readonly="readonly" />
+      </form>
+      <form id="import-form">
+        <input type="text" name="importInput" required />
+        <button type="submit">Import</button>
+        <div id="error-message"></div>
+      </form>
+    </section> <!-- end export-import -->
 
-  <div id="saved-states">
-    <form id="save-form">
-      <input type="text" name="nameInput" placeholder="Setup name" required />
-      <button type="submit">Save Current Setup</button>
-    </form>
-    <button id="clear-saves">Clear All Saved Data</button>
-    <div id="saves"></div>
-  </div>
+    <section id="saved-states">
+      <h2>Save Your Beat</h2>
+      <form id="save-form">
+        <input type="text" name="nameInput" placeholder="Beat name" required />
+        <button type="submit">Save Current Setup</button>
+      </form>
+      <div id="saves"></div>
+      <button id="clear-saves">Clear All Saved Data</button>
+    </section> <!-- end saved-states -->
 
+    <footer>
+      <a href="#">Meet the Team</a>
+    </footer>
+  </aside>
+
+
+
+
+  <main>
+    <table id="grid-beat"></table>
+
+    <section id="piano-box">
+      <table id="piano"></table>
+      <div id="c-sharp" class="black-key"><span>W</span></div>
+      <div id="d-sharp" class="black-key"><span>E</span></div>
+      <div id="f-sharp" class="black-key"><span>T</span></div>
+      <div id="g-sharp" class="black-key"><span>Y</span></div>
+      <div id="a-sharp" class="black-key"><span>U</span></div>
+    </section> <!-- end piano-box -->
+  </main>
 
   <script src='app.js'></script>
 </body>
