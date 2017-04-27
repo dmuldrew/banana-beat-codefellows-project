@@ -36,7 +36,6 @@ function generateRow(drum, drumRow) {
   var beatBox;
   for (var i = 0; i < drum.playTriggers.length; i++) {
     beatBox = document.createElement('td');
-    console.log(drum.playTriggers[i]);
     if (drum.playTriggers[i]) {
       beatBox.className = 'on';
     } else {
@@ -84,73 +83,69 @@ function handleTempoChange(e) {
   resetExportCode();
 }
 
+// PLAY THE MUSIC
+
 var snare = function(){
   return new Drum('snare', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 01.wav');
-}
+};
 
 var hihat = function(){
   return  new Drum('hihat', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Hit Hat Open/ED Open Hit Hat 23.wav');
-}
+};
 
 var kick = function(){
   return  new Drum('kick', 'Samples/kick-classic.mp3');
-}
+};
 
 var tom1 = function(){
   return  new Drum('tom1', 'Samples/tom-acoustic01.mp3');
-}
+};
 
 var tom2 = function(){
   return  new Drum('tom2', 'Samples/tom-acoustic02.mp3');
-}
+};
 
 var crash = function(){
   return  new Drum('crash', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 09.wav');
-}
+};
 
 var bass = function(){
   return  new Drum ('bass', 'random samples/Live_bass_Bitz_116.mp3');
-}
+};
 
 
 var technoBass = function(){
   return  new Drum ('technoBass', '');
-}
+};
 
 var technoKick = function(){
   return  new Drum ('technoKick', '');
-}
+};
 
 
 var guitar1 = function(){
   return  new Drum ('guitar1', 'random samples/Guitar_loop32(160BPM).mp3');
-}
+};
 
 var bassBeat = function(){
   return  new Drum ('bassBeat', 'random samples/Beat1-edited.wav');
-}
+};
 
 
 
 var allDrums = [snare(), hihat(), kick(), tom1(), tom2(), crash(), bass()];
-// var alternateDrums = [something, drum, element, that, replaces, current, elements];
+
 
 
 var d1 = document.getElementById('d1');
 function switchToOption1() {
   loadDrumSetup([snare(), hihat(), kick(), tom1(), tom2(), crash(), bass()]);
-  // nukeTable();
-  // generateTable(allDrums);
-  console.log('button change 1');
 }
 d1.addEventListener('click', switchToOption1);
 
 var d2 = document.getElementById('d2');
 function switchToOption2() {
   loadDrumSetup([technoBass(), hihat(), technoKick(), tom1(), tom2(), crash(), bass()]);
-  // nukeTable();
-  // generateTable(allDrums);
-  console.log('button change 2');
 }
 d2.addEventListener('click', switchToOption2);
 
@@ -159,7 +154,6 @@ var d3 = document.getElementById('d3');
 function switchToOption3() {
   allDrums.push(guitar1());
   loadDrumSetup (allDrums);
-  console.log('added a row');
 }
 d3.addEventListener('click', switchToOption3);
 
@@ -167,7 +161,6 @@ var d4 = document.getElementById('d4');
 function switchToOption4() {
   allDrums.push(bassBeat());
   loadDrumSetup (allDrums);
-  console.log('added a row');
 }
 d4.addEventListener('click', switchToOption4);
 
@@ -361,7 +354,7 @@ function encode(drumList) {
   return encodedList;
 }
 
-// decodes a string of unicode characters to create a drum setup. uses the current set of drums to determine which the drum sample and name. returns null if given invalid characters.
+// decodes a string of unicode characters to create a drum setup. uses the current set of drums to determine which drum sample and name. returns null if given invalid characters.
 function decode(code) {
   var codes = code.split(' ');
   var encodedList = codes[0];
@@ -425,7 +418,6 @@ function generatePiano() {
     row.appendChild(pianoKey);
   }
   table.appendChild(row);
-  var blackKey = document.getElementById('blackKey');
 }
 generatePiano();
 
