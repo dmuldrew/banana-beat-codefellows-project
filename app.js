@@ -223,7 +223,7 @@ function handleClearClick() {
     localStorage.clear();
     document.getElementById('saves').innerHTML = '';
   } catch(error) {
-    console.error('Unable to save to localStorage:', error);
+    console.error('Unable to access localStorage:', error);
   }
 }
 
@@ -236,7 +236,7 @@ function saveCurrentState(nameInput) {
       tempo: bpm,
     };
     savedStates.push(currentState);
-    generateSavedStateBox(currentState, document.getElementById('saved-states'));
+    generateSavedStateBox(currentState, document.getElementById('saves'));
     try {
       localStorage.savedStates = JSON.stringify(savedStates);
     } catch(error) {
@@ -249,13 +249,35 @@ function saveCurrentState(nameInput) {
 function generateSavedStateBox(state, allSavedBoxes) {
   var saveBox = document.createElement('div');
   saveBox.className = 'saved-state';
-  saveBox.textContent = state.name;
   allSavedBoxes.appendChild(saveBox);
 
-  saveBox.addEventListener('click', function() {
+  var saveStateBox = document.createElement('div');
+  saveStateBox.textContent = state.name;
+  saveBox.appendChild(saveStateBox);
+
+  saveStateBox.addEventListener('click', function() {
     loadDrumSetup(state.setup);
     loadTempo(state.tempo);
   });
+
+  var removeBox = document.createElement('button');
+  removeBox.className = 'delete-button';
+  removeBox.textContent = 'delete';
+  saveBox.appendChild(removeBox);
+
+  removeBox.addEventListener('click', function(e) {handleDeleteClick(e, state);});
+}
+
+function handleDeleteClick(e, state) {
+  var saveBox = e.target.parentElement;
+  saveBox.parentElement.removeChild(saveBox);
+
+  savedStates.splice(savedStates.indexOf(state), 1);
+  try {
+    localStorage.savedStates = JSON.stringify(savedStates);
+  } catch(error) {
+    console.error('Unable to access localStorage:', error);
+  }
 }
 
 // takes a list of drums as a drum setup and loads it to the grid
@@ -407,6 +429,22 @@ function decode(code) {
     }
   }
   return drumList;
+}
+
+// RANDOM DRUMS
+
+document.getElementById('random-button'). addEventListener('click', handleRandomizeClick);
+
+function handleRandomizeClick() {
+  var code = '';
+  // random setup
+  for (var char = 0; char < (allDrums.length * 2); char++) {
+    code += String.fromCharCode(Math.round((Math.random() * 255) + 215));
+  }
+  // random tempo
+  code += ' ' + Math.round((Math.random() * 180) + 20);
+
+  loadDrumSetup(decode(code));
 }
 
 // PIANO FUNCTIONALITY
