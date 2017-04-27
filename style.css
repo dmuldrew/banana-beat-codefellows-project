@@ -99,6 +99,24 @@ select, input {
   margin-bottom: 20px;
 }
 
+#random-button:hover {
+  animation: rainbow 2s infinite;
+}
+
+@keyframes rainbow {
+  0% {background-color: hsl(0, 80%, 50%);}
+  10% {background-color: hsl(30, 80%, 50%);}
+  20% {background-color: hsl(60, 80%, 50%);}
+  30% {background-color: hsl(90, 80%, 50%);}
+  40% {background-color: hsl(120, 80%, 50%);}
+  50% {background-color: hsl(150, 80%, 50%);}
+  60% {background-color: hsl(180, 80%, 50%);}
+  70% {background-color: hsl(210, 80%, 50%);}
+  80% {background-color: hsl(240, 80%, 50%);}
+  90% {background-color: hsl(270, 80%, 50%);}
+  100% {background-color: hsl(300, 80%, 50%);}
+}
+
 #options {
   text-align: center;
 }
