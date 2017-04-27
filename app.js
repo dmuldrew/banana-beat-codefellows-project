@@ -261,7 +261,7 @@ function generateSavedStateBox(state, allSavedBoxes) {
   allSavedBoxes.appendChild(saveBox);
 
   var saveStateBox = document.createElement('div');
-  saveStateBox.textContent = state.name;
+  saveStateBox.innerHTML = state.name + '<br/>' + state.tempo + ' bpm';
   saveBox.appendChild(saveStateBox);
 
   saveStateBox.addEventListener('click', function() {
@@ -538,7 +538,7 @@ var firstKeyCNext = true;
 
 document.onkeydown = function(event) {
   switch (event.keyCode) {
-  case 220:
+  case 190:
     if(!firstPause) return;
     firstPause = false;
     var button = document.getElementById('play-pause');
@@ -671,7 +671,7 @@ document.onkeydown = function(event) {
 
 document.onkeyup = function(event) {
   switch (event.keyCode) {
-  case 220:
+  case 190:
     firstPause = true;
     break;
   case 65:

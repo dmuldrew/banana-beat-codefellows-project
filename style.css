@@ -4,17 +4,33 @@
   padding: 0;
   box-sizing: border-box;
   width: 100%;
+  font-size: 1em;
+  font-weight: normal;
 }
 
 body, html {
   height: 100%;
 }
 
-body {
-  background: #363636 url(lodyas.png);
+.right {
+  float: right;
 }
 
-section {
+.left {
+  float: left;
+}
+
+.clear-fix {
+  clear: both;
+}
+
+body {
+  background: #363636 url(lodyas.png);
+  font-family: Poppins, sans-serif;
+  font-weight: 300;
+}
+
+aside {
   width: 20%;
   height: 100%;
   float: left;
@@ -24,11 +40,114 @@ section {
   background: rgba(255,255,255,.3);
 }
 
+section {
+  margin-bottom: 20px;
+}
+
 #banana-beat {
   width: auto;
-  height: 50px;
+  height: 80px;
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 20px;
+}
+
+button {
+  background: #FFDB42;
+  border: none;
+  border-radius: 7px;
+  display: block;
+  margin: 2px auto;
+  padding: 2px;
+}
+
+h2 {
+  text-align: center;
+  font-family: Comfortaa, cursive;
+  font-weight: bold;
+  font-size: 1.4em;
+  margin: 5px 0 7px;
+  clear: both;
+}
+
+select, input {
+  border: none;
+  padding: 2px;
+  border-radius: 2px;
+}
+
+#tempo-change {
+  text-align: center;
+  margin-bottom: 10px;
+  font-family: Comfortaa, cursive;
+  font-weight: bold;
+}
+
+#tempo-change #tempo-value{
+  width: 3em;
+  text-align: right;
+  background: rgba(255,255,255,.1);
+  margin-bottom: 5px;
+}
+
+#play-pause {
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+#reset, #random-button {
+  width: 60%;
+  margin-bottom: 5px;
+}
+
+#reset {
+  background: #999;
+  margin-bottom: 20px;
+}
+
+#options {
+  text-align: center;
+}
+
+#options button {
+  width: 45%;
+  display: inline-block;
+}
+
+#piano-settings p {
+  display: inline-block;
+  width: auto;
+}
+
+#octave-menu, #wave-menu {
+  width: 55%;
+}
+
+#export-import {
+  text-align: center;
+}
+
+#export-import button, #export-import input {
+  display: inline-block;
+}
+
+#export-import button {
+  width: 80px;
+}
+
+#export-import input {
+  width: calc(90% - 80px);
+  margin-bottom: 5px;
+}
+
+#export-form input {
+  background: #ccc;
+}
+
+#save-form input {
+  margin-bottom: 5px;
 }
 
 footer {
@@ -75,6 +194,7 @@ main {
 }
 
 #piano-box {
+  font-family: Comfortaa, cursive;
   position: relative;
   height: 40%;
   padding-top: 10px;
