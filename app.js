@@ -70,7 +70,6 @@ function generateRow(drum, drumRow) {
   var muteButton = document.createElement('button');
   muteButton.type = 'button';
   muteButton.id = drum.name;
-  muteButton.innerHTML = '<img src="img/mute.png" alt="volume" />';
   muteButton.className = 'mute-button mute';
   muteButton.addEventListener('click', handleMuteButton);
 

@@ -146,6 +146,35 @@ select, input {
   margin-bottom: 5px;
 }
 
+#save-form button {
+  margin-bottom: 10px;
+}
+
+.saved-state {
+  position: relative;
+  border-radius: 2px;
+  margin-bottom: 5px;
+  background: rgba(255,255,255,.2);
+  padding: 10px;
+}
+
+.saved-state button {
+  width: 50px;
+  position: absolute;
+  bottom: 2px;
+  right: 3px;
+  background-color: #555;
+  color: #bbb;
+  font-weight: lighter;
+  font-size: .8em;
+}
+
+#clear-saves {
+  margin-top: 10px;
+  background-color: #555;
+  color: #bbb;
+}
+
 footer {
   background: #707070;
   width: 20%;
@@ -211,8 +240,13 @@ main {
 
 .drum-label .mute-button {
   right: 7%;
-  padding: 2px 0;
+  height: 20px;
   background: #999;
+  background-image: url(img/mute.png);
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+
 }
 
 .drum-label img {
@@ -331,7 +365,7 @@ main {
 
 #play-pause{
   position: relative;
-  margin: 0 auto 20px;
+  margin: 0 auto 15px;
   width: 40%;
 }
 
