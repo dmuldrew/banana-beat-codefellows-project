@@ -10,11 +10,44 @@ body, html {
   height: 100%;
 }
 
+body {
+  background: #363636 url(lodyas.png);
+}
+
 section {
   width: 20%;
   height: 100%;
   float: left;
   padding: 20px;
+  padding-bottom: 50px;
+  overflow: scroll;
+  background: rgba(255,255,255,.3);
+}
+
+#banana-beat {
+  width: auto;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+}
+
+footer {
+  background: #707070;
+  width: 20%;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+footer a {
+  color: #333;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
 
 main {
@@ -22,22 +55,23 @@ main {
   height: 100%;
   float: right;
   padding: 10px;
-  padding-left: 0;
 }
 
 #grid-beat {
   height: 60%;
+  border-spacing: 0px;
 }
 
 #grid-beat td {
-  border: 1px solid black;
+  text-align: center;
+  border: 2px solid #1e1e1e;
   width: calc(80% / 17);
   height: calc(60% / 7);
 }
 
-#banana-beat {
-  width: 40px;
-  height:40px;
+#grid-beat .drum-label {
+  border: 1px solid #1e1e1e;
+  background: rgba(255,255,255,.3);
 }
 
 #piano-box {
@@ -53,15 +87,37 @@ main {
 
 #piano td {
   width: calc(80% / 8);
-  border: 1px solid black;
+  border: 10px outset #eee;
+  border-top: none;
+  background: #fff;
+  color: #9A9A9A;
+  vertical-align: bottom;
+  text-align: center;
 }
 
 .black-key{
   width: calc(75% / 8);
   height: 60%;
   background-color: black;
-  display: inline-block;
-  border: 1px solid black;
+  border: 10px outset #555;
+  border-top: none;
+  color: #777;
+  text-align: center;
+}
+
+.black-key span {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+#piano-box .pressed {
+  color: #8C0000;
+  background-color: red;
+  border-color: #e00000;
+  border-style: inset;
+  border-top: none;
 }
 
 #c-sharp{

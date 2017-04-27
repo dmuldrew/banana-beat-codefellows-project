@@ -31,6 +31,7 @@ function generateRow(drum, drumRow) {
   var table = document.getElementById('grid-beat');
   var row = document.createElement('tr');
   var drumName = document.createElement('td');
+  drumName.className = 'drum-label';
   drumName.textContent = drum.name;
   row.appendChild(drumName);
   var beatBox;
@@ -38,8 +39,10 @@ function generateRow(drum, drumRow) {
     beatBox = document.createElement('td');
     if (drum.playTriggers[i]) {
       beatBox.className = 'on';
+      beatBox.style.background = randomColor();
     } else {
       beatBox.className = 'off';
+      beatBox.style.background = 'none';
     }
     beatBox.setAttribute('count-index', i);
     row.appendChild(beatBox);
@@ -54,11 +57,17 @@ function toggleTrigger(e, drum) {
   if (beatBox.className === 'off') {
     drum.playTriggers[beatBox.getAttribute('count-index')] = true;
     beatBox.className = 'on';
+    beatBox.style.background = randomColor();
   } else {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
     beatBox.className = 'off';
+    beatBox.style.background = 'none';
   }
   resetExportCode();
+}
+
+function randomColor() {
+  return 'hsl(' + (Math.random()*360) + ', 80%, 50%)';
 }
 
 // TEMPO CHANGE FUNCTIONALITY
@@ -181,8 +190,8 @@ function playBeat(){
   for (i = 0; i < allBoxes.length; i++) {
     if (allBoxes[i].getAttribute('count-index') == currentBeat) {
       allBoxes[i].style.borderColor = 'red';
-    } else {
-      allBoxes[i].style.borderColor = 'black';
+    } else if (allBoxes[i].className != 'drum-label'){
+      allBoxes[i].style.borderColor = '#1e1e1e';
     }
   }
   currentBeat++;
@@ -458,9 +467,8 @@ function generatePiano() {
   for (var i = 0; i < pianoLabels.length; i++) {
     pianoKey = document.createElement('td');
     pianoKey.setAttribute('id', pianoLabels[i]);
-    pianoKey.style.width = '35px';
-    pianoKey.style.height = '150px';
     row.appendChild(pianoKey);
+    pianoKey.textContent = pianoLabels[i];
   }
   table.appendChild(row);
 }
@@ -513,6 +521,7 @@ Note.prototype.stop = function() {
 var c, cSharp, d, dSharp, e, f, fSharp, g, gSharp, a, aSharp, b, cNext;
 var keyA, keyW, keyS, keyE, keyD, keyF, keyT, keyG, keyY, keyH, keyU, keyJ, keyK;
 
+var firstPause = true;
 var firstKeyA = true;
 var firstKeyB = true;
 var firstKeyC = true;
@@ -529,13 +538,25 @@ var firstKeyCNext = true;
 
 document.onkeydown = function(event) {
   switch (event.keyCode) {
+  case 220:
+    if(!firstPause) return;
+    firstPause = false;
+    var button = document.getElementById('play-pause');
+    if (button.textContent === 'Pause') {
+      clearInterval(playingInterval);
+      button.textContent = 'Play';
+    } else {
+      playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+      button.textContent = 'Pause';
+    }
+    break;
   case 65:
     if(!firstKeyC) return;
     firstKeyC = false;
     c = new Note(261.63);
     c.start();
     keyA = document.getElementById('A');
-    keyA.style.backgroundColor = 'red';
+    keyA.className += ' pressed';
     break;
 
   case 87:
@@ -544,7 +565,7 @@ document.onkeydown = function(event) {
     cSharp = new Note(277.18);
     cSharp.start();
     keyW = document.getElementById('c-sharp');
-    keyW.style.backgroundColor = 'red';
+    keyW.className += ' pressed';
     break;
 
   case 83:
@@ -553,7 +574,7 @@ document.onkeydown = function(event) {
     d = new Note(293.66);
     d.start();
     keyS = document.getElementById('S');
-    keyS.style.backgroundColor = 'red';
+    keyS.className += ' pressed';
     break;
 
   case 69:
@@ -562,7 +583,7 @@ document.onkeydown = function(event) {
     dSharp = new Note(311.13);
     dSharp.start();
     keyE = document.getElementById('d-sharp');
-    keyE.style.backgroundColor = 'red';
+    keyE.className += ' pressed';
     break;
 
   case 68:
@@ -571,7 +592,7 @@ document.onkeydown = function(event) {
     e = new Note(329.63);
     e.start();
     keyD = document.getElementById('D');
-    keyD.style.backgroundColor = 'red';
+    keyD.className += ' pressed';
     break;
 
   case 70:
@@ -580,7 +601,7 @@ document.onkeydown = function(event) {
     f = new Note(349.23);
     f.start();
     keyF = document.getElementById('F');
-    keyF.style.backgroundColor = 'red';
+    keyF.className += ' pressed';
     break;
 
   case 84:
@@ -589,7 +610,7 @@ document.onkeydown = function(event) {
     fSharp = new Note(369.99);
     fSharp.start();
     keyT = document.getElementById('f-sharp');
-    keyT.style.backgroundColor = 'red';
+    keyT.className += ' pressed';
     break;
 
   case 71:
@@ -598,7 +619,7 @@ document.onkeydown = function(event) {
     g = new Note(392);
     g.start();
     keyG = document.getElementById('G');
-    keyG.style.backgroundColor = 'red';
+    keyG.className += ' pressed';
     break;
 
   case 89:
@@ -607,7 +628,7 @@ document.onkeydown = function(event) {
     gSharp = new Note(415.30);
     gSharp.start();
     keyY = document.getElementById('g-sharp');
-    keyY.style.backgroundColor = 'red';
+    keyY.className += ' pressed';
     break;
 
   case 72:
@@ -616,7 +637,7 @@ document.onkeydown = function(event) {
     a = new Note(440);
     a.start();
     keyH = document.getElementById('H');
-    keyH.style.backgroundColor = 'red';
+    keyH.className += ' pressed';
     break;
 
   case 85:
@@ -625,7 +646,7 @@ document.onkeydown = function(event) {
     aSharp = new Note(466.16);
     aSharp.start();
     keyU = document.getElementById('a-sharp');
-    keyU.style.backgroundColor = 'red';
+    keyU.className += ' pressed';
     break;
 
   case 74:
@@ -634,7 +655,7 @@ document.onkeydown = function(event) {
     b = new Note(493.88);
     b.start();
     keyJ = document.getElementById('J');
-    keyJ.style.backgroundColor = 'red';
+    keyJ.className += ' pressed';
     break;
 
   case 75:
@@ -643,89 +664,92 @@ document.onkeydown = function(event) {
     cNext = new Note(523.25);
     cNext.start();
     keyK = document.getElementById('K');
-    keyK.style.backgroundColor = 'red';
+    keyK.className += ' pressed';
     break;
   }
 };
 
 document.onkeyup = function(event) {
   switch (event.keyCode) {
+  case 220:
+    firstPause = true;
+    break;
   case 65:
     firstKeyC = true;
     c.stop();
-    keyA.style.backgroundColor = 'white';
+    keyA.className = keyA.className.split(' ')[0];
     break;
 
   case 87:
     firstKeyCSharp = true;
     cSharp.stop();
-    keyW.style.backgroundColor = 'black';
+    keyW.className = keyW.className.split(' ')[0];
     break;
 
   case 83:
     firstKeyD = true;
     d.stop();
-    keyS.style.backgroundColor = 'white';
+    keyS.className = keyS.className.split(' ')[0];
     break;
 
   case 69:
     firstKeyDSharp = true;
     dSharp.stop();
-    keyE.style.backgroundColor = 'black';
+    keyE.className = keyE.className.split(' ')[0];
     break;
 
   case 68:
     firstKeyE = true;
     e.stop();
-    keyD.style.backgroundColor = 'white';
+    keyD.className = keyD.className.split(' ')[0];
     break;
 
   case 70:
     firstKeyF = true;
     f.stop();
-    keyF.style.backgroundColor = 'white';
+    keyF.className = keyF.className.split(' ')[0];
     break;
 
   case 84:
     firstKeyFSharp = true;
     fSharp.stop();
-    keyT.style.backgroundColor = 'black';
+    keyT.className = keyT.className.split(' ')[0];
     break;
 
   case 71:
     firstKeyG = true;
     g.stop();
-    keyG.style.backgroundColor = 'white';
+    keyG.className = keyG.className.split(' ')[0];
     break;
 
   case 89:
     firstKeyGSharp = true;
     gSharp.stop();
-    keyY.style.backgroundColor = 'black';
+    keyY.className = keyY.className.split(' ')[0];
     break;
 
   case 72:
     firstKeyA = true;
     a.stop();
-    keyH.style.backgroundColor = 'white';
+    keyH.className = keyH.className.split(' ')[0];
     break;
 
   case 85:
     firstKeyASharp = true;
     aSharp.stop();
-    keyU.style.backgroundColor = 'black';
+    keyU.className = keyU.className.split(' ')[0];
     break;
 
   case 74:
     firstKeyB = true;
     b.stop();
-    keyJ.style.backgroundColor = 'white';
+    keyJ.className = keyJ.className.split(' ')[0];
     break;
 
   case 75:
     firstKeyCNext = true;
     cNext.stop();
-    keyK.style.backgroundColor = 'white';
+    keyK.className = keyK.className.split(' ')[0];
     break;
   }
 };
@@ -756,6 +780,7 @@ function resetBeats(){
     allCells = allRows[i].childNodes;
     for (var j= 1; j < allCells.length; j++) {
       allCells[j].className = 'off';
+      allCells[j].style.background = 'none';
     }
   }
 
