@@ -8,31 +8,93 @@ var bpm = 80;
 
 var currentBeat = 0;
 
+var audioContext;
+audioContext = new AudioContext || window.webkitAudioContext();
+
 // DRUM OBJECT
 
 function Drum(name, sample){
+  this.context = audioContext;
+  this.drumGain = audioContext.createGain();
+  this.drumGain.gain.value = 0;
   this.name = name;
   this.sample = sample;
   this.playTriggers = new Array(16).fill(false);
+  this.soundVolume = .5;
+  this.muted = false;
 }
+//
+// var newDrum = audioContext.createMediaElementSource(sound);
+// sound.crossOrigin = 'anonymous';
+// newDrum.connect(this.drumGain);
+// this.drumGain.connect(audioContext.destination);
 
 Drum.prototype.playDrum = function(){
-  new Audio(this.sample).play();
+  var sound = new Audio(this.sample);
+  sound.volume = this.soundVolume;
+  sound.play();
+  sound.muted = this.muted;
 };
 
+// TABLE GENERATION
 
 function generateTable(drumList) {
   for(var i = 0; i < drumList.length; i++) {
     generateRow(drumList[i]);
+
   }
 }
+
+var sliderZIndex = 1000;
 
 function generateRow(drum, drumRow) {
   var table = document.getElementById('grid-beat');
   var row = document.createElement('tr');
   var drumName = document.createElement('td');
-  drumName.textContent = drum.name;
+  drumName.style.position = 'relative';
+  var volumeSlider = document.createElement('input');
+  var volumeDrop = document.createElement('button');
+  volumeDrop.style.zIndex = sliderZIndex;
+  sliderZIndex--;
+  volumeDrop.textContent = 'Volume';
+  volumeDrop.style.position = 'absolute';
+  volumeDrop.style.left = '0';
+  volumeDrop.style.top = '18px';
+  volumeDrop.addEventListener('click', handleClickOnVolumeBox);
+  volumeDrop.style.border = '1px solid black';
+  volumeSlider.style.display = 'none';
+  volumeSlider.type = 'range';
+  volumeSlider.min = '0';
+  volumeSlider.max = '1';
+  volumeSlider.step = '.1';
+  volumeSlider.value = '.5';
+  volumeSlider.id = drum.name;
+  volumeSlider.className = 'drum-slider';
+  volumeSlider.addEventListener('change', handleVolumeChange);
+  var muteButton = document.createElement('button');
+  muteButton.type = 'button';
+  muteButton.id = drum.name;
+  muteButton.textContent = 'Mute';
+  muteButton.className = 'mute-button';
+  drumName.innerHTML = '<span style = "display: block; margin-bottom: 20px;">' + drum.name + '</span>';
+  drumName.style.border = '2px solid black';
+  drumName.style.fontSize = '.8em';
+  drumName.style.fontWeight = '600';
+  drumName.style.textAlign = 'center';
+  muteButton.addEventListener('click', handleMuteButton);
+  volumeDrop.appendChild(volumeSlider);
+  drumName.appendChild(volumeDrop);
+  drumName.appendChild(muteButton);
   row.appendChild(drumName);
+
+  function handleClickOnVolumeBox(){
+    if (volumeSlider.style.display == 'none'){
+      volumeSlider.style.display = 'inline-block';
+    } else if (volumeSlider.style.display == 'inline-block'){
+      volumeSlider.style.display = 'none';
+    }
+  }
+
   var beatBox;
   for (var i = 0; i < drum.playTriggers.length; i++) {
     beatBox = document.createElement('td');
@@ -60,6 +122,33 @@ function toggleTrigger(e, drum) {
   }
   resetExportCode();
 }
+// VOLUME change
+
+function handleVolumeChange(e){
+  var newVolume = e.target.value;
+  for(var i = 0; i < allDrums.length; i++){
+    console.log(allDrums[i].id);
+    if(e.target.id == allDrums[i].name){
+      allDrums[i].soundVolume = newVolume;
+    }
+  }
+}
+
+function handleMuteButton(e){
+  for(var i = 0; i < allDrums.length; i++){
+    if(e.target.id == allDrums[i].name && e.target.textContent == 'Mute'){
+      console.log(allDrums[i].soundVolume);
+      allDrums[i].muted = true;
+      e.target.textContent = 'Unmute';
+      e.target.style.backgroundColor = 'red';
+    } else if(e.target.id == allDrums[i].name && e.target.textContent == 'Unmute'){
+      allDrums[i].muted = false;
+      e.target.textContent = 'Mute';
+      e.target.style.backgroundColor = 'transparent';
+    }
+  }
+}
+
 
 // TEMPO CHANGE FUNCTIONALITY
 
@@ -86,31 +175,31 @@ function handleTempoChange(e) {
 // PLAY THE MUSIC
 
 var snare = function(){
-  return new Drum('snare', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 01.wav');
+  return new Drum('Snare', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 01.wav');
 };
 
 var hihat = function(){
-  return  new Drum('hihat', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Hit Hat Open/ED Open Hit Hat 23.wav');
+  return  new Drum('Hi-Hat', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Hit Hat Open/ED Open Hit Hat 23.wav');
 };
 
 var kick = function(){
-  return  new Drum('kick', 'Samples/kick-classic.mp3');
+  return  new Drum('Kick', 'Samples/kick-classic.mp3');
 };
 
 var tom1 = function(){
-  return  new Drum('tom1', 'Samples/tom-acoustic01.mp3');
+  return  new Drum('Tom (1)', 'Samples/tom-acoustic01.mp3');
 };
 
 var tom2 = function(){
-  return  new Drum('tom2', 'Samples/tom-acoustic02.mp3');
+  return  new Drum('Tom (2)', 'Samples/tom-acoustic02.mp3');
 };
 
 var crash = function(){
-  return  new Drum('crash', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 09.wav');
+  return  new Drum('Crash', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 09.wav');
 };
 
 var bass = function(){
-  return  new Drum ('bass', 'random samples/Live_bass_Bitz_116.mp3');
+  return  new Drum ('Bass', 'random samples/Live_bass_Bitz_116.mp3');
 };
 
 
@@ -121,7 +210,6 @@ var technoBass = function(){
 var technoKick = function(){
   return  new Drum ('technoKick', '');
 };
-
 
 var guitar1 = function(){
   return  new Drum ('guitar1', 'random samples/Guitar_loop32(160BPM).mp3');
@@ -408,7 +496,18 @@ var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'];
 
 function generatePiano() {
   var table = document.getElementById('piano');
+  var volumeBox = document.createElement('td');
+  volumeBox.style.width = 'calc(80%/14)';
   var row = document.createElement('tr');
+  row.appendChild(volumeBox);
+  var pianoVolumeSlider = document.createElement('input');
+  pianoVolumeSlider.type = 'range';
+  pianoVolumeSlider.min = '0';
+  pianoVolumeSlider.max = '1';
+  pianoVolumeSlider.step = '.1';
+  pianoVolumeSlider.id = 'piano-slider';
+  pianoVolumeSlider.addEventListener('change', handlePianoVolumeChange);
+  volumeBox.appendChild(pianoVolumeSlider);
   var pianoKey;
   for (var i = 0; i < pianoLabels.length; i++) {
     pianoKey = document.createElement('td');
@@ -420,9 +519,6 @@ function generatePiano() {
   table.appendChild(row);
 }
 generatePiano();
-
-var audioContext;
-audioContext = new AudioContext || window.webkitAudioContext();
 
 var octave = 0;
 var octaveChange = document.getElementById('octave-menu');
@@ -442,19 +538,24 @@ function handleWaveChange(e){
 
 waveChange.addEventListener('change', handleWaveChange);
 
+var oscVolume = .5;
 
+function handlePianoVolumeChange(e){
+  oscVolume = e.target.value;
+}
 function Note(frequency){
   this.frequency = frequency * Math.pow(2, octave);
   this.osc = audioContext.createOscillator();
   this.osc.type = waveType;
   this.osc.frequency.value = this.frequency;
   this.gain = audioContext.createGain();
-  this.gain.gain.value = .5;
+  this.gain.gain.value = oscVolume;
 
   this.osc.connect(this.gain);
   this.gain.connect(audioContext.destination);
 
 }
+
 
 Note.prototype.start = function () {
   this.osc.start(0);
@@ -464,6 +565,8 @@ Note.prototype.start = function () {
 Note.prototype.stop = function() {
   this.gain.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
 };
+
+
 
 var c, cSharp, d, dSharp, e, f, fSharp, g, gSharp, a, aSharp, b, cNext;
 var keyA, keyW, keyS, keyE, keyD, keyF, keyT, keyG, keyY, keyH, keyU, keyJ, keyK;
