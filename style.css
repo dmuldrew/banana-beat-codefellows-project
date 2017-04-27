@@ -8,7 +8,7 @@
 
 body, html {
   height: 100%;
-  background-color: #FFDB42;
+  background-color: black;
 }
 
 section {
@@ -160,4 +160,30 @@ main {
 .mute-button{
   float: right;
   width: 90%;
+}
+
+  #banana-spiral{
+    transition: transform;
+    width: 15%;
+    height: 15%;
+  }
+
+  #banana-spiral.spinning{
+    animation-name: spin;
+    animation-duration: 9s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @keyframes spin{
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+  }
+
+#playhead{
+  position: relative;
+  right: 123px;
+  bottom: 70px;
+  width: 4%;
+  height: 4%;
 }
