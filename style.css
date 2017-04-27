@@ -314,15 +314,6 @@ main {
   left: calc(calc(125% / 16) * 9.15);
 }
 
-.off {
-  background: none;
-}
-
-.on {
-  background: green;
-
-}
-
 .hide {
   display: none;
 }
@@ -366,17 +357,9 @@ main {
     to {transform: rotate(360deg);}
 }
 
-#playhead{
+#playhead, #playhead-paused{
   position:absolute;
   bottom: 42%;
-  left: 37%;
-  width: auto;
-  height: 25%;
-}
-
-#playhead-paused{
-  position:absolute;
-  bottom: 40%;
   left: 37%;
   width: auto;
   height: 25%;

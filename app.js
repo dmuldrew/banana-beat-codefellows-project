@@ -393,6 +393,8 @@ function loadTempo(tempo) {
   if (isPlaying) {
     clearInterval(playingInterval);
     playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+    var spinSpeed = 9 - (((bpm - 20) / 180) * 8);
+    document.getElementById('banana-spiral').style.animationDuration = spinSpeed + 's';
   }
 }
 
@@ -643,6 +645,8 @@ document.onkeydown = function(event) {
       button.className = '';
     } else {
       playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+      var spinSpeed = 9 - (((bpm - 20) / 180) * 8);
+      button.style.animationDuration = spinSpeed + 's';
       button.className = 'spinning';
     }
     break;
@@ -855,13 +859,15 @@ document.onkeyup = function(event) {
 var playPauseButton = document.getElementById('playhead');
 playPauseButton.addEventListener('click', handlePlayPauseClick);
 function handlePlayPauseClick(e) {
-  var bananaSpiral = document.getElementById('banana-spiral')
+  var bananaSpiral = document.getElementById('banana-spiral');
   if (e.target.id === 'playhead') {
     clearInterval(playingInterval);
     e.target.id = 'playhead-paused';
     bananaSpiral.className = '';
   } else {
     playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+    var spinSpeed = 9 - (((bpm - 20) / 180) * 8);
+    bananaSpiral.style.animationDuration = spinSpeed + 's';
     e.target.id = 'playhead';
     bananaSpiral.className = 'spinning';
   }
