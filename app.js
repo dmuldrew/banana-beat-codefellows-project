@@ -854,7 +854,7 @@ document.onkeyup = function(event) {
 var playPauseButton = document.getElementById('playhead');
 playPauseButton.addEventListener('click', handlePlayPauseClick);
 function handlePlayPauseClick(e) {
-  var bananaSpiral = document.getElementById('banana-spiral')
+  var bananaSpiral = document.getElementById('banana-spiral');
   if (e.target.id === 'playhead') {
     clearInterval(playingInterval);
     e.target.id = 'playhead-paused';
