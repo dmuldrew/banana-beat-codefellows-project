@@ -6,12 +6,16 @@
 </head>
 <body>
   <section>
-    <img id="banana"src="https://m.popkey.co/987552/NGLb3.gif"/>
+    <img id="banana-beat" src="banana/banana7.png" alt="dancing banana"/>
     <div id="tempo-change">
       <label for="tempo">Current Tempo:</label>
       <input id="tempo-value" type="number" name="tempoValueInput" min="20" max="200" />bpm
       <input id="tempo-slider" type="range" name="tempoSliderInput" min="20" max="200" step="5" />
     </div>
+
+    <button id="play-pause">Pause</button>
+
+    <button id="reset" type="click"> Reset </button>
 
     <div id="options">
       <button id="d1" type:"submit">Option 1</button>
@@ -19,10 +23,6 @@
       <button id="d3" type:"submit">Option 3</button>
       <button id="d4" type:"submit">Option 4</button>
     </div>
-
-    <button id="play-pause">Pause</button>
-
-    <button id="reset" type="click"> Reset </button>
 
     <div id ='octaveSelector'>
       Change Octave:
@@ -66,8 +66,8 @@
         <input type="text" name="nameInput" placeholder="Setup name" required />
         <button type="submit">Save Current Setup</button>
       </form>
-      <button id="clear-saves">Clear All Saved Data</button>
       <div id="saves"></div>
+      <button id="clear-saves">Clear All Saved Data</button>
     </div>
 
   </section>

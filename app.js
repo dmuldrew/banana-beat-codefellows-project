@@ -168,6 +168,9 @@ generateTable(allDrums);
 
 var playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
 
+var currentBanana = 0;
+var bananas = ['6.png', '7.png', '8.png', '1.png', '2.png', '3.png', '4.png', '5.png'];
+
 function playBeat(){
   for (var i = 0; i < allDrums.length; i++){
     if (allDrums[i].playTriggers[currentBeat]){
@@ -184,6 +187,10 @@ function playBeat(){
   }
   currentBeat++;
   currentBeat %= 16;
+
+  document.getElementById('banana-beat').src = 'banana/banana'+bananas[currentBanana];
+  currentBanana++;
+  currentBanana %= 8;
 }
 
 // SAVING TO LOCALSTORAGE FUNCTIONALITY
