@@ -162,23 +162,23 @@ main {
   width: 90%;
 }
 
-  #banana-spiral{
+#banana-spiral{
     transition: transform;
     width: 15%;
     height: 15%;
-  }
+}
 
-  #banana-spiral.spinning{
+#banana-spiral.spinning{
     animation-name: spin;
     animation-duration: 9s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-  }
+}
 
-  @keyframes spin{
+@keyframes spin{
     from {transform: rotate(0deg);}
     to {transform: rotate(360deg);}
-  }
+}
 
 #playhead{
   position: relative;
