@@ -10,6 +10,7 @@
 
 body, html {
   height: 100%;
+  background-color: #FFDB42;
 }
 
 .right {
@@ -186,6 +187,7 @@ main {
   border: 2px solid #1e1e1e;
   width: calc(80% / 17);
   height: calc(60% / 7);
+  background-color: white;
 }
 
 #grid-beat .drum-label {
@@ -197,13 +199,12 @@ main {
   font-family: Comfortaa, cursive;
   position: relative;
   height: 40%;
-  padding-top: 10px;
+  background-color: white;
 }
 
 #piano {
   height: 100%;
 }
-
 
 #piano td {
   width: calc(80% / 8);
@@ -242,31 +243,31 @@ main {
 
 #c-sharp{
   position: absolute;
-  top: 10px;
+  top: 2px;
   left: calc(125% / 16);
 }
 
 #d-sharp{
   position: absolute;
-  top: 10px;
+  top: 2px;
   left: calc(calc(125% / 16) * 2.6);
 }
 
 #f-sharp{
   position: absolute;
-  top: 10px;
+  top: 2px;
   left: calc(calc(125% / 16) * 5.8);
 }
 
 #g-sharp{
   position: absolute;
-  top: 10px;
+  top: 2px;
   left: calc(calc(125% / 16) * 7.4);
 }
 
 #a-sharp{
   position: absolute;
-  top: 10px;
+  top: 2px;
   left: calc(calc(125% / 16) * 9);
 }
 
@@ -281,4 +282,53 @@ main {
 
 .hide {
   display: none;
+}
+
+.options{
+  border: 2px solid black;
+  border-radius: 7px;
+  width: 40%;
+  margin: 5px;
+}
+
+.playback{
+  margin: 5px;
+  border: 2px solid black;
+  border-radius: 7px;
+  width: 40%;
+}
+
+#tempo-change{
+  text-align: center;
+}
+
+#tempo-value{
+  text-align: center;
+  height:30px;
+  width: 50%;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.export{
+  margin: 5px;
+  float: left;
+  width: 40%;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+#piano-slider{
+  -webkit-appearance: slider-vertical;
+}
+
+.drum-slider{
+  display: inline-block;
+  float:left;
+  -webkit-appearance: slider-vertical;
+}
+
+.mute-button{
+  float: right;
+  width: 90%;
 }
