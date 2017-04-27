@@ -29,10 +29,6 @@ main {
   height: 60%;
 }
 
-#piano {
-  height: 40%;
-}
-
 #grid-beat td {
   border: 1px solid black;
   width: calc(80% / 17);
@@ -44,54 +40,58 @@ main {
   height:40px;
 }
 
-/*#piano {
-  width: auto;
-}*/
+#piano-box {
+  position: relative;
+  height: 40%;
+  padding-top: 10px;
+}
+
+#piano {
+  height: 100%;
+}
+
 
 #piano td {
   width: calc(80% / 8);
-  height: 150px;
   border: 1px solid black;
 }
 
 .black-key{
-  width: 30px;
-  height: 90px;
+  width: calc(75% / 8);
+  height: 60%;
   background-color: black;
   display: inline-block;
   border: 1px solid black;
 }
 
-#two-keys{
-  position: relative;
-  bottom: 156px;
-  left: 25px;
-  display:inline-block;
-  width:auto;
+#c-sharp{
+  position: absolute;
+  top: 10px;
+  left: calc(125% / 16);
 }
 
 #d-sharp{
-  position: relative;
-  left: 8px;
+  position: absolute;
+  top: 10px;
+  left: calc(calc(125% / 16) * 2.6);
+}
+
+#f-sharp{
+  position: absolute;
+  top: 10px;
+  left: calc(calc(125% / 16) * 5.8);
 }
 
 #g-sharp{
-  position: relative;
-  left: 5px;
+  position: absolute;
+  top: 10px;
+  left: calc(calc(125% / 16) * 7.4);
 }
 
 #a-sharp{
-  position: relative;
-  left: 10px;
-}
-
-#three-keys{
-  position:relative;
-  bottom: 156px;
-  left: 80px;
-  display:inline-block;
-  width: auto;
-
+  position: absolute;
+  top: 10px;
+  left: calc(calc(125% / 16) * 9);
 }
 
 .off {
