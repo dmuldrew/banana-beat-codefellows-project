@@ -45,11 +45,24 @@ function generateTable(drumList) {
   }
 }
 
+var sliderZIndex = 1000;
+
 function generateRow(drum, drumRow) {
   var table = document.getElementById('grid-beat');
   var row = document.createElement('tr');
   var drumName = document.createElement('td');
+  drumName.style.position = 'relative';
   var volumeSlider = document.createElement('input');
+  var volumeDrop = document.createElement('button');
+  volumeDrop.style.zIndex = sliderZIndex;
+  sliderZIndex--;
+  volumeDrop.textContent = 'Volume';
+  volumeDrop.style.position = 'absolute';
+  volumeDrop.style.left = '0';
+  volumeDrop.style.top = '18px';
+  volumeDrop.addEventListener('click', handleClickOnVolumeBox);
+  volumeDrop.style.border = '1px solid black';
+  volumeSlider.style.display = 'none';
   volumeSlider.type = 'range';
   volumeSlider.min = '0';
   volumeSlider.max = '1';
@@ -57,22 +70,30 @@ function generateRow(drum, drumRow) {
   volumeSlider.value = '.5';
   volumeSlider.id = drum.name;
   volumeSlider.className = 'drum-slider';
-  volumeSlider.style.height = '30px';
   volumeSlider.addEventListener('change', handleVolumeChange);
   var muteButton = document.createElement('button');
   muteButton.type = 'button';
   muteButton.id = drum.name;
   muteButton.textContent = 'Mute';
   muteButton.className = 'mute-button';
-  drumName.textContent = drum.name;
+  drumName.innerHTML = '<span style = "display: block; margin-bottom: 20px;">' + drum.name + '</span>';
   drumName.style.border = '2px solid black';
   drumName.style.fontSize = '.8em';
   drumName.style.fontWeight = '600';
   drumName.style.textAlign = 'center';
   muteButton.addEventListener('click', handleMuteButton);
-  drumName.appendChild(volumeSlider);
+  volumeDrop.appendChild(volumeSlider);
+  drumName.appendChild(volumeDrop);
   drumName.appendChild(muteButton);
   row.appendChild(drumName);
+
+  function handleClickOnVolumeBox(){
+    if (volumeSlider.style.display == 'none'){
+      volumeSlider.style.display = 'inline-block';
+    } else if (volumeSlider.style.display == 'inline-block'){
+      volumeSlider.style.display = 'none';
+    }
+  }
 
   var beatBox;
   for (var i = 0; i < drum.playTriggers.length; i++) {

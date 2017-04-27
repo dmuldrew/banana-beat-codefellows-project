@@ -152,8 +152,6 @@ main {
 }
 
 .drum-slider{
-  height:100%;
-  width: 2px;
   display: inline-block;
   float:left;
   -webkit-appearance: slider-vertical;
