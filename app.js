@@ -83,6 +83,8 @@ function handleTempoChange(e) {
   resetExportCode();
 }
 
+// PLAY THE MUSIC
+
 var snare = function(){
   return new Drum('snare', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 01.wav');
 };

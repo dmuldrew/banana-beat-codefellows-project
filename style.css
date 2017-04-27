@@ -1,17 +1,57 @@
 
 * {
-  background-color: white;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-td {
+body, html {
+  height: 100%;
+}
+
+section {
+  width: 20%;
+  height: 100%;
+  float: left;
+  padding: 20px;
+}
+
+main {
+  width: 80%;
+  height: 100%;
+  float: right;
+  padding: 10px;
+  padding-left: 0;
+}
+
+#grid-beat {
+  height: 60%;
+}
+
+#piano {
+  height: 40%;
+}
+
+#grid-beat td {
   border: 1px solid black;
-  width: 50px;
-  height: 50px;
+  width: calc(80% / 17);
+  height: calc(60% / 7);
 }
 
 #banana {
   width: 40px;
   height:40px;
+}
+
+/*#piano {
+  width: auto;
+}*/
+
+#piano td {
+  width: calc(80% / 8);
+  height: 150px;
+  border: 1px solid black;
 }
 
 .black-key{
