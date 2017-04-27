@@ -1,57 +1,103 @@
 
 * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+body, html {
+  height: 100%;
+  background-color: #FFDB42;
+}
+
+section {
+  font-family: 'Baloo', cursive;
+  width: 20%;
+  height: 100%;
+  float: left;
+  padding: 20px;
+  background-color: #FFDB42;
+  text-align: center;
+}
+
+main {
+  width: 80%;
+  height: 100%;
+  float: right;
+  padding: 10px;
+  padding-left: 0;
+  background-color: #FFDB42;
+}
+
+#grid-beat {
+  height: 60%;
+}
+
+#grid-beat td {
+  font-family: 'Droid Serif', serif;
+  border: 1px solid black;
+  width: calc(80% / 17);
+  height: calc(60% / 7);
   background-color: white;
 }
 
-td {
-  border: 1px solid black;
-  width: 50px;
-  height: 50px;
+#banana {
+  width: 80px;
+  height:80px;
 }
 
-#banana {
-  width: 40px;
-  height:40px;
+#piano-box {
+  position: relative;
+  height: 40%;
+  background-color: white;
+}
+
+#piano {
+  height: 100%;
+}
+
+#piano td {
+  width: calc(80% / 8);
+  border: 3px solid black;
 }
 
 .black-key{
-  width: 30px;
-  height: 90px;
+  width: calc(75% / 8);
+  height: 60%;
   background-color: black;
   display: inline-block;
   border: 1px solid black;
 }
 
-#two-keys{
-  position: relative;
-  bottom: 156px;
-  left: 25px;
-  display:inline-block;
-  width:auto;
+#c-sharp{
+  position: absolute;
+  top: 2px;
+  left: calc(125% / 16);
 }
 
 #d-sharp{
-  position: relative;
-  left: 8px;
+  position: absolute;
+  top: 2px;
+  left: calc(calc(125% / 16) * 2.6);
+}
+
+#f-sharp{
+  position: absolute;
+  top: 2px;
+  left: calc(calc(125% / 16) * 5.8);
 }
 
 #g-sharp{
-  position: relative;
-  left: 5px;
+  position: absolute;
+  top: 2px;
+  left: calc(calc(125% / 16) * 7.4);
 }
 
 #a-sharp{
-  position: relative;
-  left: 10px;
-}
-
-#three-keys{
-  position:relative;
-  bottom: 156px;
-  left: 80px;
-  display:inline-block;
-  width: auto;
-
+  position: absolute;
+  top: 2px;
+  left: calc(calc(125% / 16) * 9);
 }
 
 .off {
@@ -65,4 +111,55 @@ td {
 
 .hide {
   display: none;
+}
+
+.options{
+  border: 2px solid black;
+  border-radius: 7px;
+  width: 40%;
+  margin: 5px;
+}
+
+.playback{
+  margin: 5px;
+  border: 2px solid black;
+  border-radius: 7px;
+  width: 40%;
+}
+
+#tempo-change{
+  text-align: center;
+}
+
+#tempo-value{
+  text-align: center;
+  height:30px;
+  width: 50%;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.export{
+  margin: 5px;
+  float: left;
+  width: 40%;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+#piano-slider{
+  -webkit-appearance: slider-vertical;
+}
+
+.drum-slider{
+  height:100%;
+  width: 2px;
+  display: inline-block;
+  float:left;
+  -webkit-appearance: slider-vertical;
+}
+
+.mute-button{
+  float: right;
+  width: 90%;
 }

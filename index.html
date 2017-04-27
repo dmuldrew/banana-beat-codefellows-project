@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Drum-Machine</title>
+  <title>Banana Beat</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet">
 </head>
 <body>
-  <img id="banana"src="https://m.popkey.co/987552/NGLb3.gif"/>
-  <div id="tempo-change">
-    <label for="tempo">Current Tempo:</label>
-    <input id="tempo-value" type="number" name="tempoValueInput" min="20" max="200" />bpm
-    <input id="tempo-slider" type="range" name="tempoSliderInput" min="20" max="200" step="5" />
-  </div>
+  <section>
+    <img id="banana"src="https://m.popkey.co/987552/NGLb3.gif"/>
+    <div id="tempo-change">
+      <label for="tempo"><h1>Tempo</h1></label>
+      <input id="tempo-value" type="number" name="tempoValueInput" min="20" max="200"  />
+      <input id="tempo-slider" type="range" name="tempoSliderInput" min="20" max="200" step="5" />
+    </div>
 
-  <table id="grid-beat">
-  </table>
+    <div id="options">
+      <h1>Kit Change</h1>
+      <button class='options' id="d1" type:"submit">Option 1</button>
+      <button class='options' id="d2" type:"submit">Option 2</button>
+      <button class='options' id="d3" type:"submit">Option 3</button>
+      <button class='options' id="d4" type:"submit">Option 4</button>
+    </div>
 
-  <div>
-    <button id="d1" type:"submit">Option 1</button>
-    <button id="d2" type:"submit">Option 2</button>
-    <button id="d3" type:"submit">Option 3</button>
-    <button id="d4" type:"submit">Option 4</button>
-  </div>
+    <div id='playback'>
+      <h1>Playback</h1>
+        <button id="play-pause" class='playback'>Pause</button>
+        <button id="reset" type="click" class='playback'> Reset </button>
+    </div>
 
-  <button id="play-pause">Pause</button>
-
-  <button id="reset" type="click"> Reset </button>
-
-  <table id="piano">
-  </table>
-  <div id="two-keys">
-    <div id="c-sharp" class="black-key"></div>
-    <div id="d-sharp" class="black-key"></div>
-  </div>
-  <div id="three-keys">
-    <div id="f-sharp" class="black-key"></div>
-    <div id="g-sharp" class="black-key"></div>
-    <div id="a-sharp" class="black-key"></div>
-  </div>
+    <div id ='waveSelector'>
+      Change Wave Tone:
+      <select id='wave-menu' name="wave-change">
+        <option value='sine'>Sine</option>
+        <option value='sawtooth'>Saw</option>
+        <option value='triangle'>Triangle</option>
+        <option value="square">Square</option>
+      </select>
+    </div>
 
     <div id ='octaveSelector'>
       Change Octave:
@@ -51,39 +52,48 @@
         <option value=7>7</option>
         <option value=8>8</option>
       </select>
+
+    <div id="export-import">
+      Share Your Beat:
+      <form id="export-form">
+        <button type="submit" class='export'>Export Current</button>
+        <input type="text" name="exportOutput" readonly="readonly" class='export'/>
+      </form>
+      <form id="import-form">
+        <input type="text" name="importInput" required />
+        <button type="submit">Import Setup</button>
+        <div id="error-message"></div>
+      </form>
     </div>
 
-  <div id ='waveSelector'>
-    Change Wave Tone:
-    <select id='wave-menu' name="wave-change">
-      <option value='sine'>Sine</option>
-      <option value='sawtooth'>Saw</option>
-      <option value='triangle'>Triangle</option>
-      <option value="square">Square</option>
-    </select>
-  </div>
+    <div id="saved-states">
+      <form id="save-form">
+        <input type="text" name="nameInput" placeholder="Setup name" required />
+        <button type="submit">Save Current Setup</button>
+      </form>
 
-  <div id="export-import">
-    <form id="export-form">
-      <button type="submit">Export Current Setup</button>
-      <input type="text" name="exportOutput" readonly="readonly" />
-    </form>
-    <form id="import-form">
-      <input type="text" name="importInput" required />
-      <button type="submit">Import Setup</button>
-      <div id="error-message"></div>
-    </form>
-  </div>
+      <button id="clear-saves">Clear All Saved Data</button>
+      <div id="saves"></div>
+    </div>
+  </section>
 
-  <div id="saved-states">
-    <form id="save-form">
-      <input type="text" name="nameInput" placeholder="Setup name" required />
-      <button type="submit">Save Current Setup</button>
-    </form>
-    <button id="clear-saves">Clear All Saved Data</button>
-    <div id="saves"></div>
-  </div>
 
+
+
+  <main>
+    <table id="grid-beat"></table>
+
+
+    <div id="piano-box">
+      <table id="piano">
+      </table>
+      <div id="c-sharp" class="black-key"></div>
+      <div id="d-sharp" class="black-key"></div>
+      <div id="f-sharp" class="black-key"></div>
+      <div id="g-sharp" class="black-key"></div>
+      <div id="a-sharp" class="black-key"></div>
+    </div>
+  </main>
 
   <script src='app.js'></script>
 </body>
