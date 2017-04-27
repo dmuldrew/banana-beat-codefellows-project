@@ -172,6 +172,7 @@ function handleTempoChange(e) {
   resetExportCode();
 }
 
+
 // PLAY THE MUSIC
 
 var snare = function(){
@@ -388,7 +389,7 @@ function loadTempo(tempo) {
   bpm = tempo;
   tempoSlider.value = bpm;
   tempoValue.value = bpm;
-  var isPlaying = document.getElementById('play-pause').textContent === 'Pause';
+  var isPlaying = document.getElementById('banana-spiral').className === 'spinning';
   if (isPlaying) {
     clearInterval(playingInterval);
     playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
@@ -635,13 +636,13 @@ document.onkeydown = function(event) {
   case 190:
     if(!firstPause) return;
     firstPause = false;
-    var button = document.getElementById('play-pause');
-    if (button.textContent === 'Pause') {
+    var button = document.getElementById('banana-spiral');
+    if (button.className === 'spinning') {
       clearInterval(playingInterval);
-      button.textContent = 'Play';
+      button.className = '';
     } else {
       playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
-      button.textContent = 'Pause';
+      button.className = 'spinning';
     }
     break;
   case 65:
@@ -850,16 +851,18 @@ document.onkeyup = function(event) {
 
 // PLAY, PAUSE, RESET FUNCTIONALITY
 
-var playPauseButton = document.getElementById('play-pause');
+var playPauseButton = document.getElementById('playhead');
 playPauseButton.addEventListener('click', handlePlayPauseClick);
 function handlePlayPauseClick(e) {
-  var button = e.target;
-  if (button.textContent === 'Pause') {
+  var bananaSpiral = document.getElementById('banana-spiral')
+  if (e.target.id === 'playhead') {
     clearInterval(playingInterval);
-    button.textContent = 'Play';
+    e.target.id = 'playhead-paused';
+    bananaSpiral.className = '';
   } else {
     playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
-    button.textContent = 'Pause';
+    e.target.id = 'playhead';
+    bananaSpiral.className = 'spinning';
   }
 }
 
