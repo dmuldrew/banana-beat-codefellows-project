@@ -8,38 +8,94 @@ var bpm = 80;
 
 var currentBeat = 0;
 
+var audioContext;
+audioContext = new AudioContext || window.webkitAudioContext();
+
 // DRUM OBJECT
 
 function Drum(name, sample){
+  this.context = audioContext;
+  this.drumGain = audioContext.createGain();
+  this.drumGain.gain.value = 0;
   this.name = name;
   this.sample = sample;
   this.playTriggers = new Array(16).fill(false);
+  this.soundVolume = .5;
+  this.muted = false;
 }
 
 Drum.prototype.playDrum = function(){
-  new Audio(this.sample).play();
+  var sound = new Audio(this.sample);
+  sound.volume = this.soundVolume;
+  sound.play();
+  sound.muted = this.muted;
 };
 
+// TABLE GENERATION
 
 function generateTable(drumList) {
   for(var i = 0; i < drumList.length; i++) {
     generateRow(drumList[i]);
+
   }
 }
+
+var sliderZIndex = 1000;
 
 function generateRow(drum, drumRow) {
   var table = document.getElementById('grid-beat');
   var row = document.createElement('tr');
   var drumName = document.createElement('td');
-  drumName.textContent = drum.name;
+  drumName.className = 'drum-label';
+  drumName.innerHTML = '<span>' + drum.name + '</span>';
+
+  var volumeDrop = document.createElement('button');
+  volumeDrop.className = 'volume-drop';
+  volumeDrop.style.zIndex = sliderZIndex;
+  sliderZIndex--;
+  volumeDrop.innerHTML = '<img src="img/volume.png" alt="volume" />';
+  volumeDrop.addEventListener('click', handleClickOnVolumeBox);
+
+  var volumeSlider = document.createElement('input');
+  volumeSlider.style.display = 'none';
+  volumeSlider.type = 'range';
+  volumeSlider.min = '0';
+  volumeSlider.max = '1';
+  volumeSlider.step = '.1';
+  volumeSlider.value = '.5';
+  volumeSlider.id = drum.name;
+  volumeSlider.className = 'drum-slider';
+  volumeSlider.addEventListener('change', handleVolumeChange);
+
+  var muteButton = document.createElement('button');
+  muteButton.type = 'button';
+  muteButton.id = drum.name;
+  muteButton.innerHTML = '<img src="img/mute.png" alt="volume" />';
+  muteButton.className = 'mute-button mute';
+  muteButton.addEventListener('click', handleMuteButton);
+
+  volumeDrop.appendChild(volumeSlider);
+  drumName.appendChild(volumeDrop);
+  drumName.appendChild(muteButton);
   row.appendChild(drumName);
+
+  function handleClickOnVolumeBox(){
+    if (volumeSlider.style.display == 'none'){
+      volumeSlider.style.display = 'inline-block';
+    } else if (volumeSlider.style.display == 'inline-block'){
+      volumeSlider.style.display = 'none';
+    }
+  }
+
   var beatBox;
   for (var i = 0; i < drum.playTriggers.length; i++) {
     beatBox = document.createElement('td');
     if (drum.playTriggers[i]) {
       beatBox.className = 'on';
+      beatBox.style.background = randomColor();
     } else {
       beatBox.className = 'off';
+      beatBox.style.background = 'none';
     }
     beatBox.setAttribute('count-index', i);
     row.appendChild(beatBox);
@@ -54,11 +110,44 @@ function toggleTrigger(e, drum) {
   if (beatBox.className === 'off') {
     drum.playTriggers[beatBox.getAttribute('count-index')] = true;
     beatBox.className = 'on';
+    beatBox.style.background = randomColor();
   } else {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
     beatBox.className = 'off';
+    beatBox.style.background = 'none';
   }
   resetExportCode();
+}
+
+function randomColor() {
+  return 'hsl(' + (Math.random()*360) + ', 80%, 50%)';
+}
+
+// VOLUME change
+
+function handleVolumeChange(e){
+  var newVolume = e.target.value;
+  for(var i = 0; i < allDrums.length; i++){
+    console.log(allDrums[i].id);
+    if(e.target.id == allDrums[i].name){
+      allDrums[i].soundVolume = newVolume;
+    }
+  }
+}
+
+function handleMuteButton(e){
+  for(var i = 0; i < allDrums.length; i++){
+    if(e.target.id == allDrums[i].name && e.target.className.split(' ')[1] === 'mute') {
+      console.log(allDrums[i].soundVolume);
+      allDrums[i].muted = true;
+      e.target.className = e.target.className.split(' ')[0] + ' unmute';
+      e.target.style.backgroundColor = '#f43030';
+    } else if(e.target.id == allDrums[i].name && e.target.className.split(' ')[1] === 'unmute') {
+      allDrums[i].muted = false;
+      e.target.className = e.target.className.split(' ')[0] + ' mute';
+      e.target.style.backgroundColor = '#999';
+    }
+  }
 }
 
 // TEMPO CHANGE FUNCTIONALITY
@@ -83,69 +172,122 @@ function handleTempoChange(e) {
   resetExportCode();
 }
 
+
 // PLAY THE MUSIC
 
 var snare = function(){
-  return new Drum('snare', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 01.wav');
-};
+
+  return new Drum('snare', 'Samples/snare-acoustic01.mp3');
+}
 
 var hihat = function(){
-  return  new Drum('hihat', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Hit Hat Open/ED Open Hit Hat 23.wav');
-};
+  return  new Drum('hihat', 'Samples/hihat-dist01.mp3');
+}
 
 var kick = function(){
-  return  new Drum('kick', 'Samples/kick-classic.mp3');
+  return  new Drum('Kick', 'Samples/kick-classic.mp3');
 };
 
 var tom1 = function(){
-  return  new Drum('tom1', 'Samples/tom-acoustic01.mp3');
+  return  new Drum('Tom (1)', 'Samples/tom-acoustic01.mp3');
 };
 
 var tom2 = function(){
-  return  new Drum('tom2', 'Samples/tom-acoustic02.mp3');
+  return  new Drum('Tom (2)', 'Samples/tom-acoustic02.mp3');
 };
 
 var crash = function(){
-  return  new Drum('crash', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 09.wav');
+  return  new Drum('Crash', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 09.wav');
 };
+
+
+
+var goat1 = function(){
+  return  new Drum ('goat 1', 'random samples/Goat-sound-effectedit1.mp3');
+}
+
+var goat2 = function(){
+  return  new Drum ('goat 2', 'random samples/Goat-sound-effectedit2.mp3');
+}
+
+var goat3 = function(){
+  return  new Drum ('goat 3', 'random samples/Goat-sound-effectiedit3.mp3');
+}
+
 
 var bass = function(){
-  return  new Drum ('bass', 'random samples/Live_bass_Bitz_116.mp3');
+  return  new Drum ('Bass', 'random samples/Live_bass_Bitz_116.mp3');
 };
 
+var bass2 = function(){
+  return  new Drum ('bass 2', 'electro-flux-sound-kit/Electro Flux Sound Kit/Bassdrums/ED Bassdrums 33.wav');
+}
 
-var technoBass = function(){
-  return  new Drum ('technoBass', '');
-};
+var percussion1 = function(){
+  return  new Drum ('percussion 1', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion/ED Percussion 02.wav');
+}
 
-var technoKick = function(){
-  return  new Drum ('technoKick', '');
-};
+var snare2 = function(){
+  return  new Drum ('snare 2', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 21.wav');
+}
 
+var percussion2 = function(){
+  return  new Drum ('percussion2', 'electro-flux-sound-kit/Electro Flux Sound Kit/Synths/ED Synths 10.wav');
+}
+
+var synth1 = function(){
+  return  new Drum ('synth1', 'electro-flux-sound-kit/Electro Flux Sound Kit/Synths/ED Synths 02.wav');
+}
+
+var crash2 = function(){
+  return  new Drum ('crash 2', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 11.wav');
+}
 
 var guitar1 = function(){
-  return  new Drum ('guitar1', 'random samples/Guitar_loop32(160BPM).mp3');
-};
+  return  new Drum ('guitar loop (40bpm)', 'random samples/Guitar_loop32(160BPM).mp3');
+}
 
-var bassBeat = function(){
-  return  new Drum ('bassBeat', 'random samples/Beat1-edited.wav');
-};
+var synthLoop = function(){
+  return  new Drum ('synth loop (60bpm)', 'random samples/scifi-bass.wav');
+}
+
+var bass3 = function(){
+  return  new Drum ('bass loop (60bpm)', 'random samples/Bass125A-01.mp3');
+}
+
+var bassLoop2 = function(){
+  return  new Drum ('bass loop 2 (43bpm)', 'random samples/EMOK1Bass86E-04.mp3');
+}
 
 
+var allDrums = [snare(), hihat(), kick(), tom1(), tom2(), crash()];
+// var alternateDrums = [something, drum, element, that, replaces, current, elements];
 
-var allDrums = [snare(), hihat(), kick(), tom1(), tom2(), crash(), bass()];
 
-
+var d0 = document.getElementById('d0');
+function switchToOption0() {
+  loadDrumSetup([goat1(), goat2(), goat3(), kick(), tom1(), crash()]);
+  // nukeTable();
+  // generateTable(allDrums);
+  console.log('button change 0');
+}
+d0.addEventListener('click', switchToOption0);
 
 var d1 = document.getElementById('d1');
 function switchToOption1() {
-  loadDrumSetup([snare(), hihat(), kick(), tom1(), tom2(), crash(), bass()]);
+  loadDrumSetup([snare(), hihat(), kick(), tom1(), tom2(), crash()]);
+  // nukeTable();
+  // generateTable(allDrums);
+  console.log('button change 1');
 }
 d1.addEventListener('click', switchToOption1);
 
 var d2 = document.getElementById('d2');
 function switchToOption2() {
-  loadDrumSetup([technoBass(), hihat(), technoKick(), tom1(), tom2(), crash(), bass()]);
+  loadDrumSetup([bass2(), percussion1(), percussion2(), snare2(), synth1(), crash2()]);
+  // nukeTable();
+  // generateTable(allDrums);
+  console.log('button change 2');
 }
 d2.addEventListener('click', switchToOption2);
 
@@ -159,14 +301,42 @@ d3.addEventListener('click', switchToOption3);
 
 var d4 = document.getElementById('d4');
 function switchToOption4() {
-  allDrums.push(bassBeat());
+  allDrums.push(bass());
   loadDrumSetup (allDrums);
 }
 d4.addEventListener('click', switchToOption4);
 
+var d5 = document.getElementById('d5');
+function switchToOption5() {
+  allDrums.push(synthLoop());
+  loadDrumSetup (allDrums);
+  console.log('added a row');
+}
+d5.addEventListener('click', switchToOption5);
+
+var d6 = document.getElementById('d6');
+function switchToOption6() {
+  allDrums.push(bass3());
+  loadDrumSetup (allDrums);
+  console.log('added a row');
+}
+d6.addEventListener('click', switchToOption6);
+
+var d7 = document.getElementById('d7');
+function switchToOption7() {
+  allDrums.push(bassLoop2());
+  loadDrumSetup (allDrums);
+  console.log('added a row');
+}
+d7.addEventListener('click', switchToOption7);
+
+
 generateTable(allDrums);
 
 var playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+
+var currentBanana = 0;
+var bananas = ['6.png', '7.png', '8.png', '1.png', '2.png', '3.png', '4.png', '5.png'];
 
 function playBeat(){
   for (var i = 0; i < allDrums.length; i++){
@@ -178,12 +348,16 @@ function playBeat(){
   for (i = 0; i < allBoxes.length; i++) {
     if (allBoxes[i].getAttribute('count-index') == currentBeat) {
       allBoxes[i].style.borderColor = 'red';
-    } else {
-      allBoxes[i].style.borderColor = 'black';
+    } else if (allBoxes[i].className != 'drum-label'){
+      allBoxes[i].style.borderColor = '#1e1e1e';
     }
   }
   currentBeat++;
   currentBeat %= 16;
+
+  document.getElementById('banana-beat').src = 'banana/banana'+bananas[currentBanana];
+  currentBanana++;
+  currentBanana %= 8;
 }
 
 // SAVING TO LOCALSTORAGE FUNCTIONALITY
@@ -216,7 +390,7 @@ function handleClearClick() {
     localStorage.clear();
     document.getElementById('saves').innerHTML = '';
   } catch(error) {
-    console.error('Unable to save to localStorage:', error);
+    console.error('Unable to access localStorage:', error);
   }
 }
 
@@ -229,7 +403,7 @@ function saveCurrentState(nameInput) {
       tempo: bpm,
     };
     savedStates.push(currentState);
-    generateSavedStateBox(currentState, document.getElementById('saved-states'));
+    generateSavedStateBox(currentState, document.getElementById('saves'));
     try {
       localStorage.savedStates = JSON.stringify(savedStates);
     } catch(error) {
@@ -242,13 +416,35 @@ function saveCurrentState(nameInput) {
 function generateSavedStateBox(state, allSavedBoxes) {
   var saveBox = document.createElement('div');
   saveBox.className = 'saved-state';
-  saveBox.textContent = state.name;
   allSavedBoxes.appendChild(saveBox);
 
-  saveBox.addEventListener('click', function() {
+  var saveStateBox = document.createElement('div');
+  saveStateBox.innerHTML = state.name + '<br/>' + state.tempo + ' bpm';
+  saveBox.appendChild(saveStateBox);
+
+  saveStateBox.addEventListener('click', function() {
     loadDrumSetup(state.setup);
     loadTempo(state.tempo);
   });
+
+  var removeBox = document.createElement('button');
+  removeBox.className = 'delete-button';
+  removeBox.textContent = 'delete';
+  saveBox.appendChild(removeBox);
+
+  removeBox.addEventListener('click', function(e) {handleDeleteClick(e, state);});
+}
+
+function handleDeleteClick(e, state) {
+  var saveBox = e.target.parentElement;
+  saveBox.parentElement.removeChild(saveBox);
+
+  savedStates.splice(savedStates.indexOf(state), 1);
+  try {
+    localStorage.savedStates = JSON.stringify(savedStates);
+  } catch(error) {
+    console.error('Unable to access localStorage:', error);
+  }
 }
 
 // takes a list of drums as a drum setup and loads it to the grid
@@ -271,7 +467,7 @@ function loadTempo(tempo) {
   bpm = tempo;
   tempoSlider.value = bpm;
   tempoValue.value = bpm;
-  var isPlaying = document.getElementById('play-pause').textContent === 'Pause';
+  var isPlaying = document.getElementById('banana-spiral').className === 'spinning';
   if (isPlaying) {
     clearInterval(playingInterval);
     playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
@@ -402,27 +598,50 @@ function decode(code) {
   return drumList;
 }
 
+// RANDOM DRUMS
+
+document.getElementById('random-button'). addEventListener('click', handleRandomizeClick);
+
+function handleRandomizeClick() {
+  var code = '';
+  // random setup
+  for (var char = 0; char < (allDrums.length * 2); char++) {
+    code += String.fromCharCode(Math.round((Math.random() * 255) + 215));
+  }
+  // random tempo
+  code += ' ' + Math.round((Math.random() * 180) + 20);
+
+  loadDrumSetup(decode(code));
+}
+
 // PIANO FUNCTIONALITY
 
 var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'];
 
 function generatePiano() {
   var table = document.getElementById('piano');
+  var volumeBox = document.createElement('td');
+  volumeBox.id = 'piano-volume';
   var row = document.createElement('tr');
+  row.appendChild(volumeBox);
+  var pianoVolumeSlider = document.createElement('input');
+  pianoVolumeSlider.type = 'range';
+  pianoVolumeSlider.min = '0';
+  pianoVolumeSlider.max = '1';
+  pianoVolumeSlider.step = '.1';
+  pianoVolumeSlider.id = 'piano-slider';
+  pianoVolumeSlider.addEventListener('change', handlePianoVolumeChange);
+  volumeBox.appendChild(pianoVolumeSlider);
   var pianoKey;
   for (var i = 0; i < pianoLabels.length; i++) {
     pianoKey = document.createElement('td');
     pianoKey.setAttribute('id', pianoLabels[i]);
-    pianoKey.style.width = '35px';
-    pianoKey.style.height = '150px';
     row.appendChild(pianoKey);
+    pianoKey.textContent = pianoLabels[i];
   }
   table.appendChild(row);
 }
 generatePiano();
-
-var audioContext;
-audioContext = new AudioContext || window.webkitAudioContext();
 
 var octave = 0;
 var octaveChange = document.getElementById('octave-menu');
@@ -442,19 +661,24 @@ function handleWaveChange(e){
 
 waveChange.addEventListener('change', handleWaveChange);
 
+var oscVolume = .5;
 
+function handlePianoVolumeChange(e){
+  oscVolume = e.target.value;
+}
 function Note(frequency){
   this.frequency = frequency * Math.pow(2, octave);
   this.osc = audioContext.createOscillator();
   this.osc.type = waveType;
   this.osc.frequency.value = this.frequency;
   this.gain = audioContext.createGain();
-  this.gain.gain.value = .5;
+  this.gain.gain.value = oscVolume;
 
   this.osc.connect(this.gain);
   this.gain.connect(audioContext.destination);
 
 }
+
 
 Note.prototype.start = function () {
   this.osc.start(0);
@@ -465,9 +689,12 @@ Note.prototype.stop = function() {
   this.gain.gain.setTargetAtTime(0, audioContext.currentTime, 0.015);
 };
 
+
+
 var c, cSharp, d, dSharp, e, f, fSharp, g, gSharp, a, aSharp, b, cNext;
 var keyA, keyW, keyS, keyE, keyD, keyF, keyT, keyG, keyY, keyH, keyU, keyJ, keyK;
 
+var firstPause = true;
 var firstKeyA = true;
 var firstKeyB = true;
 var firstKeyC = true;
@@ -484,13 +711,25 @@ var firstKeyCNext = true;
 
 document.onkeydown = function(event) {
   switch (event.keyCode) {
+  case 190:
+    if(!firstPause) return;
+    firstPause = false;
+    var button = document.getElementById('banana-spiral');
+    if (button.className === 'spinning') {
+      clearInterval(playingInterval);
+      button.className = '';
+    } else {
+      playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+      button.className = 'spinning';
+    }
+    break;
   case 65:
     if(!firstKeyC) return;
     firstKeyC = false;
     c = new Note(261.63);
     c.start();
     keyA = document.getElementById('A');
-    keyA.style.backgroundColor = 'red';
+    keyA.className += ' pressed';
     break;
 
   case 87:
@@ -499,7 +738,7 @@ document.onkeydown = function(event) {
     cSharp = new Note(277.18);
     cSharp.start();
     keyW = document.getElementById('c-sharp');
-    keyW.style.backgroundColor = 'red';
+    keyW.className += ' pressed';
     break;
 
   case 83:
@@ -508,7 +747,7 @@ document.onkeydown = function(event) {
     d = new Note(293.66);
     d.start();
     keyS = document.getElementById('S');
-    keyS.style.backgroundColor = 'red';
+    keyS.className += ' pressed';
     break;
 
   case 69:
@@ -517,7 +756,7 @@ document.onkeydown = function(event) {
     dSharp = new Note(311.13);
     dSharp.start();
     keyE = document.getElementById('d-sharp');
-    keyE.style.backgroundColor = 'red';
+    keyE.className += ' pressed';
     break;
 
   case 68:
@@ -526,7 +765,7 @@ document.onkeydown = function(event) {
     e = new Note(329.63);
     e.start();
     keyD = document.getElementById('D');
-    keyD.style.backgroundColor = 'red';
+    keyD.className += ' pressed';
     break;
 
   case 70:
@@ -535,7 +774,7 @@ document.onkeydown = function(event) {
     f = new Note(349.23);
     f.start();
     keyF = document.getElementById('F');
-    keyF.style.backgroundColor = 'red';
+    keyF.className += ' pressed';
     break;
 
   case 84:
@@ -544,7 +783,7 @@ document.onkeydown = function(event) {
     fSharp = new Note(369.99);
     fSharp.start();
     keyT = document.getElementById('f-sharp');
-    keyT.style.backgroundColor = 'red';
+    keyT.className += ' pressed';
     break;
 
   case 71:
@@ -553,7 +792,7 @@ document.onkeydown = function(event) {
     g = new Note(392);
     g.start();
     keyG = document.getElementById('G');
-    keyG.style.backgroundColor = 'red';
+    keyG.className += ' pressed';
     break;
 
   case 89:
@@ -562,7 +801,7 @@ document.onkeydown = function(event) {
     gSharp = new Note(415.30);
     gSharp.start();
     keyY = document.getElementById('g-sharp');
-    keyY.style.backgroundColor = 'red';
+    keyY.className += ' pressed';
     break;
 
   case 72:
@@ -571,7 +810,7 @@ document.onkeydown = function(event) {
     a = new Note(440);
     a.start();
     keyH = document.getElementById('H');
-    keyH.style.backgroundColor = 'red';
+    keyH.className += ' pressed';
     break;
 
   case 85:
@@ -580,7 +819,7 @@ document.onkeydown = function(event) {
     aSharp = new Note(466.16);
     aSharp.start();
     keyU = document.getElementById('a-sharp');
-    keyU.style.backgroundColor = 'red';
+    keyU.className += ' pressed';
     break;
 
   case 74:
@@ -589,7 +828,7 @@ document.onkeydown = function(event) {
     b = new Note(493.88);
     b.start();
     keyJ = document.getElementById('J');
-    keyJ.style.backgroundColor = 'red';
+    keyJ.className += ' pressed';
     break;
 
   case 75:
@@ -598,105 +837,110 @@ document.onkeydown = function(event) {
     cNext = new Note(523.25);
     cNext.start();
     keyK = document.getElementById('K');
-    keyK.style.backgroundColor = 'red';
+    keyK.className += ' pressed';
     break;
   }
 };
 
 document.onkeyup = function(event) {
   switch (event.keyCode) {
+  case 190:
+    firstPause = true;
+    break;
   case 65:
     firstKeyC = true;
     c.stop();
-    keyA.style.backgroundColor = 'white';
+    keyA.className = keyA.className.split(' ')[0];
     break;
 
   case 87:
     firstKeyCSharp = true;
     cSharp.stop();
-    keyW.style.backgroundColor = 'black';
+    keyW.className = keyW.className.split(' ')[0];
     break;
 
   case 83:
     firstKeyD = true;
     d.stop();
-    keyS.style.backgroundColor = 'white';
+    keyS.className = keyS.className.split(' ')[0];
     break;
 
   case 69:
     firstKeyDSharp = true;
     dSharp.stop();
-    keyE.style.backgroundColor = 'black';
+    keyE.className = keyE.className.split(' ')[0];
     break;
 
   case 68:
     firstKeyE = true;
     e.stop();
-    keyD.style.backgroundColor = 'white';
+    keyD.className = keyD.className.split(' ')[0];
     break;
 
   case 70:
     firstKeyF = true;
     f.stop();
-    keyF.style.backgroundColor = 'white';
+    keyF.className = keyF.className.split(' ')[0];
     break;
 
   case 84:
     firstKeyFSharp = true;
     fSharp.stop();
-    keyT.style.backgroundColor = 'black';
+    keyT.className = keyT.className.split(' ')[0];
     break;
 
   case 71:
     firstKeyG = true;
     g.stop();
-    keyG.style.backgroundColor = 'white';
+    keyG.className = keyG.className.split(' ')[0];
     break;
 
   case 89:
     firstKeyGSharp = true;
     gSharp.stop();
-    keyY.style.backgroundColor = 'black';
+    keyY.className = keyY.className.split(' ')[0];
     break;
 
   case 72:
     firstKeyA = true;
     a.stop();
-    keyH.style.backgroundColor = 'white';
+    keyH.className = keyH.className.split(' ')[0];
     break;
 
   case 85:
     firstKeyASharp = true;
     aSharp.stop();
-    keyU.style.backgroundColor = 'black';
+    keyU.className = keyU.className.split(' ')[0];
     break;
 
   case 74:
     firstKeyB = true;
     b.stop();
-    keyJ.style.backgroundColor = 'white';
+    keyJ.className = keyJ.className.split(' ')[0];
     break;
 
   case 75:
     firstKeyCNext = true;
     cNext.stop();
-    keyK.style.backgroundColor = 'white';
+    keyK.className = keyK.className.split(' ')[0];
     break;
   }
 };
 
 // PLAY, PAUSE, RESET FUNCTIONALITY
 
-var playPauseButton = document.getElementById('play-pause');
+var playPauseButton = document.getElementById('playhead');
 playPauseButton.addEventListener('click', handlePlayPauseClick);
 function handlePlayPauseClick(e) {
-  var button = e.target;
-  if (button.textContent === 'Pause') {
+  var bananaSpiral = document.getElementById('banana-spiral')
+  if (e.target.id === 'playhead') {
     clearInterval(playingInterval);
-    button.textContent = 'Play';
+    e.target.id = 'playhead-paused';
+    bananaSpiral.className = '';
   } else {
     playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
-    button.textContent = 'Pause';
+    e.target.id = 'playhead';
+    bananaSpiral.className = 'spinning';
   }
 }
 
@@ -711,45 +955,10 @@ function resetBeats(){
     allCells = allRows[i].childNodes;
     for (var j= 1; j < allCells.length; j++) {
       allCells[j].className = 'off';
+      allCells[j].style.background = 'none';
     }
   }
 
   resetExportCode();
-
-}
-// creating a pulldown menue to select beatsbox color
-
-var beatBoxColor =document.getElementById('cellColors');
-beatBoxColor.addEventListener('change', beatBoxColorChange);
-function cssRules(){
-  var rules={}; var ds=document.styleSheets,dsl=ds.length;
-  for (var i=0;i<dsl;++i){
-    var dsi=ds[i].cssRules,dsil=dsi.length;
-    for (var j=0;j<dsil;++j) rules[dsi[j].selectorText]=dsi[j];
-  }
-  return rules;
-}
-function cssGetClass(name){
-  var rules=cssRules();
-  if (!rules.hasOwnProperty(name)) throw 'todo:deal_with_notfound_case';
-  return rules[name];
-}
-function beatBoxColorChange(e) {
-  var beatBoxColor = e.target;
-  try {
-    if (beatBoxColor.value === 'green'){
-      cssGetClass('.on').style.background = 'green';
-    }else if (beatBoxColor.value === 'yellow'){
-      cssGetClass('.on').style.background = 'yellow';
-    } else if(beatBoxColor.value === 'blue'){
-      cssGetClass('.on').style.background = 'blue';
-    } else if(beatBoxColor.value === 'red'){
-      cssGetClass('.on').style.background = 'red';
-    } else {
-      cssGetClass('.on').style.background = 'pink';
-    }
-  } catch(error) {
-    console.warn(error);
-  }
 
 }
