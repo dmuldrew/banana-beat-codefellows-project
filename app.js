@@ -21,6 +21,7 @@ function Drum(name, sample){
   this.sample = sample;
   this.playTriggers = new Array(16).fill(false);
   this.soundVolume = .5;
+  this.muted = false;
 }
 //
 // var newDrum = audioContext.createMediaElementSource(sound);
@@ -32,6 +33,7 @@ Drum.prototype.playDrum = function(){
   var sound = new Audio(this.sample);
   sound.volume = this.soundVolume;
   sound.play();
+  sound.muted = this.muted
 };
 
 // TABLE GENERATION
@@ -74,8 +76,14 @@ function generateRow(drum, drumRow) {
   volumeSlider.value = '.5';
   volumeSlider.id = drum.name;
   volumeSlider.addEventListener('change', handleVolumeChange);
+  var muteButton = document.createElement('button');
+  muteButton.type = 'button';
+  muteButton.id = drum.name;
+  muteButton.textContent = 'Mute';
   drumName.textContent = drum.name;
+  muteButton.addEventListener('click', handleMuteButton);
   drumName.appendChild(volumeSlider);
+  drumName.appendChild(muteButton);
   row.appendChild(drumName);
 
   var beatBox;
@@ -113,6 +121,21 @@ function handleVolumeChange(e){
     console.log(allDrums[i].id);
     if(e.target.id == allDrums[i].name){
       allDrums[i].soundVolume = newVolume;
+    }
+  }
+}
+
+function handleMuteButton(e){
+  for(var i = 0; i < allDrums.length; i++){
+    if(e.target.id == allDrums[i].name && e.target.textContent == 'Mute'){
+      console.log(allDrums[i].soundVolume);
+      allDrums[i].muted = true;
+      e.target.textContent = 'Unmute';
+      e.target.style.backgroundColor = 'red';
+    } else if(e.target.id == allDrums[i].name && e.target.textContent == 'Unmute'){
+      allDrums[i].muted = false;
+      e.target.textContent = 'Mute';
+      e.target.style.backgroundColor = 'transparent';
     }
   }
 }
