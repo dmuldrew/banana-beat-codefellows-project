@@ -2,7 +2,8 @@
 
 // GLOBALS
 
-var MINUTE = 60000;
+var MINUTE = 60000;//IT's OVER 9000!!!!(What!? 9000!?!?!)
+
 var bpm = 80;
 
 var currentBeat = 0;
@@ -32,6 +33,7 @@ Drum.prototype.playDrum = function(){
   sound.volume = this.soundVolume;
   sound.play();
 };
+
 // TABLE GENERATION
 
 function generateTable(drumList) {
@@ -40,8 +42,27 @@ function generateTable(drumList) {
 
   }
 }
+// function generateTable(drumList) {
+//   for(var i = 0; i < drumList.length; i++) {
+//     generateRow(drumList[i]);
+//
+//   }
+//   numRows = allDrums.length;
+// }
 
-function generateRow(drum) {
+// function nukeTable() {
+//   var table = document.getElementById('grid-beat');
+//   for (var i = 0; i < numRows; i++) {
+//     var row = document.getElementById(i);
+//     table.removeChild(row);
+//   }
+// }
+
+// function silenceRow(row) {
+//   row.playTriggers[beatBox.getAttribute('count-index')] = false;
+// }
+
+function generateRow(drum, drumRow) {
   var table = document.getElementById('grid-beat');
   var row = document.createElement('tr');
   var drumName = document.createElement('td');
@@ -69,6 +90,7 @@ function generateRow(drum) {
     row.appendChild(beatBox);
     beatBox.addEventListener('click', function(e) {toggleTrigger(e, drum);});
   }
+  row.setAttribute('id', drumRow);
   table.appendChild(row);
 }
 
@@ -86,7 +108,13 @@ function toggleTrigger(e, drum) {
 // VOLUME change
 
 function handleVolumeChange(e){
-  
+  var newVolume = e.target.value;
+  for(var i = 0; i < allDrums.length; i++){
+    console.log(allDrums[i].id);
+    if(e.target.id == allDrums[i].name){
+      allDrums[i].soundVolume = newVolume;
+    }
+  }
 }
 
 
@@ -112,16 +140,92 @@ function handleTempoChange(e) {
   resetExportCode();
 }
 
-// PLAY THE MUSIC
+var snare = function(){
+  return new Drum('snare', 'electro-flux-sound-kit/Electro Flux Sound Kit/Snares/ED Snares 01.wav');
+}
 
-var snare = new Drum('snare', 'Samples/snare-dist01.mp3');
-var hihat = new Drum('hihat', 'Samples/hihat-dist01.mp3');
-var kick = new Drum('kick', 'Samples/kick-classic.mp3');
-var tom1 = new Drum('tom1', 'Samples/tom-acoustic01.mp3');
-var tom2 = new Drum('tom2', 'Samples/tom-acoustic02.mp3');
-var crash = new Drum('crash', 'Samples/crash-acoustic.mp3');
+var hihat = function(){
+  return  new Drum('hihat', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Hit Hat Open/ED Open Hit Hat 23.wav');
+}
 
-var allDrums = [snare, hihat, kick, tom1, tom2, crash];
+var kick = function(){
+  return  new Drum('kick', 'Samples/kick-classic.mp3');
+}
+
+var tom1 = function(){
+  return  new Drum('tom1', 'Samples/tom-acoustic01.mp3');
+}
+
+var tom2 = function(){
+  return  new Drum('tom2', 'Samples/tom-acoustic02.mp3');
+}
+
+var crash = function(){
+  return  new Drum('crash', 'electro-flux-sound-kit/Electro Flux Sound Kit/Percussion (2)/ED Crash/ED Crash 09.wav');
+}
+
+var bass = function(){
+  return  new Drum ('bass', 'random samples/Live_bass_Bitz_116.mp3');
+}
+
+
+var technoBass = function(){
+  return  new Drum ('technoBass', '');
+}
+
+var technoKick = function(){
+  return  new Drum ('technoKick', '');
+}
+
+
+var guitar1 = function(){
+  return  new Drum ('guitar1', 'random samples/Guitar_loop32(160BPM).mp3');
+}
+
+var bassBeat = function(){
+  return  new Drum ('bassBeat', 'random samples/Beat1-edited.wav');
+}
+
+
+
+var allDrums = [snare(), hihat(), kick(), tom1(), tom2(), crash(), bass()];
+// var alternateDrums = [something, drum, element, that, replaces, current, elements];
+
+
+var d1 = document.getElementById('d1');
+function switchToOption1() {
+  loadDrumSetup([snare(), hihat(), kick(), tom1(), tom2(), crash(), bass()]);
+  // nukeTable();
+  // generateTable(allDrums);
+  console.log('button change 1');
+}
+d1.addEventListener('click', switchToOption1);
+
+var d2 = document.getElementById('d2');
+function switchToOption2() {
+  loadDrumSetup([technoBass(), hihat(), technoKick(), tom1(), tom2(), crash(), bass()]);
+  // nukeTable();
+  // generateTable(allDrums);
+  console.log('button change 2');
+}
+d2.addEventListener('click', switchToOption2);
+
+
+var d3 = document.getElementById('d3');
+function switchToOption3() {
+  allDrums.push(guitar1());
+  loadDrumSetup (allDrums);
+  console.log('added a row');
+}
+d3.addEventListener('click', switchToOption3);
+
+var d4 = document.getElementById('d4');
+function switchToOption4() {
+  allDrums.push(bassBeat());
+  loadDrumSetup (allDrums);
+  console.log('added a row');
+}
+d4.addEventListener('click', switchToOption4);
 
 generateTable(allDrums);
 
@@ -203,6 +307,7 @@ function generateSavedStateBox(state, allSavedBoxes) {
   saveBox.className = 'saved-state';
   saveBox.textContent = state.name;
   allSavedBoxes.appendChild(saveBox);
+
   saveBox.addEventListener('click', function() {
     loadDrumSetup(state.setup);
     loadTempo(state.tempo);
@@ -212,9 +317,13 @@ function generateSavedStateBox(state, allSavedBoxes) {
 // takes a list of drums as a drum setup and loads it to the grid
 function loadDrumSetup(drumList) {
   var table = document.getElementById('grid-beat');
+  // table.textContent = '';
   var newTable = document.createElement('table');
   newTable.id = 'grid-beat';
   table.parentElement.replaceChild(newTable, table);
+
+  allDrums = [];
+
   allDrums = copyDrumsList(drumList);
   generateTable(allDrums);
 
@@ -393,6 +502,7 @@ function handleWaveChange(e){
 }
 
 waveChange.addEventListener('change', handleWaveChange);
+
 
 function Note(frequency){
   this.frequency = frequency * Math.pow(2, octave);
@@ -679,5 +789,7 @@ function resetBeats(){
       allCells[j].className = 'off';
     }
   }
+
   resetExportCode();
+
 }
