@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Banana Beat</title>
+  <link rel="icon" href="http://rs824.pbsrc.com/albums/zz164/Vinnie2020/Smiley24.gif~c200">
   <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700|Poppins:300,400" rel="stylesheet">
 
   <link href="style.css" rel="stylesheet" type="text/css" />
@@ -16,7 +17,11 @@
       <input id="tempo-slider" type="range" name="tempoSliderInput" min="20" max="200" step="5" />
     </section> <!-- end tempo-change -->
 
-    <button id="play-pause">Pause</button>
+    <div id='play-pause'>
+      <img id='banana-spiral' clicked='no' class='spinning' src="bananaspiral.png" />
+      <img id='playhead' src="playpause.png" />
+    </div>
+
 
     <button id="random-button">Randomize</button>
     <button id="reset" type="click"> Reset </button>
@@ -85,9 +90,6 @@
       <a href="#">Meet the Team</a>
     </footer>
   </aside>
-
-
-
 
   <main>
     <table id="grid-beat"></table>

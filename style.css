@@ -89,13 +89,13 @@ select, input {
   margin-bottom: 5px;
 }
 
-#play-pause {
+/*#play-pause {
   border-radius: 50%;
   height: 80px;
   width: 80px;
   display: block;
   margin: 0 auto 20px;
-}
+}*/
 
 #reset, #random-button {
   width: 60%;
@@ -340,4 +340,44 @@ main {
 .mute-button{
   float: right;
   width: 90%;
+}
+
+#play-pause{
+  position: relative;
+  margin: 0 auto;
+  width: 40%;
+}
+
+#banana-spiral{
+    transition: transform;
+    width: 100%;
+    height: 100%;
+}
+
+#banana-spiral.spinning{
+    animation-name: spin;
+    animation-duration: 9s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes spin{
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+#playhead{
+  position:absolute;
+  bottom: 42%;
+  left: 37%;
+  width: auto;
+  height: 25%;
+}
+
+#playhead-paused{
+  position:absolute;
+  bottom: 40%;
+  left: 37%;
+  width: auto;
+  height: 25%;
 }
