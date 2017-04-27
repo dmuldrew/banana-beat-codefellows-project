@@ -23,11 +23,6 @@ function Drum(name, sample){
   this.soundVolume = .5;
   this.muted = false;
 }
-//
-// var newDrum = audioContext.createMediaElementSource(sound);
-// sound.crossOrigin = 'anonymous';
-// newDrum.connect(this.drumGain);
-// this.drumGain.connect(audioContext.destination);
 
 Drum.prototype.playDrum = function(){
   var sound = new Audio(this.sample);
@@ -51,17 +46,17 @@ function generateRow(drum, drumRow) {
   var table = document.getElementById('grid-beat');
   var row = document.createElement('tr');
   var drumName = document.createElement('td');
-  drumName.style.position = 'relative';
-  var volumeSlider = document.createElement('input');
+  drumName.className = 'drum-label';
+  drumName.innerHTML = '<span>' + drum.name + '</span>';
+
   var volumeDrop = document.createElement('button');
+  volumeDrop.className = 'volume-drop';
   volumeDrop.style.zIndex = sliderZIndex;
   sliderZIndex--;
-  volumeDrop.textContent = 'Volume';
-  volumeDrop.style.position = 'absolute';
-  volumeDrop.style.left = '0';
-  volumeDrop.style.top = '18px';
+  volumeDrop.innerHTML = '<img src="img/volume.png" alt="volume" />';
   volumeDrop.addEventListener('click', handleClickOnVolumeBox);
-  volumeDrop.style.border = '1px solid black';
+
+  var volumeSlider = document.createElement('input');
   volumeSlider.style.display = 'none';
   volumeSlider.type = 'range';
   volumeSlider.min = '0';
@@ -71,17 +66,14 @@ function generateRow(drum, drumRow) {
   volumeSlider.id = drum.name;
   volumeSlider.className = 'drum-slider';
   volumeSlider.addEventListener('change', handleVolumeChange);
+
   var muteButton = document.createElement('button');
   muteButton.type = 'button';
   muteButton.id = drum.name;
-  muteButton.textContent = 'Mute';
-  muteButton.className = 'mute-button';
-  drumName.innerHTML = '<span style = "display: block; margin-bottom: 20px;">' + drum.name + '</span>';
-  drumName.style.border = '2px solid black';
-  drumName.style.fontSize = '.8em';
-  drumName.style.fontWeight = '600';
-  drumName.style.textAlign = 'center';
+  muteButton.innerHTML = '<img src="img/mute.png" alt="volume" />';
+  muteButton.className = 'mute-button mute';
   muteButton.addEventListener('click', handleMuteButton);
+
   volumeDrop.appendChild(volumeSlider);
   drumName.appendChild(volumeDrop);
   drumName.appendChild(muteButton);
@@ -100,8 +92,10 @@ function generateRow(drum, drumRow) {
     beatBox = document.createElement('td');
     if (drum.playTriggers[i]) {
       beatBox.className = 'on';
+      beatBox.style.background = randomColor();
     } else {
       beatBox.className = 'off';
+      beatBox.style.background = 'none';
     }
     beatBox.setAttribute('count-index', i);
     row.appendChild(beatBox);
@@ -116,12 +110,19 @@ function toggleTrigger(e, drum) {
   if (beatBox.className === 'off') {
     drum.playTriggers[beatBox.getAttribute('count-index')] = true;
     beatBox.className = 'on';
+    beatBox.style.background = randomColor();
   } else {
     drum.playTriggers[beatBox.getAttribute('count-index')] = false;
     beatBox.className = 'off';
+    beatBox.style.background = 'none';
   }
   resetExportCode();
 }
+
+function randomColor() {
+  return 'hsl(' + (Math.random()*360) + ', 80%, 50%)';
+}
+
 // VOLUME change
 
 function handleVolumeChange(e){
@@ -136,19 +137,18 @@ function handleVolumeChange(e){
 
 function handleMuteButton(e){
   for(var i = 0; i < allDrums.length; i++){
-    if(e.target.id == allDrums[i].name && e.target.textContent == 'Mute'){
+    if(e.target.id == allDrums[i].name && e.target.className.split(' ')[1] === 'mute') {
       console.log(allDrums[i].soundVolume);
       allDrums[i].muted = true;
-      e.target.textContent = 'Unmute';
-      e.target.style.backgroundColor = 'red';
-    } else if(e.target.id == allDrums[i].name && e.target.textContent == 'Unmute'){
+      e.target.className = e.target.className.split(' ')[0] + ' unmute';
+      e.target.style.backgroundColor = '#f43030';
+    } else if(e.target.id == allDrums[i].name && e.target.className.split(' ')[1] === 'unmute') {
       allDrums[i].muted = false;
-      e.target.textContent = 'Mute';
-      e.target.style.backgroundColor = 'transparent';
+      e.target.className = e.target.className.split(' ')[0] + ' mute';
+      e.target.style.backgroundColor = '#999';
     }
   }
 }
-
 
 // TEMPO CHANGE FUNCTIONALITY
 
@@ -256,6 +256,9 @@ generateTable(allDrums);
 
 var playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
 
+var currentBanana = 0;
+var bananas = ['6.png', '7.png', '8.png', '1.png', '2.png', '3.png', '4.png', '5.png'];
+
 function playBeat(){
   for (var i = 0; i < allDrums.length; i++){
     if (allDrums[i].playTriggers[currentBeat]){
@@ -266,12 +269,16 @@ function playBeat(){
   for (i = 0; i < allBoxes.length; i++) {
     if (allBoxes[i].getAttribute('count-index') == currentBeat) {
       allBoxes[i].style.borderColor = 'red';
-    } else {
-      allBoxes[i].style.borderColor = 'black';
+    } else if (allBoxes[i].className != 'drum-label'){
+      allBoxes[i].style.borderColor = '#1e1e1e';
     }
   }
   currentBeat++;
   currentBeat %= 16;
+
+  document.getElementById('banana-beat').src = 'banana/banana'+bananas[currentBanana];
+  currentBanana++;
+  currentBanana %= 8;
 }
 
 // SAVING TO LOCALSTORAGE FUNCTIONALITY
@@ -304,7 +311,7 @@ function handleClearClick() {
     localStorage.clear();
     document.getElementById('saves').innerHTML = '';
   } catch(error) {
-    console.error('Unable to save to localStorage:', error);
+    console.error('Unable to access localStorage:', error);
   }
 }
 
@@ -317,7 +324,7 @@ function saveCurrentState(nameInput) {
       tempo: bpm,
     };
     savedStates.push(currentState);
-    generateSavedStateBox(currentState, document.getElementById('saved-states'));
+    generateSavedStateBox(currentState, document.getElementById('saves'));
     try {
       localStorage.savedStates = JSON.stringify(savedStates);
     } catch(error) {
@@ -330,13 +337,35 @@ function saveCurrentState(nameInput) {
 function generateSavedStateBox(state, allSavedBoxes) {
   var saveBox = document.createElement('div');
   saveBox.className = 'saved-state';
-  saveBox.textContent = state.name;
   allSavedBoxes.appendChild(saveBox);
 
-  saveBox.addEventListener('click', function() {
+  var saveStateBox = document.createElement('div');
+  saveStateBox.innerHTML = state.name + '<br/>' + state.tempo + ' bpm';
+  saveBox.appendChild(saveStateBox);
+
+  saveStateBox.addEventListener('click', function() {
     loadDrumSetup(state.setup);
     loadTempo(state.tempo);
   });
+
+  var removeBox = document.createElement('button');
+  removeBox.className = 'delete-button';
+  removeBox.textContent = 'delete';
+  saveBox.appendChild(removeBox);
+
+  removeBox.addEventListener('click', function(e) {handleDeleteClick(e, state);});
+}
+
+function handleDeleteClick(e, state) {
+  var saveBox = e.target.parentElement;
+  saveBox.parentElement.removeChild(saveBox);
+
+  savedStates.splice(savedStates.indexOf(state), 1);
+  try {
+    localStorage.savedStates = JSON.stringify(savedStates);
+  } catch(error) {
+    console.error('Unable to access localStorage:', error);
+  }
 }
 
 // takes a list of drums as a drum setup and loads it to the grid
@@ -490,6 +519,22 @@ function decode(code) {
   return drumList;
 }
 
+// RANDOM DRUMS
+
+document.getElementById('random-button'). addEventListener('click', handleRandomizeClick);
+
+function handleRandomizeClick() {
+  var code = '';
+  // random setup
+  for (var char = 0; char < (allDrums.length * 2); char++) {
+    code += String.fromCharCode(Math.round((Math.random() * 255) + 215));
+  }
+  // random tempo
+  code += ' ' + Math.round((Math.random() * 180) + 20);
+
+  loadDrumSetup(decode(code));
+}
+
 // PIANO FUNCTIONALITY
 
 var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'];
@@ -497,7 +542,7 @@ var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'];
 function generatePiano() {
   var table = document.getElementById('piano');
   var volumeBox = document.createElement('td');
-  volumeBox.style.width = 'calc(80%/14)';
+  volumeBox.id = 'piano-volume';
   var row = document.createElement('tr');
   row.appendChild(volumeBox);
   var pianoVolumeSlider = document.createElement('input');
@@ -512,9 +557,8 @@ function generatePiano() {
   for (var i = 0; i < pianoLabels.length; i++) {
     pianoKey = document.createElement('td');
     pianoKey.setAttribute('id', pianoLabels[i]);
-    pianoKey.style.width = '35px';
-    pianoKey.style.height = '150px';
     row.appendChild(pianoKey);
+    pianoKey.textContent = pianoLabels[i];
   }
   table.appendChild(row);
 }
@@ -571,6 +615,7 @@ Note.prototype.stop = function() {
 var c, cSharp, d, dSharp, e, f, fSharp, g, gSharp, a, aSharp, b, cNext;
 var keyA, keyW, keyS, keyE, keyD, keyF, keyT, keyG, keyY, keyH, keyU, keyJ, keyK;
 
+var firstPause = true;
 var firstKeyA = true;
 var firstKeyB = true;
 var firstKeyC = true;
@@ -587,13 +632,25 @@ var firstKeyCNext = true;
 
 document.onkeydown = function(event) {
   switch (event.keyCode) {
+  case 190:
+    if(!firstPause) return;
+    firstPause = false;
+    var button = document.getElementById('play-pause');
+    if (button.textContent === 'Pause') {
+      clearInterval(playingInterval);
+      button.textContent = 'Play';
+    } else {
+      playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+      button.textContent = 'Pause';
+    }
+    break;
   case 65:
     if(!firstKeyC) return;
     firstKeyC = false;
     c = new Note(261.63);
     c.start();
     keyA = document.getElementById('A');
-    keyA.style.backgroundColor = 'red';
+    keyA.className += ' pressed';
     break;
 
   case 87:
@@ -602,7 +659,7 @@ document.onkeydown = function(event) {
     cSharp = new Note(277.18);
     cSharp.start();
     keyW = document.getElementById('c-sharp');
-    keyW.style.backgroundColor = 'red';
+    keyW.className += ' pressed';
     break;
 
   case 83:
@@ -611,7 +668,7 @@ document.onkeydown = function(event) {
     d = new Note(293.66);
     d.start();
     keyS = document.getElementById('S');
-    keyS.style.backgroundColor = 'red';
+    keyS.className += ' pressed';
     break;
 
   case 69:
@@ -620,7 +677,7 @@ document.onkeydown = function(event) {
     dSharp = new Note(311.13);
     dSharp.start();
     keyE = document.getElementById('d-sharp');
-    keyE.style.backgroundColor = 'red';
+    keyE.className += ' pressed';
     break;
 
   case 68:
@@ -629,7 +686,7 @@ document.onkeydown = function(event) {
     e = new Note(329.63);
     e.start();
     keyD = document.getElementById('D');
-    keyD.style.backgroundColor = 'red';
+    keyD.className += ' pressed';
     break;
 
   case 70:
@@ -638,7 +695,7 @@ document.onkeydown = function(event) {
     f = new Note(349.23);
     f.start();
     keyF = document.getElementById('F');
-    keyF.style.backgroundColor = 'red';
+    keyF.className += ' pressed';
     break;
 
   case 84:
@@ -647,7 +704,7 @@ document.onkeydown = function(event) {
     fSharp = new Note(369.99);
     fSharp.start();
     keyT = document.getElementById('f-sharp');
-    keyT.style.backgroundColor = 'red';
+    keyT.className += ' pressed';
     break;
 
   case 71:
@@ -656,7 +713,7 @@ document.onkeydown = function(event) {
     g = new Note(392);
     g.start();
     keyG = document.getElementById('G');
-    keyG.style.backgroundColor = 'red';
+    keyG.className += ' pressed';
     break;
 
   case 89:
@@ -665,7 +722,7 @@ document.onkeydown = function(event) {
     gSharp = new Note(415.30);
     gSharp.start();
     keyY = document.getElementById('g-sharp');
-    keyY.style.backgroundColor = 'red';
+    keyY.className += ' pressed';
     break;
 
   case 72:
@@ -674,7 +731,7 @@ document.onkeydown = function(event) {
     a = new Note(440);
     a.start();
     keyH = document.getElementById('H');
-    keyH.style.backgroundColor = 'red';
+    keyH.className += ' pressed';
     break;
 
   case 85:
@@ -683,7 +740,7 @@ document.onkeydown = function(event) {
     aSharp = new Note(466.16);
     aSharp.start();
     keyU = document.getElementById('a-sharp');
-    keyU.style.backgroundColor = 'red';
+    keyU.className += ' pressed';
     break;
 
   case 74:
@@ -692,7 +749,7 @@ document.onkeydown = function(event) {
     b = new Note(493.88);
     b.start();
     keyJ = document.getElementById('J');
-    keyJ.style.backgroundColor = 'red';
+    keyJ.className += ' pressed';
     break;
 
   case 75:
@@ -701,89 +758,92 @@ document.onkeydown = function(event) {
     cNext = new Note(523.25);
     cNext.start();
     keyK = document.getElementById('K');
-    keyK.style.backgroundColor = 'red';
+    keyK.className += ' pressed';
     break;
   }
 };
 
 document.onkeyup = function(event) {
   switch (event.keyCode) {
+  case 190:
+    firstPause = true;
+    break;
   case 65:
     firstKeyC = true;
     c.stop();
-    keyA.style.backgroundColor = 'white';
+    keyA.className = keyA.className.split(' ')[0];
     break;
 
   case 87:
     firstKeyCSharp = true;
     cSharp.stop();
-    keyW.style.backgroundColor = 'black';
+    keyW.className = keyW.className.split(' ')[0];
     break;
 
   case 83:
     firstKeyD = true;
     d.stop();
-    keyS.style.backgroundColor = 'white';
+    keyS.className = keyS.className.split(' ')[0];
     break;
 
   case 69:
     firstKeyDSharp = true;
     dSharp.stop();
-    keyE.style.backgroundColor = 'black';
+    keyE.className = keyE.className.split(' ')[0];
     break;
 
   case 68:
     firstKeyE = true;
     e.stop();
-    keyD.style.backgroundColor = 'white';
+    keyD.className = keyD.className.split(' ')[0];
     break;
 
   case 70:
     firstKeyF = true;
     f.stop();
-    keyF.style.backgroundColor = 'white';
+    keyF.className = keyF.className.split(' ')[0];
     break;
 
   case 84:
     firstKeyFSharp = true;
     fSharp.stop();
-    keyT.style.backgroundColor = 'black';
+    keyT.className = keyT.className.split(' ')[0];
     break;
 
   case 71:
     firstKeyG = true;
     g.stop();
-    keyG.style.backgroundColor = 'white';
+    keyG.className = keyG.className.split(' ')[0];
     break;
 
   case 89:
     firstKeyGSharp = true;
     gSharp.stop();
-    keyY.style.backgroundColor = 'black';
+    keyY.className = keyY.className.split(' ')[0];
     break;
 
   case 72:
     firstKeyA = true;
     a.stop();
-    keyH.style.backgroundColor = 'white';
+    keyH.className = keyH.className.split(' ')[0];
     break;
 
   case 85:
     firstKeyASharp = true;
     aSharp.stop();
-    keyU.style.backgroundColor = 'black';
+    keyU.className = keyU.className.split(' ')[0];
     break;
 
   case 74:
     firstKeyB = true;
     b.stop();
-    keyJ.style.backgroundColor = 'white';
+    keyJ.className = keyJ.className.split(' ')[0];
     break;
 
   case 75:
     firstKeyCNext = true;
     cNext.stop();
-    keyK.style.backgroundColor = 'white';
+    keyK.className = keyK.className.split(' ')[0];
     break;
   }
 };
@@ -814,6 +874,7 @@ function resetBeats(){
     allCells = allRows[i].childNodes;
     for (var j= 1; j < allCells.length; j++) {
       allCells[j].className = 'off';
+      allCells[j].style.background = 'none';
     }
   }
 
