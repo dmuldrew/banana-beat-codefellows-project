@@ -23,11 +23,6 @@ function Drum(name, sample){
   this.soundVolume = .5;
   this.muted = false;
 }
-//
-// var newDrum = audioContext.createMediaElementSource(sound);
-// sound.crossOrigin = 'anonymous';
-// newDrum.connect(this.drumGain);
-// this.drumGain.connect(audioContext.destination);
 
 Drum.prototype.playDrum = function(){
   var sound = new Audio(this.sample);
@@ -52,17 +47,16 @@ function generateRow(drum, drumRow) {
   var row = document.createElement('tr');
   var drumName = document.createElement('td');
   drumName.className = 'drum-label';
-  drumName.style.position = 'relative';
-  var volumeSlider = document.createElement('input');
+  drumName.innerHTML = '<span>' + drum.name + '</span>';
+
   var volumeDrop = document.createElement('button');
+  volumeDrop.className = 'volume-drop';
   volumeDrop.style.zIndex = sliderZIndex;
   sliderZIndex--;
-  volumeDrop.textContent = 'Volume';
-  volumeDrop.style.position = 'absolute';
-  volumeDrop.style.left = '0';
-  volumeDrop.style.top = '18px';
+  volumeDrop.innerHTML = '<img src="img/volume.png" alt="volume" />';
   volumeDrop.addEventListener('click', handleClickOnVolumeBox);
-  volumeDrop.style.border = '1px solid black';
+
+  var volumeSlider = document.createElement('input');
   volumeSlider.style.display = 'none';
   volumeSlider.type = 'range';
   volumeSlider.min = '0';
@@ -72,17 +66,14 @@ function generateRow(drum, drumRow) {
   volumeSlider.id = drum.name;
   volumeSlider.className = 'drum-slider';
   volumeSlider.addEventListener('change', handleVolumeChange);
+
   var muteButton = document.createElement('button');
   muteButton.type = 'button';
   muteButton.id = drum.name;
-  muteButton.textContent = 'Mute';
-  muteButton.className = 'mute-button';
-  drumName.innerHTML = '<span style = "display: block; margin-bottom: 20px;">' + drum.name + '</span>';
-  drumName.style.border = '2px solid black';
-  drumName.style.fontSize = '.8em';
-  drumName.style.fontWeight = '600';
-  drumName.style.textAlign = 'center';
+  muteButton.innerHTML = '<img src="img/mute.png" alt="volume" />';
+  muteButton.className = 'mute-button mute';
   muteButton.addEventListener('click', handleMuteButton);
+
   volumeDrop.appendChild(volumeSlider);
   drumName.appendChild(volumeDrop);
   drumName.appendChild(muteButton);
@@ -127,6 +118,11 @@ function toggleTrigger(e, drum) {
   }
   resetExportCode();
 }
+
+function randomColor() {
+  return 'hsl(' + (Math.random()*360) + ', 80%, 50%)';
+}
+
 // VOLUME change
 
 function handleVolumeChange(e){
@@ -141,22 +137,17 @@ function handleVolumeChange(e){
 
 function handleMuteButton(e){
   for(var i = 0; i < allDrums.length; i++){
-    if(e.target.id == allDrums[i].name && e.target.textContent == 'Mute'){
+    if(e.target.id == allDrums[i].name && e.target.className.split(' ')[1] === 'mute') {
       console.log(allDrums[i].soundVolume);
       allDrums[i].muted = true;
-      e.target.textContent = 'Unmute';
-      e.target.style.backgroundColor = 'red';
-    } else if(e.target.id == allDrums[i].name && e.target.textContent == 'Unmute'){
+      e.target.className = e.target.className.split(' ')[0] + ' unmute';
+      e.target.style.backgroundColor = '#f43030';
+    } else if(e.target.id == allDrums[i].name && e.target.className.split(' ')[1] === 'unmute') {
       allDrums[i].muted = false;
-      e.target.textContent = 'Mute';
-      e.target.style.backgroundColor = 'transparent';
+      e.target.className = e.target.className.split(' ')[0] + ' mute';
+      e.target.style.backgroundColor = '#999';
     }
   }
-}
-
-
-function randomColor() {
-  return 'hsl(' + (Math.random()*360) + ', 80%, 50%)';
 }
 
 // TEMPO CHANGE FUNCTIONALITY
@@ -551,7 +542,7 @@ var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'];
 function generatePiano() {
   var table = document.getElementById('piano');
   var volumeBox = document.createElement('td');
-  volumeBox.style.width = 'calc(80%/14)';
+  volumeBox.id = 'piano-volume';
   var row = document.createElement('tr');
   row.appendChild(volumeBox);
   var pianoVolumeSlider = document.createElement('input');
