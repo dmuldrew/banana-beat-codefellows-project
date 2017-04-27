@@ -89,14 +89,6 @@ select, input {
   margin-bottom: 5px;
 }
 
-/*#play-pause {
-  border-radius: 50%;
-  height: 80px;
-  width: 80px;
-  display: block;
-  margin: 0 auto 20px;
-}*/
-
 #reset, #random-button {
   width: 60%;
   margin-bottom: 5px;
@@ -114,6 +106,10 @@ select, input {
 #options button {
   width: 45%;
   display: inline-block;
+}
+
+#d0 {
+  margin-bottom: 7px;
 }
 
 #piano-settings p {
@@ -249,6 +245,10 @@ main {
   width: calc(80%/17);
   vertical-align: middle;
   background: rgba(255,255,255,.3);
+  font-family: Poppins, sans-serif;
+  font-weight: lighter;
+  font-size: .75em;
+  color: #000;
 }
 
 #piano-volume input {
@@ -310,15 +310,6 @@ main {
   left: calc(calc(125% / 16) * 9.15);
 }
 
-.off {
-  background: none;
-}
-
-.on {
-  background: green;
-
-}
-
 .hide {
   display: none;
 }
@@ -340,7 +331,7 @@ main {
 
 #play-pause{
   position: relative;
-  margin: 0 auto;
+  margin: 0 auto 20px;
   width: 40%;
 }
 
@@ -362,17 +353,9 @@ main {
     to {transform: rotate(360deg);}
 }
 
-#playhead{
+#playhead, #playhead-paused{
   position:absolute;
   bottom: 42%;
-  left: 37%;
-  width: auto;
-  height: 25%;
-}
-
-#playhead-paused{
-  position:absolute;
-  bottom: 40%;
   left: 37%;
   width: auto;
   height: 25%;

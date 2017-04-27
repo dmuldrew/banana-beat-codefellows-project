@@ -471,6 +471,8 @@ function loadTempo(tempo) {
   if (isPlaying) {
     clearInterval(playingInterval);
     playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+    var spinSpeed = 9 - (((bpm - 20) / 180) * 8);
+    document.getElementById('banana-spiral').style.animationDuration = spinSpeed + 's';
   }
 }
 
@@ -622,6 +624,7 @@ function generatePiano() {
   var table = document.getElementById('piano');
   var volumeBox = document.createElement('td');
   volumeBox.id = 'piano-volume';
+  volumeBox.textContent = 'Volume';
   var row = document.createElement('tr');
   row.appendChild(volumeBox);
   var pianoVolumeSlider = document.createElement('input');
@@ -720,6 +723,8 @@ document.onkeydown = function(event) {
       button.className = '';
     } else {
       playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+      var spinSpeed = 9 - (((bpm - 20) / 180) * 8);
+      button.style.animationDuration = spinSpeed + 's';
       button.className = 'spinning';
     }
     break;
@@ -939,6 +944,8 @@ function handlePlayPauseClick(e) {
     bananaSpiral.className = '';
   } else {
     playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
+    var spinSpeed = 9 - (((bpm - 20) / 180) * 8);
+    bananaSpiral.style.animationDuration = spinSpeed + 's';
     e.target.id = 'playhead';
     bananaSpiral.className = 'spinning';
   }
