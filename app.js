@@ -26,25 +26,6 @@ function generateTable(drumList) {
     generateRow(drumList[i]);
   }
 }
-// function generateTable(drumList) {
-//   for(var i = 0; i < drumList.length; i++) {
-//     generateRow(drumList[i]);
-//
-//   }
-//   numRows = allDrums.length;
-// }
-
-// function nukeTable() {
-//   var table = document.getElementById('grid-beat');
-//   for (var i = 0; i < numRows; i++) {
-//     var row = document.getElementById(i);
-//     table.removeChild(row);
-//   }
-// }
-
-// function silenceRow(row) {
-//   row.playTriggers[beatBox.getAttribute('count-index')] = false;
-// }
 
 function generateRow(drum, drumRow) {
   var table = document.getElementById('grid-beat');
@@ -726,21 +707,6 @@ function handlePlayPauseClick(e) {
     button.textContent = 'Pause';
   }
 }
-
-
-// //creating a pause button event listener
-// var pause = document.getElementById('pause');
-// pause.addEventListener('click', pausePlaying);
-// function pausePlaying(){
-//   clearInterval(playingInterval);
-// }
-//
-// //creating a play button event listener
-// var play = document.getElementById('play');
-// play.addEventListener('click', playBack);
-// function playBack(){
-//   playingInterval = setInterval(playBeat, MINUTE / (bpm * 4));
-// }
 
 //creating a reset button
 var reset = document.getElementById('reset');
