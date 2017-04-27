@@ -4,21 +4,169 @@
   padding: 0;
   box-sizing: border-box;
   width: 100%;
+  font-size: 1em;
+  font-weight: normal;
 }
 
 body, html {
   height: 100%;
-  background-color: black;
 }
 
-section {
-  font-family: 'Baloo', cursive;
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.clear-fix {
+  clear: both;
+}
+
+body {
+  background: #363636 url(img/lodyas.png);
+  font-family: Poppins, sans-serif;
+  font-weight: 300;
+}
+
+aside {
   width: 20%;
   height: 100%;
   float: left;
   padding: 20px;
-  background-color: #FFDB42;
+  padding-bottom: 50px;
+  overflow: scroll;
+  background: rgba(255,255,255,.3);
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+#banana-beat {
+  width: auto;
+  height: 80px;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+button {
+  background: #FFDB42;
+  border: none;
+  border-radius: 7px;
+  display: block;
+  margin: 2px auto;
+  padding: 2px;
+}
+
+h2 {
   text-align: center;
+  font-family: Comfortaa, cursive;
+  font-weight: bold;
+  font-size: 1.4em;
+  margin: 5px 0 7px;
+  clear: both;
+}
+
+select, input {
+  border: none;
+  padding: 2px;
+  border-radius: 2px;
+}
+
+#tempo-change {
+  text-align: center;
+  margin-bottom: 10px;
+  font-family: Comfortaa, cursive;
+  font-weight: bold;
+}
+
+#tempo-change #tempo-value{
+  width: 3em;
+  text-align: right;
+  background: rgba(255,255,255,.1);
+  margin-bottom: 5px;
+}
+
+/*#play-pause {
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+  display: block;
+  margin: 0 auto 20px;
+}*/
+
+#reset, #random-button {
+  width: 60%;
+  margin-bottom: 5px;
+}
+
+#reset {
+  background: #999;
+  margin-bottom: 20px;
+}
+
+#options {
+  text-align: center;
+}
+
+#options button {
+  width: 45%;
+  display: inline-block;
+}
+
+#piano-settings p {
+  display: inline-block;
+  width: auto;
+}
+
+#octave-menu, #wave-menu {
+  width: 55%;
+}
+
+#export-import {
+  text-align: center;
+}
+
+#export-import button, #export-import input {
+  display: inline-block;
+}
+
+#export-import button {
+  width: 80px;
+}
+
+#export-import input {
+  width: calc(90% - 80px);
+  margin-bottom: 5px;
+}
+
+#export-form input {
+  background: #ccc;
+}
+
+#save-form input {
+  margin-bottom: 5px;
+}
+
+footer {
+  background: #707070;
+  width: 20%;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+footer a {
+  color: #333;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
 
 main {
@@ -26,31 +174,60 @@ main {
   height: 100%;
   float: right;
   padding: 10px;
-  padding-left: 0;
-  background-color: #FFDB42;
 }
 
 #grid-beat {
   height: 60%;
+  border-spacing: 0px;
 }
 
 #grid-beat td {
-  font-family: 'Droid Serif', serif;
-  border: 1px solid black;
+  text-align: center;
+  border: 2px solid #1e1e1e;
   width: calc(80% / 17);
   height: calc(60% / 7);
   background-color: white;
 }
 
-#banana {
-  width: 80px;
-  height:80px;
+#grid-beat .drum-label {
+  border: 1px solid #1e1e1e;
+  background: rgba(255,255,255,.3);
+  position: relative;
+  font-size: .8em;
+}
+
+.drum-label span {
+  display: block;
+  margin-bottom: 24px;
+}
+
+.drum-label button {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  border-radius: 10px;
+}
+
+.drum-label .volume-drop {
+  left: 7%;
+  padding: 2px 0;
+}
+
+.drum-label .mute-button {
+  right: 7%;
+  padding: 2px 0;
+  background: #999;
+}
+
+.drum-label img {
+  width: 14px;
 }
 
 #piano-box {
+  font-family: Comfortaa, cursive;
   position: relative;
   height: 40%;
-  background-color: white;
+  margin-bottom: 0;
 }
 
 #piano {
@@ -59,45 +236,78 @@ main {
 
 #piano td {
   width: calc(80% / 8);
-  border: 3px solid black;
+  border: 10px outset #eee;
+  border-top: none;
+  background: #fff;
+  color: #9A9A9A;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+#piano #piano-volume {
+  border: none;
+  width: calc(80%/17);
+  vertical-align: middle;
+  background: rgba(255,255,255,.3);
+}
+
+#piano-volume input {
+  height: 80%;
 }
 
 .black-key{
   width: calc(75% / 8);
   height: 60%;
   background-color: black;
-  display: inline-block;
-  border: 1px solid black;
+  border: 10px outset #555;
+  border-top: none;
+  color: #777;
+  text-align: center;
+}
+
+.black-key span {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+#piano-box .pressed {
+  color: #8C0000;
+  background-color: red;
+  border-color: #e00000;
+  border-style: inset;
+  border-top: none;
 }
 
 #c-sharp{
   position: absolute;
   top: 2px;
-  left: calc(125% / 16);
+  left: calc(calc(100% / 8) * 1.02);
 }
 
 #d-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 2.6);
+  left: calc(calc(125% / 16) * 3.15);
 }
 
 #f-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 5.8);
+  left: calc(calc(125% / 16) * 6.15);
 }
 
 #g-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 7.4);
+  left: calc(calc(125% / 16) * 7.65);
 }
 
 #a-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 9);
+  left: calc(calc(125% / 16) * 9.15);
 }
 
 .off {
@@ -111,40 +321,6 @@ main {
 
 .hide {
   display: none;
-}
-
-.options{
-  border: 2px solid black;
-  border-radius: 7px;
-  width: 40%;
-  margin: 5px;
-}
-
-.playback{
-  margin: 5px;
-  border: 2px solid black;
-  border-radius: 7px;
-  width: 40%;
-}
-
-#tempo-change{
-  text-align: center;
-}
-
-#tempo-value{
-  text-align: center;
-  height:30px;
-  width: 50%;
-  border: 2px solid black;
-  border-radius: 5px;
-}
-
-.export{
-  margin: 5px;
-  float: left;
-  width: 40%;
-  border: 2px solid black;
-  border-radius: 5px;
 }
 
 #piano-slider{
@@ -162,10 +338,16 @@ main {
   width: 90%;
 }
 
+#play-pause{
+  position: relative;
+  margin: 0 auto;
+  width: 40%;
+}
+
 #banana-spiral{
     transition: transform;
-    width: 15%;
-    height: 15%;
+    width: 100%;
+    height: 100%;
 }
 
 #banana-spiral.spinning{
@@ -181,9 +363,17 @@ main {
 }
 
 #playhead{
-  position: relative;
-  right: 123px;
-  bottom: 70px;
-  width: 4%;
-  height: 4%;
+  position:absolute;
+  bottom: 42%;
+  left: 37%;
+  width: auto;
+  height: 25%;
+}
+
+#playhead-paused{
+  position:absolute;
+  bottom: 40%;
+  left: 37%;
+  width: auto;
+  height: 25%;
 }
