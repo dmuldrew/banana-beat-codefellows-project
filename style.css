@@ -45,8 +45,8 @@ section {
 }
 
 #banana-beat {
-  width: auto;
-  height: 80px;
+  width: 50%;
+  height: auto;
   display: block;
   margin: 0 auto 20px;
 }
@@ -89,14 +89,6 @@ select, input {
   margin-bottom: 5px;
 }
 
-/*#play-pause {
-  border-radius: 50%;
-  height: 80px;
-  width: 80px;
-  display: block;
-  margin: 0 auto 20px;
-}*/
-
 #reset, #random-button {
   width: 60%;
   margin-bottom: 5px;
@@ -107,6 +99,24 @@ select, input {
   margin-bottom: 20px;
 }
 
+#random-button:hover {
+  animation: rainbow 2s infinite;
+}
+
+@keyframes rainbow {
+  0% {background-color: hsl(0, 80%, 50%);}
+  10% {background-color: hsl(30, 80%, 50%);}
+  20% {background-color: hsl(60, 80%, 50%);}
+  30% {background-color: hsl(90, 80%, 50%);}
+  40% {background-color: hsl(120, 80%, 50%);}
+  50% {background-color: hsl(150, 80%, 50%);}
+  60% {background-color: hsl(180, 80%, 50%);}
+  70% {background-color: hsl(210, 80%, 50%);}
+  80% {background-color: hsl(240, 80%, 50%);}
+  90% {background-color: hsl(270, 80%, 50%);}
+  100% {background-color: hsl(300, 80%, 50%);}
+}
+
 #options {
   text-align: center;
 }
@@ -114,6 +124,10 @@ select, input {
 #options button {
   width: 45%;
   display: inline-block;
+}
+
+#d0 {
+  margin-bottom: 7px;
 }
 
 #piano-settings p {
@@ -150,6 +164,35 @@ select, input {
   margin-bottom: 5px;
 }
 
+#save-form button {
+  margin-bottom: 10px;
+}
+
+.saved-state {
+  position: relative;
+  border-radius: 2px;
+  margin-bottom: 5px;
+  background: rgba(255,255,255,.2);
+  padding: 10px;
+}
+
+.saved-state button {
+  width: 50px;
+  position: absolute;
+  bottom: 2px;
+  right: 3px;
+  background-color: #555;
+  color: #bbb;
+  font-weight: lighter;
+  font-size: .8em;
+}
+
+#clear-saves {
+  margin-top: 10px;
+  background-color: #555;
+  color: #bbb;
+}
+
 footer {
   background: #707070;
   width: 20%;
@@ -176,8 +219,14 @@ main {
   padding: 10px;
 }
 
-#grid-beat {
+#beats {
   height: 60%;
+  overflow: scroll;
+  margin: 0;
+}
+
+#grid-beat {
+  height: 100%;
   border-spacing: 0px;
 }
 
@@ -198,12 +247,20 @@ main {
 
 .drum-label span {
   display: block;
-  margin-bottom: 24px;
+  height: 50%;
+  padding-top: 20%;
+  line-height: 1em;
+}
+
+.drum-label div {
+  display: block;
+  position: relative;
+  height: 50%;
 }
 
 .drum-label button {
   position: absolute;
-  top: 50%;
+  top: 0;
   width: 20px;
   border-radius: 10px;
 }
@@ -215,8 +272,13 @@ main {
 
 .drum-label .mute-button {
   right: 7%;
-  padding: 2px 0;
+  height: 20px;
   background: #999;
+  background-image: url(img/mute.png);
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+
 }
 
 .drum-label img {
@@ -249,6 +311,10 @@ main {
   width: calc(80%/17);
   vertical-align: middle;
   background: rgba(255,255,255,.3);
+  font-family: Poppins, sans-serif;
+  font-weight: lighter;
+  font-size: .75em;
+  color: #000;
 }
 
 #piano-volume input {
@@ -310,15 +376,6 @@ main {
   left: calc(calc(125% / 16) * 9.15);
 }
 
-.off {
-  background: none;
-}
-
-.on {
-  background: green;
-
-}
-
 .hide {
   display: none;
 }
@@ -340,7 +397,7 @@ main {
 
 #play-pause{
   position: relative;
-  margin: 0 auto;
+  margin: 0 auto 15px;
   width: 40%;
 }
 
@@ -362,28 +419,10 @@ main {
     to {transform: rotate(360deg);}
 }
 
-#playhead{
+#playhead, #playhead-paused{
   position:absolute;
   bottom: 42%;
   left: 37%;
   width: auto;
   height: 25%;
 }
-
-#playhead-paused{
-  position:absolute;
-  bottom: 40%;
-  left: 37%;
-  width: auto;
-  height: 25%;
-}
- #fourthBeater img {
-  height: 15%;
-  width: 15%;
- }
- #fourthBeater a {
-   display:   block;
- }
- #au {
-   background-color: beige;
- }

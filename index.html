@@ -28,14 +28,15 @@
 
     <section id="options">
       <h2>Kit Change</h2>
-        <button id="d1" type:"submit">Classic</button>
-        <button id="d2" type:"submit">Electric</button>
-        <button id="d3" type:"submit">Guitar Loop (4bpm)</button>
-        <button id="d4" type:"submit">Bass Guitar</button>
-        <button id="d5" type:"submit">Synth Loop (60bpm)</button>
-        <button id="d6" type:"submit">Bass Loop 1(60bpm)</button>
-        <button id="d7" type:"submit">Bass Loop 2(43bpm)</button>
-        <button id="d0" type:"submit">Goat-Hub</button>
+      <button id="d1" type:"submit">Classic</button>
+      <button id="d2" type:"submit">Electric</button>
+      <button id="d4" type:"submit">Bass Guitar</button>
+      <button id="d0" type:"submit">Goat-Hub</button>
+      <h2>Add Loop</h2>
+      <button id="d3" type:"submit">Guitar Loop (40bpm)</button>
+      <button id="d5" type:"submit">Synth Loop (60bpm)</button>
+      <button id="d6" type:"submit">Bass Loop 1(60bpm)</button>
+      <button id="d7" type:"submit">Bass Loop 2(43bpm)</button>
     </section> <!-- end options -->
 
     <section id="piano-settings">
@@ -47,7 +48,7 @@
           <option value=1>1</option>
           <option value=2>2</option>
           <option value=3>3</option>
-          <option value=4>4</option>
+          <option selected="selected" value=4>4</option>
           <option value=5>5</option>
           <option value=6>6</option>
           <option value=7>7</option>
@@ -98,7 +99,9 @@
   </aside>
 
   <main>
-    <table id="grid-beat"></table>
+    <section id='beats'>
+      <table id="grid-beat"></table>
+    </section>
 
     <section id="piano-box">
       <table id="piano"></table>
