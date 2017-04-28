@@ -56,6 +56,9 @@ function generateRow(drum, drumRow) {
   volumeDrop.innerHTML = '<img src="img/volume.png" alt="volume" />';
   volumeDrop.addEventListener('click', handleClickOnVolumeBox);
 
+  var volumeControls = document.createElement('div');
+  volumeControls.id = 'volume-controls';
+
   var volumeSlider = document.createElement('input');
   volumeSlider.style.display = 'none';
   volumeSlider.type = 'range';
@@ -74,8 +77,9 @@ function generateRow(drum, drumRow) {
   muteButton.addEventListener('click', handleMuteButton);
 
   volumeDrop.appendChild(volumeSlider);
-  drumName.appendChild(volumeDrop);
-  drumName.appendChild(muteButton);
+  volumeControls.appendChild(volumeDrop);
+  volumeControls.appendChild(muteButton);
+  drumName.appendChild(volumeControls);
   row.appendChild(drumName);
 
   function handleClickOnVolumeBox(){
