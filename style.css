@@ -61,6 +61,10 @@ button {
   padding: 2px;
 }
 
+button:focus {
+  outline: none;
+}
+
 h2 {
   text-align: center;
   font-family: Comfortaa, cursive;
@@ -74,6 +78,11 @@ select, input {
   border: none;
   padding: 2px;
   border-radius: 2px;
+}
+
+select:focus, input:focus {
+  outline-color: #000;
+  outline-width: 2px;
 }
 
 #tempo-change {
