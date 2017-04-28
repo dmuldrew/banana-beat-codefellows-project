@@ -45,8 +45,8 @@ section {
 }
 
 #banana-beat {
-  width: auto;
-  height: 80px;
+  width: 50%;
+  height: auto;
   display: block;
   margin: 0 auto 20px;
 }
@@ -219,8 +219,14 @@ main {
   padding: 10px;
 }
 
-#grid-beat {
+#beats {
   height: 60%;
+  overflow: scroll;
+  margin: 0;
+}
+
+#grid-beat {
+  height: 100%;
   border-spacing: 0px;
 }
 
@@ -241,12 +247,20 @@ main {
 
 .drum-label span {
   display: block;
-  margin-bottom: 24px;
+  height: 50%;
+  padding-top: 20%;
+  line-height: 1em;
+}
+
+.drum-label div {
+  display: block;
+  position: relative;
+  height: 50%;
 }
 
 .drum-label button {
   position: absolute;
-  top: 50%;
+  top: 0;
   width: 20px;
   border-radius: 10px;
 }
