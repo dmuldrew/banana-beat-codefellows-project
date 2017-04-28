@@ -28,7 +28,6 @@ body {
   background: #363636 url(img/lodyas.png);
   font-family: Poppins, sans-serif;
   font-weight: 300;
-  overflow: hidden;
 }
 
 aside {
@@ -69,7 +68,7 @@ button:active {
   background: #dbba39;
 }
 
-h2 {
+h1, h2 {
   text-align: center;
   font-family: Comfortaa, cursive;
   font-weight: bold;
@@ -243,6 +242,7 @@ main {
   height: 100%;
   float: right;
   padding: 10px;
+  overflow: hidden;
 }
 
 #beats {
@@ -464,10 +464,64 @@ main {
   width: auto;
   height: 25%;
 }
-#au img{
-  height: 220px;
-  width: 220px;
+
+#au {
+  width: 80%;
+  min-width: 474px;
+  height: 100%;
+  margin: 3% auto;
+  font-weight: lighter;
 }
-#secondBeater{
-  float: left;
+
+#au .beaters {
+  display: inline-block;
+  width: 24%;
+  text-align: center;
+}
+
+#au h1, #au h2 {
+  color: #FFDB42;
+}
+
+#au h1 {
+  font-size: 2em;
+  margin-bottom: 2%;
+}
+
+#au h2 {
+  font-size: 1.6em;
+}
+
+#au img{
+  width: 100%;
+}
+
+#au a {
+  color: #FFDB42;
+  text-decoration: none;
+}
+
+#au a:hover {
+  text-decoration: underline;
+}
+
+#banana-drum {
+  margin-top: 4%;
+  height: 20%;
+  min-height: 140px;
+  text-align: center;
+}
+
+#banana-drum img {
+  height: 100%;
+  width: auto;
+}
+
+#au #home-link {
+  margin-top: 2%;
+  font-family: Comfortaa, cursive;
+  font-size: 3em;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
