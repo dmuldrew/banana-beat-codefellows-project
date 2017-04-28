@@ -6,8 +6,6 @@
   <link href="https://fonts.googleapis.com/css?family=Comfortaa:400,700|Poppins:300,400" rel="stylesheet">
 
   <link href="style.css" rel="stylesheet" type="text/css" />
-  <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet">
 </head>
 <body>
   <aside>
@@ -18,8 +16,8 @@
     </section> <!-- end tempo-change -->
 
     <div id='play-pause'>
-      <img id='banana-spiral' clicked='no' class='spinning' src="bananaspiral.png" />
-      <img id='playhead' src="playpause.png" />
+      <img id='banana-spiral' clicked='no' class='spinning' src="img/bananaspiral.png" />
+      <img id='playhead' src="img/playpause.png" />
     </div>
 
 
@@ -35,8 +33,8 @@
       <h2>Add Loop</h2>
       <button id="d3" type:"submit">Guitar Loop (40bpm)</button>
       <button id="d5" type:"submit">Synth Loop (60bpm)</button>
-      <button id="d6" type:"submit">Bass Loop 1(60bpm)</button>
-      <button id="d7" type:"submit">Bass Loop 2(43bpm)</button>
+      <button id="d6" type:"submit">Bass Loop 1 (60bpm)</button>
+      <button id="d7" type:"submit">Bass Loop 2 (43bpm)</button>
     </section> <!-- end options -->
 
     <section id="piano-settings">
@@ -87,7 +85,7 @@
       <h2>Save Your Beat</h2>
       <form id="save-form">
         <input type="text" name="nameInput" placeholder="Beat name" required />
-        <button type="submit">Save Current Setup</button>
+        <button type="submit">Save Current Beat</button>
       </form>
       <div id="saves"></div>
       <button id="clear-saves">Clear All Saved Data</button>
@@ -103,14 +101,16 @@
       <table id="grid-beat"></table>
     </section>
 
-    <section id="piano-box">
-      <table id="piano"></table>
-      <div id="c-sharp" class="black-key"><span>W</span></div>
-      <div id="d-sharp" class="black-key"><span>E</span></div>
-      <div id="f-sharp" class="black-key"><span>T</span></div>
-      <div id="g-sharp" class="black-key"><span>Y</span></div>
-      <div id="a-sharp" class="black-key"><span>U</span></div>
-    </section> <!-- end piano-box -->
+    <section id="entire-piano">
+      <div id="piano-box">
+        <table id="piano"></table>
+        <div id="c-sharp" class="black-key"><span>W</span></div>
+        <div id="d-sharp" class="black-key"><span>E</span></div>
+        <div id="f-sharp" class="black-key"><span>T</span></div>
+        <div id="g-sharp" class="black-key"><span>Y</span></div>
+        <div id="a-sharp" class="black-key"><span>U</span></div>
+      </div> <!-- end piano-box -->
+    </section> <!-- end entire-piano -->
   </main>
 
 

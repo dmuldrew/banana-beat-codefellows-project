@@ -60,7 +60,15 @@ button {
   padding: 2px;
 }
 
-h2 {
+button:focus {
+  outline: none;
+}
+
+button:active {
+  background: #dbba39;
+}
+
+h1, h2 {
   text-align: center;
   font-family: Comfortaa, cursive;
   font-weight: bold;
@@ -73,6 +81,11 @@ select, input {
   border: none;
   padding: 2px;
   border-radius: 2px;
+}
+
+select:focus, input:focus {
+  outline-color: #000;
+  outline-width: 2px;
 }
 
 #tempo-change {
@@ -97,6 +110,10 @@ select, input {
 #reset {
   background: #999;
   margin-bottom: 20px;
+}
+
+#reset:active {
+  background: #888;
 }
 
 #random-button:hover {
@@ -187,10 +204,18 @@ select, input {
   font-size: .8em;
 }
 
+.saved-state button:active {
+  background: #F43030;
+}
+
 #clear-saves {
   margin-top: 10px;
   background-color: #555;
   color: #bbb;
+}
+
+#clear-saves:active {
+  background: #F43030;
 }
 
 footer {
@@ -217,6 +242,7 @@ main {
   height: 100%;
   float: right;
   padding: 10px;
+  overflow: hidden;
 }
 
 #beats {
@@ -240,15 +266,16 @@ main {
 
 #grid-beat .drum-label {
   border: 1px solid #1e1e1e;
+  width: calc(80% / 15);
+  padding: 2px;
   background: rgba(255,255,255,.3);
   position: relative;
   font-size: .8em;
 }
 
 .drum-label span {
-  display: block;
+  display: inline-block;
   height: calc(100% - 24px);
-  padding-top: 20%;
   line-height: 1em;
 }
 
@@ -278,18 +305,44 @@ main {
   background-size: 14px;
   background-repeat: no-repeat;
   background-position: 2px 2px;
-
 }
 
 .drum-label img {
   width: 14px;
 }
 
+#entire-piano {
+  height: 40%;
+  margin-bottom: 0;
+  margin-top: 3px;
+}
+
+#entire-piano #piano-volume {
+  text-align: center;
+  width: calc(80%/12);
+  padding: 1% 0;
+  background: rgba(255,255,255,.3);
+  border: 2px solid #333;
+  font-family: Poppins, sans-serif;
+  font-weight: lighter;
+  font-size: .75em;
+  color: #000;
+  float: left;
+  height: 100%;
+}
+
+#piano-volume input {
+  height: 85%;
+  line-height: 100%;
+}
+
 #piano-box {
   font-family: Comfortaa, cursive;
   position: relative;
-  height: 40%;
+  height: 100%;
+  width: calc(100% - calc(80%/12));
   margin-bottom: 0;
+  float: right;
 }
 
 #piano {
@@ -304,21 +357,6 @@ main {
   color: #9A9A9A;
   vertical-align: bottom;
   text-align: center;
-}
-
-#piano #piano-volume {
-  border: none;
-  width: calc(80%/17);
-  vertical-align: middle;
-  background: rgba(255,255,255,.3);
-  font-family: Poppins, sans-serif;
-  font-weight: lighter;
-  font-size: .75em;
-  color: #000;
-}
-
-#piano-volume input {
-  height: 80%;
 }
 
 .black-key{
@@ -349,31 +387,31 @@ main {
 #c-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(100% / 8) * 1.02);
+  left: calc(125% / 16);
 }
 
 #d-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 3.15);
+  left: calc(calc(125% / 16) * 2.6);
 }
 
 #f-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 6.15);
+  left: calc(calc(125% / 16) * 5.8);
 }
 
 #g-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 7.65);
+  left: calc(calc(125% / 16) * 7.4);
 }
 
 #a-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 9.15);
+  left: calc(calc(125% / 16) * 9);
 }
 
 .hide {
@@ -426,10 +464,64 @@ main {
   width: auto;
   height: 25%;
 }
-#au img{
-  height: 220px;
-  width: 220px;
+
+#au {
+  width: 80%;
+  min-width: 474px;
+  height: 100%;
+  margin: 3% auto;
+  font-weight: lighter;
 }
-#secondBeater{
-  float: left;
+
+#au .beaters {
+  display: inline-block;
+  width: 24%;
+  text-align: center;
+}
+
+#au h1, #au h2 {
+  color: #FFDB42;
+}
+
+#au h1 {
+  font-size: 2em;
+  margin-bottom: 2%;
+}
+
+#au h2 {
+  font-size: 1.6em;
+}
+
+#au img{
+  width: 100%;
+}
+
+#au a {
+  color: #FFDB42;
+  text-decoration: none;
+}
+
+#au a:hover {
+  text-decoration: underline;
+}
+
+#banana-drum {
+  margin-top: 4%;
+  height: 20%;
+  min-height: 140px;
+  text-align: center;
+}
+
+#banana-drum img {
+  height: 100%;
+  width: auto;
+}
+
+#au #home-link {
+  margin-top: 2%;
+  font-family: Comfortaa, cursive;
+  font-size: 3em;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
