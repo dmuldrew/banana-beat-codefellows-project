@@ -241,6 +241,8 @@ main {
 
 #grid-beat .drum-label {
   border: 1px solid #1e1e1e;
+  width: calc(80% / 15);
+  padding: 2px;
   background: rgba(255,255,255,.3);
   position: relative;
   font-size: .8em;
@@ -278,7 +280,6 @@ main {
   background-size: 14px;
   background-repeat: no-repeat;
   background-position: 2px 2px;
-
 }
 
 .drum-label img {
@@ -293,8 +294,8 @@ main {
 
 #entire-piano #piano-volume {
   text-align: center;
-  width: calc(80%/14);
-  vertical-align: middle;
+  width: calc(80%/12);
+  padding: 1% 0;
   background: rgba(255,255,255,.3);
   border: 2px solid #333;
   font-family: Poppins, sans-serif;
@@ -306,14 +307,15 @@ main {
 }
 
 #piano-volume input {
-  height: 80%;
+  height: 85%;
+  line-height: 100%;
 }
 
 #piano-box {
   font-family: Comfortaa, cursive;
   position: relative;
   height: 100%;
-  width: calc(100% - calc(80%/14));
+  width: calc(100% - calc(80%/12));
   margin-bottom: 0;
   float: right;
 }
