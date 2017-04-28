@@ -377,3 +377,13 @@ main {
   width: auto;
   height: 25%;
 }
+ #fourthBeater img {
+  height: 15%;
+  width: 15%;
+ }
+ #fourthBeater a {
+   display:   block;
+ }
+ #au {
+   background-color: beige;
+ }
