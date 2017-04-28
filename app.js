@@ -715,11 +715,12 @@ var pianoLabels = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K'];
 
 function generatePiano() {
   var table = document.getElementById('piano');
-  var volumeBox = document.createElement('td');
+  var volumeBox = document.createElement('div');
   volumeBox.id = 'piano-volume';
   volumeBox.textContent = 'Volume';
+  table.parentElement.parentElement.insertBefore(volumeBox, table.parentElement);
   var row = document.createElement('tr');
-  row.appendChild(volumeBox);
+  // row.appendChild(volumeBox);
   var pianoVolumeSlider = document.createElement('input');
   pianoVolumeSlider.type = 'range';
   pianoVolumeSlider.min = '0';

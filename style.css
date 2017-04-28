@@ -28,6 +28,7 @@ body {
   background: #363636 url(img/lodyas.png);
   font-family: Poppins, sans-serif;
   font-weight: 300;
+  overflow: hidden;
 }
 
 aside {
@@ -246,9 +247,8 @@ main {
 }
 
 .drum-label span {
-  display: block;
+  display: inline-block;
   height: calc(100% - 24px);
-  padding-top: 20%;
   line-height: 1em;
 }
 
@@ -285,11 +285,37 @@ main {
   width: 14px;
 }
 
+#entire-piano {
+  height: 40%;
+  margin-bottom: 0;
+  margin-top: 3px;
+}
+
+#entire-piano #piano-volume {
+  text-align: center;
+  width: calc(80%/14);
+  vertical-align: middle;
+  background: rgba(255,255,255,.3);
+  border: 2px solid #333;
+  font-family: Poppins, sans-serif;
+  font-weight: lighter;
+  font-size: .75em;
+  color: #000;
+  float: left;
+  height: 100%;
+}
+
+#piano-volume input {
+  height: 80%;
+}
+
 #piano-box {
   font-family: Comfortaa, cursive;
   position: relative;
-  height: 40%;
+  height: 100%;
+  width: calc(100% - calc(80%/14));
   margin-bottom: 0;
+  float: right;
 }
 
 #piano {
@@ -304,21 +330,6 @@ main {
   color: #9A9A9A;
   vertical-align: bottom;
   text-align: center;
-}
-
-#piano #piano-volume {
-  border: none;
-  width: calc(80%/17);
-  vertical-align: middle;
-  background: rgba(255,255,255,.3);
-  font-family: Poppins, sans-serif;
-  font-weight: lighter;
-  font-size: .75em;
-  color: #000;
-}
-
-#piano-volume input {
-  height: 80%;
 }
 
 .black-key{
@@ -349,31 +360,31 @@ main {
 #c-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(100% / 8) * 1.02);
+  left: calc(125% / 16);
 }
 
 #d-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 3.15);
+  left: calc(calc(125% / 16) * 2.6);
 }
 
 #f-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 6.15);
+  left: calc(calc(125% / 16) * 5.8);
 }
 
 #g-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 7.65);
+  left: calc(calc(125% / 16) * 7.4);
 }
 
 #a-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 9.15);
+  left: calc(calc(125% / 16) * 9);
 }
 
 .hide {
