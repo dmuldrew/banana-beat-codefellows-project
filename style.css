@@ -219,8 +219,14 @@ main {
   padding: 10px;
 }
 
-#grid-beat {
+#beats {
   height: 60%;
+  overflow: scroll;
+  margin: 0;
+}
+
+#grid-beat {
+  height: 100%;
   border-spacing: 0px;
 }
 
