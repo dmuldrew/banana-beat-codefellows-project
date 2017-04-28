@@ -65,6 +65,10 @@ button:focus {
   outline: none;
 }
 
+button:active {
+  background: #dbba39;
+}
+
 h2 {
   text-align: center;
   font-family: Comfortaa, cursive;
@@ -107,6 +111,10 @@ select:focus, input:focus {
 #reset {
   background: #999;
   margin-bottom: 20px;
+}
+
+#reset:active {
+  background: #888;
 }
 
 #random-button:hover {
@@ -197,10 +205,18 @@ select:focus, input:focus {
   font-size: .8em;
 }
 
+.saved-state button:active {
+  background: #F43030;
+}
+
 #clear-saves {
   margin-top: 10px;
   background-color: #555;
   color: #bbb;
+}
+
+#clear-saves:active {
+  background: #F43030;
 }
 
 footer {
