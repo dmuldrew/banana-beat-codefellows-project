@@ -266,11 +266,12 @@ main {
 
 #grid-beat .drum-label {
   border: 1px solid #1e1e1e;
-  width: 6%;
+  width: calc(80% / 15);
   padding: 2px;
   background: rgba(255,255,255,.3);
   position: relative;
   font-size: .8em;
+  max-width: 4.5px;
 }
 
 .drum-label span {
