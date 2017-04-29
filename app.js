@@ -670,7 +670,7 @@ function decode(code) {
     }
     drum += binaryHalf;
     if (i % 2) {
-      if (binaryList.length > 16) {
+      if (drum.length > 16) {
         return null;
       }
       binaryList.push(drum);
