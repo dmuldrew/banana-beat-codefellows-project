@@ -423,8 +423,6 @@ main {
 }
 
 .drum-slider{
-  display: inline-block;
-  float:left;
   -webkit-appearance: slider-vertical;
 }
 
@@ -534,7 +532,7 @@ main {
 }
 
 #browser-error img {
-  height: 100px;
+  height: 140px;
   width: auto;
 }
 

@@ -17,6 +17,7 @@ try {
   var mainPage = document.getElementsByTagName('main')[0];
   var browserError = '<div id="browser-error"><img src="img/sadbanana.gif"><h1>Sorry, Banana Beat is not supported by your browser.</h1><p>Try using <a href="https://www.google.com/chrome/">Chrome</a> or <a href="https://www.mozilla.org/firefox/">Firefox</a>.</p></div>';
   mainPage.innerHTML = browserError;
+  document.getElementById('banana-spiral').className = '';
 }
 
 // DRUM OBJECT
