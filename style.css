@@ -266,7 +266,7 @@ main {
 
 #grid-beat .drum-label {
   border: 1px solid #1e1e1e;
-  width: calc(80% / 15);
+  width: 6%;
   padding: 2px;
   background: rgba(255,255,255,.3);
   position: relative;
@@ -524,4 +524,25 @@ main {
   display: block;
   width: 100%;
   text-align: center;
+}
+
+#browser-error {
+  width: 100%;
+  text-align: center;
+  margin-top: 5%;
+  color: #FFDB42;
+}
+
+#browser-error img {
+  height: 100px;
+  width: auto;
+}
+
+#browser-error a {
+  color: #FFDB42;
+  text-decoration: none;
+}
+
+#browser-error a:hover {
+  text-decoration: underline;
 }
