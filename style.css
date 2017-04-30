@@ -320,7 +320,7 @@ main {
 
 #entire-piano #piano-volume {
   text-align: center;
-  width: calc(80%/12);
+  width: 6.667%;
   padding: 1% 0;
   background: rgba(255,255,255,.3);
   border: 2px solid #333;
@@ -341,7 +341,7 @@ main {
   font-family: Comfortaa, cursive;
   position: relative;
   height: 100%;
-  width: calc(100% - calc(80%/12));
+  width: calc(100% - 6.667%);
   margin-bottom: 0;
   float: right;
 }
@@ -388,31 +388,31 @@ main {
 #c-sharp{
   position: absolute;
   top: 2px;
-  left: calc(125% / 16);
+  left: 7.8125%;
 }
 
 #d-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 2.6);
+  left: calc(7.8125% * 2.6);
 }
 
 #f-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 5.8);
+  left: calc(7.8125% * 5.8);
 }
 
 #g-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 7.4);
+  left: calc(7.8125% * 7.4);
 }
 
 #a-sharp{
   position: absolute;
   top: 2px;
-  left: calc(calc(125% / 16) * 9);
+  left: calc(7.8125% * 9);
 }
 
 .hide {

@@ -11,7 +11,8 @@ var currentBeat = 0;
 var audioContext;
 
 try {
-  audioContext = new AudioContext || window.webkitAudioContext();
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  audioContext = new AudioContext();
 } catch(error) {
   console.error(error);
   var mainPage = document.getElementsByTagName('main')[0];
