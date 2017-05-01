@@ -26,7 +26,7 @@ try {
 function Drum(name, sample){
   this.context = audioContext;
   this.drumGain = audioContext.createGain();
-  this.drumGain.gain.value = 0;
+  this.drumGain.gain.value = .5;
   this.name = name;
   this.sample = sample;
   this.playTriggers = new Array(16).fill(false);
@@ -40,6 +40,11 @@ Drum.prototype.playDrum = function(){
   sound.play();
   sound.muted = this.muted;
 };
+
+// var newDrum = audioContext.createMediaElementSource(sound);
+// sound.crossOrigin = 'anonymous';
+// newDrum.connect(this.drumGain);
+// this.drumGain.connect(audioContext.destination);
 
 // TABLE GENERATION
 
